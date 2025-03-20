@@ -1,9 +1,10 @@
 import './App.css';
+import Exam from './Components/Maheesha/Exam';
 // Working Pretty well
 function App() {
   return (
     <div className="App">
-      <h1>Hello World!</h1>
+      <Exam />
     </div>
   );
 }
