@@ -22,6 +22,20 @@ const Layout = ({ children }) => {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             Academic Scheduler
           </Typography>
+          <Button color="inherit" component={Link} to="/">
+            Home
+          </Button>
+          <Button color="inherit" component={Link} to="/exam">
+            Exam
+          </Button>
+          <Button color="inherit" component={Link} to="/invigilator">
+            Invigilator
+          </Button>
+          <Button color="inherit" component={Link} to="/hall">
+            Halls
+          </Button>
+          <Button color="inherit" component={Link} to="/profile">
+            Profile
           <Button color="inherit" onClick={toggleDrawer}>
             Menu
           </Button>
