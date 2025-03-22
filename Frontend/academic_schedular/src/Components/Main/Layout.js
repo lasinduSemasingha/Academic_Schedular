@@ -20,7 +20,7 @@ const Layout = ({ children }) => {
             Profile
           </Button>
           <Button color="inherit" component={Link} to="/lecturer">
-            Profile
+            Lecturer
           </Button>
         </Toolbar>
       </AppBar>
