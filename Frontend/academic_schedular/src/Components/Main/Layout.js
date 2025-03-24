@@ -13,14 +13,8 @@ const Layout = ({ children }) => {
           <Button color="inherit" component={Link} to="/">
             Home
           </Button>
-          <Button color="inherit" component={Link} to="/exam">
-            Exam
-          </Button>
-          <Button color="inherit" component={Link} to="/invigilator">
-            Invigilator
-          </Button>
-          <Button color="inherit" component={Link} to="/hall">
-            Halls
+          <Button color="inherit" component={Link} to="/examHome">
+            Exam_Home
           </Button>
           <Button color="inherit" component={Link} to="/profile">
             Profile
