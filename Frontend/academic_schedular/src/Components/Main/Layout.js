@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { AppBar, Toolbar, Typography, Container, Box, Button, Drawer, List, ListItem, ListItemText, Divider } from "@mui/material";
 import { Link } from "react-router-dom";
 import { Home, AccountCircle, Schedule, Settings, Assignment } from "@mui/icons-material";
+ import { faBars } from '@fortawesome/free-solid-svg-icons';
+ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const Layout = ({ children }) => {
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -36,8 +38,9 @@ const Layout = ({ children }) => {
           </Button>
           <Button color="inherit" component={Link} to="/profile">
             Profile
+            </Button>
           <Button color="inherit" onClick={toggleDrawer}>
-            Menu
+            <FontAwesomeIcon icon="fa-solid fa-bars" />
           </Button>
         </Toolbar>
       </AppBar>
