@@ -1,9 +1,21 @@
 import React, { useState } from "react";
-import { AppBar, Toolbar, Typography, Container, Box, Button, Drawer, List, ListItem, ListItemText, Divider } from "@mui/material";
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  Container,
+  Box,
+  Button,
+  Drawer,
+  List,
+  ListItem,
+  ListItemText,
+  Divider,
+} from "@mui/material";
 import { Link } from "react-router-dom";
 import { Home, AccountCircle, Schedule, Settings, Assignment } from "@mui/icons-material";
- import { faBars } from '@fortawesome/free-solid-svg-icons';
- import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBars } from "@fortawesome/free-solid-svg-icons";
 
 const Layout = ({ children }) => {
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -17,24 +29,27 @@ const Layout = ({ children }) => {
   };
 
   return (
-    <Box sx={{ minHeight: "100vh" }}>
+    <Box sx={{ minHeight: "100vh", backgroundColor: "#F4F7FC" }}>
       {/* AppBar */}
-      <AppBar position="static">
+      <AppBar sx={{ backgroundColor: "#024CAA" }} position="static">
         <Toolbar>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+          <Typography variant="h5" fontWeight="bold" sx={{ flexGrow: 1, color: "white" }}>
             Academic Scheduler
           </Typography>
-          <Button color="inherit" component={Link} to="/">
+          <Button sx={{ color: "white", mx: 1 }} component={Link} to="/">
             Home
           </Button>
-          <Button color="inherit" component={Link} to="/examHome">
-            Exam_Home
+          <Button sx={{ color: "white", mx: 1 }} component={Link} to="/examHome">
+            Exam Home
           </Button>
-          <Button color="inherit" component={Link} to="/profile">
+          <Button sx={{ color: "white", mx: 1 }} component={Link} to="/profile">
             Profile
-            </Button>
-          <Button color="inherit" onClick={toggleDrawer}>
-            <FontAwesomeIcon icon="fa-solid fa-bars" />
+          </Button>
+          <Button sx={{ color: "white", mx: 1 }} component={Link} to="/resource">
+            Resources
+          </Button>
+          <Button color="inherit" onClick={toggleDrawer} sx={{ color: "white" }}>
+            <FontAwesomeIcon icon={faBars} />
           </Button>
         </Toolbar>
       </AppBar>
@@ -45,34 +60,33 @@ const Layout = ({ children }) => {
         open={drawerOpen}
         onClose={toggleDrawer}
         sx={{
-          width: 240,
-          flexShrink: 0,
           "& .MuiDrawer-paper": {
-            width: 240,
-            boxSizing: "border-box",
+            width: 260,
+            backgroundColor: "#091057",
+            color: "white",
           },
         }}
       >
         <List>
-          <ListItem button component={Link} to="/" onClick={closeDrawer}>
-            <Home />
+          <ListItem button component={Link} to="/" onClick={closeDrawer} sx={{ color: "white" }}>
+            <Home sx={{ marginRight: 1 }} />
             <ListItemText primary="Home" />
           </ListItem>
-          <ListItem button component={Link} to="/exam" onClick={closeDrawer}>
-            <Assignment />
+          <ListItem button component={Link} to="/exam" onClick={closeDrawer} sx={{ color: "white" }}>
+            <Assignment sx={{ marginRight: 1 }} />
             <ListItemText primary="Exam" />
           </ListItem>
-          <ListItem button component={Link} to="/schedule" onClick={closeDrawer}>
-            <Schedule />
+          <ListItem button component={Link} to="/schedule" onClick={closeDrawer} sx={{ color: "white" }}>
+            <Schedule sx={{ marginRight: 1 }} />
             <ListItemText primary="Schedule" />
           </ListItem>
-          <ListItem button component={Link} to="/profile" onClick={closeDrawer}>
-            <AccountCircle />
+          <ListItem button component={Link} to="/profile" onClick={closeDrawer} sx={{ color: "white" }}>
+            <AccountCircle sx={{ marginRight: 1 }} />
             <ListItemText primary="Profile" />
           </ListItem>
-          <Divider />
-          <ListItem button component={Link} to="/settings" onClick={closeDrawer}>
-            <Settings />
+          <Divider sx={{ backgroundColor: "white" }} />
+          <ListItem button component={Link} to="/settings" onClick={closeDrawer} sx={{ color: "white" }}>
+            <Settings sx={{ marginRight: 1 }} />
             <ListItemText primary="Settings" />
           </ListItem>
         </List>
@@ -80,28 +94,28 @@ const Layout = ({ children }) => {
 
       {/* Main Content */}
       <Box>
-        <Container sx={{ px: 0 }}>
-          {children}
-        </Container>
+        <Container sx={{ px: 2, py: 3 }}>{children}</Container>
       </Box>
 
       {/* Footer */}
       <Box
-        component="footer"
-        sx={{
-          py: 2,
-          textAlign: "center",
-          bgcolor: "primary.main",
-          color: "white",
-          mt: "auto", // This ensures the footer stays at the bottom
-          position: "fixed",
-          bottom: 0,
-          width: "100%",
-          zIndex: 1000,
-        }}
-      >
-        <Typography variant="body2">© 2025 Academic Scheduler. All rights reserved.</Typography>
-      </Box>
+  component="footer"
+  sx={{
+    py: 2,
+    textAlign: "center",
+    bgcolor: "#024CAA",
+    color: "white",
+    mt: "auto",
+    width: "100%",
+    zIndex: 1000,
+    position: "relative", // Change from fixed to relative
+  }}
+>
+  <Typography variant="body2">
+    © 2025 Academic Scheduler. All rights reserved.
+  </Typography>
+</Box>
+
     </Box>
   );
 };

@@ -12,6 +12,8 @@ import EditHall from "./Components/Sub/Maheesha/EditHall";
 import EditInvigilator from "./Components/Sub/Maheesha/EditInvigilator";
 import EditExam from "./Components/Sub/Maheesha/EditExam";
 import ExamCoordinator from "./Components/Sub/Maheesha/ExamHome";
+import ResourceManagement from "./Components/Sub/Lasindu/Resource/ResourceManagement";
+import SettingsPage from "./Components/Sub/Lasindu/Settings/SettingsPage";
 
 function App() {
   return (
@@ -28,7 +30,8 @@ function App() {
           <Route path="/invigilator/edit" element={<EditInvigilator />} />
           <Route path="/hall" element={<Hall/>} />
           <Route path="/hall/HallTable" element={<HallTable/>} />
-          <Route path="/hall/edit" element={<EditHall />} />
+          <Route path="/resource" element={<ResourceManagement />} />
+          <Route path="/settings" element={<SettingsPage />} />
 
         </Routes>
       </Layout>
