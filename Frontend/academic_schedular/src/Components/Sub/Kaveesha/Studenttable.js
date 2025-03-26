@@ -35,15 +35,16 @@ const Studenttable = () => {
                     <Table>
                         <TableHead>
                             <TableRow>
-                                <TableCell>Student ID</TableCell>
-                                <TableCell>Student Name</TableCell>
-                                <TableCell>Email</TableCell>
-                                <TableCell>Contact Number</TableCell>
-                                <TableCell>Date of Birth</TableCell>
-                                <TableCell>Faculty</TableCell>
-                                <TableCell>Year</TableCell>
-                                <TableCell>Semester</TableCell>
-                                <TableCell>Actions</TableCell>
+                                <TableCell sx={{ fontWeight: 'bold',textAlign:'center' }}>Student ID</TableCell>
+                                <TableCell sx={{ fontWeight: 'bold',textAlign:'center' }}>Student Name</TableCell>
+                                <TableCell sx={{ fontWeight: 'bold',textAlign:'center'}}>Email</TableCell>
+                                <TableCell sx={{ fontWeight: 'bold',textAlign:'center' }}>Contact Number</TableCell>
+                                <TableCell sx={{ fontWeight: 'bold',textAlign:'center' }}>Date Of Birth</TableCell>
+                                <TableCell sx={{ fontWeight: 'bold',textAlign:'center' }}>Faculty</TableCell>
+                                <TableCell sx={{ fontWeight: 'bold',textAlign:'center' }}>Year</TableCell>
+                                <TableCell sx={{ fontWeight: 'bold',textAlign:'center' }}>Semester</TableCell>
+                                <TableCell sx={{ fontWeight: 'bold',textAlign:'center' }}>Edit</TableCell>
+                                <TableCell sx={{ fontWeight: 'bold',textAlign:'center' }}>Delete</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -59,10 +60,9 @@ const Studenttable = () => {
                                     <TableCell>{student.semester}</TableCell>
                                     <TableCell>
                                         <Button variant="contained" color="primary" size="small" sx={{ mr: 1 }}>Edit</Button>
-            
                                     </TableCell>
                                     <TableCell>
-                                    <Button variant="outlined" color="secondary" size="small">Delete</Button>
+                                        <Button variant="outlined" color="secondary" size="small">Delete</Button>
                                     </TableCell>
                                 </TableRow>
                             ))}
