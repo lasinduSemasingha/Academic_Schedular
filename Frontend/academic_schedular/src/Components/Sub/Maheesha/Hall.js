@@ -2,13 +2,13 @@ import React, { useState } from "react";
 import { Box, Typography, Paper, Grid, TextField, MenuItem, Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
-function Exam() {
+function Hall() {
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
-        examId: "",
-        examType: "",
-        location: "",
-        examDate: "",
+        hallId: "",
+        hallName: "",
+        hallLocation: "",
+        hallDate: "",
     });
 
     const handleChange = (e) => {
@@ -17,29 +17,29 @@ function Exam() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Retrieve the existing exams from localStorage or initialize it as an empty array
-        let examList = JSON.parse(localStorage.getItem("exams")) || [];
-        // Add the new exam to the examList
-        examList.push(formData);
+        // Retrieve existing halls from localStorage or initialize an empty array
+        let hallList = JSON.parse(localStorage.getItem("halls")) || [];
+        // Add the new hall data
+        hallList.push(formData);
         // Save the updated list back to localStorage
-        localStorage.setItem("exams", JSON.stringify(examList));
-        // Redirect to the exam records table
-        navigate("/exam/ExamTable");
+        localStorage.setItem("halls", JSON.stringify(hallList));
+        // Redirect to the hall records table
+        navigate("/hall/HallTable");
     };
 
     return (
         <Box sx={{ textAlign: "center", py: 6 }}>
             <Paper elevation={3} sx={{ padding: 4, textAlign: "center" }}>
                 <Typography variant="h4" fontWeight="bold" gutterBottom>
-                    Exam Management
+                    Hall Management
                 </Typography>
-                <form className="examform" onSubmit={handleSubmit}>
+                <form className="hallform" onSubmit={handleSubmit}>
                     <Grid container spacing={2}>
                         <Grid item xs={12}>
                             <TextField
                                 fullWidth
-                                label="Exam ID"
-                                name="examId"
+                                label="Hall ID"
+                                name="hallId"
                                 variant="outlined"
                                 required
                                 onChange={handleChange}
@@ -49,33 +49,42 @@ function Exam() {
                             <TextField
                                 select
                                 fullWidth
-                                label="Exam Type"
-                                name="examType"
+                                label="Hall Name"
+                                name="hallName"
                                 variant="outlined"
                                 required
                                 onChange={handleChange}
                             >
-                                <MenuItem value="Midterm">Midterm</MenuItem>
-                                <MenuItem value="Final">Final</MenuItem>
-                                <MenuItem value="Quiz">Quiz</MenuItem>
-                                <MenuItem value="Assignment">Assignment</MenuItem>
+                                <MenuItem value="A012">A012</MenuItem>
+                                <MenuItem value="A013">A013</MenuItem>
+                                <MenuItem value="A014">A014</MenuItem>
+                                <MenuItem value="A015">A015</MenuItem>
+                                <MenuItem value="A016">A016</MenuItem>
+                                <MenuItem value="A017">A017</MenuItem>
+                                <MenuItem value="A018">A018</MenuItem>
+                                <MenuItem value="A019">A019</MenuItem>
+                                <MenuItem value="A020">A020</MenuItem>
+                            </TextField>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField
+                                select
+                                fullWidth
+                                label="Hall Location"
+                                name="hallLocation"
+                                variant="outlined"
+                                required
+                                onChange={handleChange}
+                            >
+                                <MenuItem value="Main Building">Main Building</MenuItem>
+                                <MenuItem value="New Building">New Building</MenuItem>
                             </TextField>
                         </Grid>
                         <Grid item xs={12}>
                             <TextField
                                 fullWidth
-                                label="Location"
-                                name="location"
-                                variant="outlined"
-                                required
-                                onChange={handleChange}
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <TextField
-                                fullWidth
-                                label="Exam Date"
-                                name="examDate"
+                                label="Hall Date"
+                                name="hallDate"
                                 type="date"
                                 InputLabelProps={{ shrink: true }}
                                 variant="outlined"
@@ -95,4 +104,4 @@ function Exam() {
     );
 }
 
-export default Exam;
+export default Hall;
