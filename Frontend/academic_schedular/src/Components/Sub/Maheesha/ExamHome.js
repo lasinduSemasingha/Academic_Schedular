@@ -1,21 +1,23 @@
-import React, { useState } from "react";
+import React from "react";
 import { 
-    Container, Typography, Box, Button, Grid, Drawer, List, ListItem, 
-    ListItemButton, ListItemText, IconButton, CssBaseline
+    Container, Typography, Box, Button, Grid, CssBaseline, useTheme
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import MenuIcon from "@mui/icons-material/Menu";
-import DashboardIcon from "@mui/icons-material/Dashboard";
-import ScheduleIcon from "@mui/icons-material/Event";
-import GroupIcon from "@mui/icons-material/Group";
-import RoomIcon from "@mui/icons-material/MeetingRoom";
-import { BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer } from "recharts";
+import { BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer, Legend } from "recharts";
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 
-const drawerWidth = 240;
 const localizer = momentLocalizer(moment);
+
+const customColors = {
+    primary: "#3f51b5",
+    secondary: "#f50057",
+    background: "#f5f5f5",
+    cardBg: "#ffffff",
+    textPrimary: "#212121",
+    textSecondary: "#757575"
+};
 
 const getCompletedExamsCount = (examData) => {
     const today = new Date().toISOString().split("T")[0];
@@ -33,155 +35,170 @@ const examData = [
     { subject: "Network Management", date: "2025-03-27", time: "1:00 PM - 4:00 PM" },
 ];
 
+// Function to convert time string to 24-hour format
+const parseTimeString = (timeStr) => {
+    const [time, period] = timeStr.replace(/ /g, '').split(/(AM|PM)/);
+    let [hours, minutes] = time.split(':');
+    hours = parseInt(hours, 10);
+    if (period === 'PM' && hours < 12) hours += 12;
+    if (period === 'AM' && hours === 12) hours = 0;
+    return `${hours.toString().padStart(2, '0')}:${minutes || '00'}`;
+};
+
+// Prepare calendar events
+const calendarEvents = examData.map(exam => {
+    const startTime = parseTimeString(exam.time.split(" - ")[0]);
+    const endTime = parseTimeString(exam.time.split(" - ")[1]);
+    
+    return {
+        title: exam.subject,
+        start: new Date(`${exam.date}T${startTime}:00`),
+        end: new Date(`${exam.date}T${endTime}:00`),
+        allDay: false,
+    };
+});
+
 const completedExamsCount = getCompletedExamsCount(examData);
 const toBeCompletedExamsCount = getToBeCompletedExamsCount(examData);
 
 const chartData = [
-    { name: "Completed", count: completedExamsCount },
-    { name: "Upcoming", count: toBeCompletedExamsCount },
+    { name: "Completed", count: completedExamsCount, fill: "#4caf50" },
+    { name: "Upcoming", count: toBeCompletedExamsCount, fill: "#ff9800" },
 ];
-
-// Convert examData to calendar events
-const events = examData.map((exam) => ({
-    title: exam.subject,
-    start: new Date(exam.date),
-    end: new Date(exam.date),
-    allDay: true,
-}));
 
 const ExamCoordinator = () => {
     const navigate = useNavigate();
-    const [mobileOpen, setMobileOpen] = useState(false);
-
-    const handleDrawerToggle = () => {
-        setMobileOpen(!mobileOpen);
-    };
-
-    const drawerContent = (
-        <Box sx={{ width: drawerWidth, bgcolor: "#2A2E3B", height: "100vh", color: "#fff", p: 2 }}>
-            <Typography variant="h6" gutterBottom textAlign="center">Exam Dashboard</Typography>
-            <List>
-                <ListItem disablePadding>
-                    <ListItemButton onClick={() => navigate("/dashboard")}>
-                        <DashboardIcon sx={{ mr: 2 }} />
-                        <ListItemText primary="Dashboard" />
-                    </ListItemButton>
-                </ListItem>
-                <ListItem disablePadding>
-                    <ListItemButton onClick={() => navigate("/exam/ExamTable")}>
-                        <ScheduleIcon sx={{ mr: 2 }} />
-                        <ListItemText primary="Exam Schedules" />
-                    </ListItemButton>
-                </ListItem>
-                <ListItem disablePadding>
-                    <ListItemButton onClick={() => navigate("/invigilator/InvigilatorTable")}>
-                        <GroupIcon sx={{ mr: 2 }} />
-                        <ListItemText primary="Invigilators" />
-                    </ListItemButton>
-                </ListItem>
-                <ListItem disablePadding>
-                    <ListItemButton onClick={() => navigate("/hall/HallTable")}>
-                        <RoomIcon sx={{ mr: 2 }} />
-                        <ListItemText primary="Hall Allocations" />
-                    </ListItemButton>
-                </ListItem>
-            </List>
-        </Box>
-    );
+    const theme = useTheme();
 
     return (
-        <Box sx={{ display: "flex" }}>
+        <Box sx={{ display: "flex", minHeight: "80vh", bgcolor: customColors.background, flexDirection: "column" }}>
             <CssBaseline />
             
-            {/* Persistent Sidebar */}
-            <Drawer 
-                variant="permanent"
-                sx={{
-                    width: drawerWidth,
-                    flexShrink: 0,
-                    "& .MuiDrawer-paper": { width: drawerWidth, bgcolor: "#2A2E3B", color: "#fff" }
-                }}
-            >
-                {drawerContent}
-            </Drawer>
-
-            {/* Mobile Sidebar */}
-            <Drawer 
-                anchor="left"
-                open={mobileOpen}
-                onClose={handleDrawerToggle}
-                sx={{ display: { xs: "block", sm: "none" } }}
-            >
-                {drawerContent}
-            </Drawer>
-
-            {/* Menu Button for Mobile */}
-            <IconButton 
-                onClick={handleDrawerToggle} 
-                sx={{ position: "absolute", top: 20, left: 20, display: { sm: "none" } }}
-            >
-                <MenuIcon sx={{ color: "#fff" }} />
-            </IconButton>
-
-            {/* Main Content */}
-            <Container sx={{ flexGrow: 1, p: 3, ml: { sm: `${drawerWidth}px` } }}>
-                <Typography variant="h4" gutterBottom>Welcome Back, Exam Coordinator!</Typography>
-
-                {/* Home Page Image */}
-                <Box sx={{ mt: 3, mb: 3, display: "flex", justifyContent: "center" }}>
-                    <img src="/Maheesha/design.png" alt="Exam Hall" style={{ width: "80%", borderRadius: "15px" }} />
-                </Box>
-
-                {/* Exam Timetable Details */}
-                <Box sx={{ mt: 4, p: 3, boxShadow: 3, borderRadius: 2, bgcolor: "background.paper", textAlign: "center" }}>
-                    <Typography variant="h5" gutterBottom>Exam Timetable Details</Typography>
-                    <Grid container spacing={2} justifyContent="center">
-                        {examData.map((exam, index) => (
-                            <Grid item xs={12} sm={6} md={4} key={index}>
-                                <Box sx={{ bgcolor: "lightgray", p: 2, borderRadius: 2, boxShadow: 2, textAlign: "center" }}>
-                                    <Typography variant="h6">{exam.subject}</Typography>
-                                    <Typography variant="body1">Date: {exam.date}</Typography>
-                                    <Typography variant="body1">Time: {exam.time}</Typography>
-                                    <Button variant="outlined" color="primary" sx={{ mt: 2 }} onClick={() => {
-        if (exam.subject === "Information Management") {
-            navigate("/ExamInfo");
-        } else if (exam.subject === "Cyber Security") {
-            navigate("/CyberExamInfo");
-        } else if (exam.subject === "Network Management") {
-            navigate("/NetworkExamInfo");
-        }
-    }}>View Details</Button>
-                                </Box>
-                            </Grid>
-                        ))}
+            {/* Navigation Buttons */}
+            <Grid container spacing={2} sx={{ p: 2, textAlign: "center" }}>
+                <Grid item xs={3}>
+                    <Button fullWidth variant="contained" color="primary" onClick={() => navigate("/dashboard")}>Dashboard</Button>
+                </Grid>
+                <Grid item xs={3}>
+                    <Button fullWidth variant="contained" color="primary" onClick={() => navigate("/exam/ExamTable")}>Exam Schedules</Button>
+                </Grid>
+                <Grid item xs={3}>
+                    <Button fullWidth variant="contained" color="primary" onClick={() => navigate("/invigilator/InvigilatorTable")}>Invigilators</Button>
+                </Grid>
+                <Grid item xs={3}>
+                    <Button fullWidth variant="contained" color="primary" onClick={() => navigate("/hall/HallTable")}>Hall Allocations</Button>
+                </Grid>
+            </Grid>
+            
+            <Container maxWidth="x2" sx={{ mt: 3 }}>
+                <Grid container spacing={3} alignItems="stretch">
+                    {/* Bar Chart Section */}
+                    <Grid item xs={12}>
+                        <Box sx={{ p: 3, boxShadow: 3, borderRadius: 2, bgcolor: customColors.cardBg }}>
+                            <Typography variant="h5" gutterBottom sx={{ fontWeight: 600, color: customColors.textPrimary, mb: 3, textAlign: "center" }}>
+                                Exam Status Overview
+                            </Typography>
+                            <ResponsiveContainer width="100%" height={300}>
+                                <BarChart
+                                    data={chartData}
+                                    margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+                                >
+                                    <CartesianGrid strokeDasharray="3 3" />
+                                    <XAxis dataKey="name" />
+                                    <YAxis />
+                                    <Tooltip />
+                                    <Legend />
+                                    <Bar 
+                                        dataKey="count" 
+                                        name="Number of Exams"
+                                        fill={customColors.primary}
+                                        label={{ position: 'top' }}
+                                    >
+                                        {chartData.map((entry, index) => (
+                                            <Bar 
+                                                key={`bar-${index}`} 
+                                                dataKey="count" 
+                                                fill={entry.fill} 
+                                                name={entry.name}
+                                            />
+                                        ))}
+                                    </Bar>
+                                </BarChart>
+                            </ResponsiveContainer>
+                        </Box>
                     </Grid>
-                </Box>
-
-                {/* Exam Completion Status Chart */}
-                <Box sx={{ mt: 4, p: 3, boxShadow: 3, borderRadius: 2, bgcolor: "background.paper", textAlign: "center" }}>
-                    <Typography variant="h5" gutterBottom>Exam Completion Status</Typography>
-                    <ResponsiveContainer width="100%" height={300}>
-                        <BarChart data={chartData}>
-                            <CartesianGrid strokeDasharray="3 3" />
-                            <XAxis dataKey="name" />
-                            <YAxis />
-                            <Tooltip />
-                            <Bar dataKey="count" fill="#1976d2" />
-                        </BarChart>
-                    </ResponsiveContainer>
-                </Box>
-
-                {/* Calendar View for Exam Dates */}
-                <Box sx={{ mt: 4, p: 3, boxShadow: 3, borderRadius: 2, bgcolor: "background.paper" }}>
-                    <Typography variant="h5" gutterBottom textAlign="center">Exam Schedule Calendar</Typography>
-                    <Calendar
-                        localizer={localizer}
-                        events={events}
-                        startAccessor="start"
-                        endAccessor="end"
-                        style={{ height: 500 }}
-                    />
-                </Box>
+                    
+                    <Grid item xs={12} md={6}>
+                        <Box sx={{ p: 3, boxShadow: 3, borderRadius: 2, bgcolor: customColors.cardBg, height: "100%" }}>
+                            <Typography variant="h5" gutterBottom sx={{ fontWeight: 600, color: customColors.textPrimary, mb: 3 }}>
+                                Exam Timetable Details
+                            </Typography>
+                            <Grid container spacing={2}>
+                                {examData.map((exam, index) => (
+                                    <Grid item xs={12} sm={6} key={index}>
+                                        <Box sx={{ bgcolor: theme.palette.grey[100], p: 2, borderRadius: 2, boxShadow: 1 }}>
+                                            <Typography variant="h6" sx={{ fontWeight: 600, color: customColors.textPrimary, mb: 1 }}>
+                                                {exam.subject}
+                                            </Typography>
+                                            <Typography variant="body1" sx={{ color: customColors.textSecondary, mb: 0.5 }}>
+                                                <strong>Date:</strong> {exam.date}
+                                            </Typography>
+                                            <Typography variant="body1" sx={{ color: customColors.textSecondary }}>
+                                                <strong>Time:</strong> {exam.time}
+                                            </Typography>
+                                            <Button 
+                                                variant="contained" 
+                                                color="primary" 
+                                                sx={{ 
+                                                    mt: 2,
+                                                    alignSelf: "flex-start"
+                                                }} 
+                                                onClick={() => {
+                                                    if (exam.subject === "Information Management") {
+                                                        navigate("/ExamInfo");
+                                                    } else if (exam.subject === "Cyber Security") {
+                                                        navigate("/CyberExamInfo");
+                                                    } else if (exam.subject === "Network Management") {
+                                                        navigate("/NetworkExamInfo");
+                                                    }
+                                                }}
+                                            >
+                                                View Details
+                                            </Button>
+                                        </Box>
+                                    </Grid>
+                                ))}
+                            </Grid>
+                        </Box>
+                    </Grid>
+                    
+                    <Grid item xs={12} md={6}>
+                        <Box sx={{ p: 3, boxShadow: 3, borderRadius: 2, bgcolor: customColors.cardBg, height: "100%" }}>
+                            <Typography variant="h5" gutterBottom sx={{ fontWeight: 600, color: customColors.textPrimary, mb: 3, textAlign: "center" }}>
+                                Exam Schedule Calendar
+                            </Typography>
+                            <Calendar
+                                localizer={localizer}
+                                events={calendarEvents}
+                                startAccessor="start"
+                                endAccessor="end"
+                                style={{ height: 500 }}
+                                defaultView="month"
+                                views={['month', 'week', 'day']}
+                                eventPropGetter={(event) => ({
+                                    style: {
+                                        backgroundColor: event.start < new Date() ? '#4caf50' : '#ff9800',
+                                        borderRadius: '4px',
+                                        opacity: 0.8,
+                                        color: 'white',
+                                        border: '0px',
+                                        display: 'block'
+                                    }
+                                })}
+                            />
+                        </Box>
+                    </Grid>
+                </Grid>
             </Container>
         </Box>
     );

@@ -72,7 +72,7 @@ const Layout = ({ children }) => {
             <Home sx={{ marginRight: 1 }} />
             <ListItemText primary="Home" />
           </ListItem>
-          <ListItem button component={Link} to="/exam" onClick={closeDrawer} sx={{ color: "white" }}>
+          <ListItem button component={Link} to="/examHome" onClick={closeDrawer} sx={{ color: "white" }}>
             <Assignment sx={{ marginRight: 1 }} />
             <ListItemText primary="Exam" />
           </ListItem>
