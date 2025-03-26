@@ -12,6 +12,9 @@ import EditHall from "./Components/Sub/Maheesha/EditHall";
 import EditInvigilator from "./Components/Sub/Maheesha/EditInvigilator";
 import EditExam from "./Components/Sub/Maheesha/EditExam";
 import ExamCoordinator from "./Components/Sub/Maheesha/ExamHome";
+import ExamInfo from "./Components/Sub/Maheesha/ExamInfo";
+import CyberExamInfo from "./Components/Sub/Maheesha/CyberExamInfo";
+import NetworkExamInfo from "./Components/Sub/Maheesha/NetworkExamInfo";
 
 function App() {
   return (
@@ -29,6 +32,9 @@ function App() {
           <Route path="/hall" element={<Hall/>} />
           <Route path="/hall/HallTable" element={<HallTable/>} />
           <Route path="/hall/edit" element={<EditHall />} />
+          <Route path="/ExamInfo" element={<ExamInfo/>}/>
+          <Route path="/CyberExamInfo" element={<CyberExamInfo/>}/>
+          <Route path="/NetworkExamInfo" element={<NetworkExamInfo/>}/>
 
         </Routes>
       </Layout>

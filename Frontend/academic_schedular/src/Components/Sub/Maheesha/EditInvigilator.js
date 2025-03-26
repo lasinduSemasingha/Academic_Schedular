@@ -46,7 +46,7 @@ function EditInvigilator() {
                 <form className="invigilator-form" onSubmit={handleSubmit}>
                     <Grid container spacing={2}>
                         <Grid item xs={12}>
-                            <TextField fullWidth label="Invigilator ID" name="invigilatorId" variant="outlined" required value={formData.invigilatorId}  />
+                            <TextField fullWidth label="Invigilator ID" name="invigilatorId" variant="outlined" required value={formData.invigilatorId} onChange={handleChange}  />
                         </Grid>
                         <Grid item xs={12}>
                             <TextField fullWidth label="Invigilator Name" name="invigilatorName" variant="outlined" required value={formData.invigilatorName} onChange={handleChange} />

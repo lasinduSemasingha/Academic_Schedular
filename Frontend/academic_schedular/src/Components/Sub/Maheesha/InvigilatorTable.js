@@ -84,7 +84,7 @@ function InvigilatorTable() {
           sx={{ mt: 2 }}
           onClick={() => navigate("/invigilator")}
         >
-          Back to Form
+          View Form
         </Button>
       </Paper>
     </Box>

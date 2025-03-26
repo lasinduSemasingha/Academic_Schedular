@@ -61,7 +61,7 @@ function HallTable() {
                     </Table>
                 </TableContainer>
                 <Button variant="contained" color="primary" sx={{ mt: 2 }} onClick={() => navigate("/hall")}>
-                    Back to Form
+                    View Form
                 </Button>
             </Paper>
         </Box>

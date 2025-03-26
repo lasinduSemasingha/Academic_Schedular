@@ -59,8 +59,10 @@ function EditExam() {
                         </Grid>
                         <Grid item xs={12}>
                             <TextField select fullWidth label="Location" name="location" variant="outlined" required value={formData.location} onChange={handleChange}>
-                                <MenuItem value="Main Hall">Main Hall</MenuItem>
-                                <MenuItem value="Room 101">Room 101</MenuItem>
+                                <MenuItem value="G01">G01</MenuItem>
+                                <MenuItem value="G02">G02</MenuItem>
+                                <MenuItem value="G03">G03</MenuItem>
+                                <MenuItem value="G04">G04</MenuItem>
                             </TextField>
                         </Grid>
                         <Grid item xs={12}>

@@ -61,7 +61,7 @@ function ExamTable() {
                     </Table>
                 </TableContainer>
                 <Button variant="contained" color="primary" sx={{ mt: 2 }} onClick={() => navigate("/exam")}> 
-                    Back to Form
+                    View Form
                 </Button>
             </Paper>
         </Box>
