@@ -1,0 +1,9 @@
+html{
+    position: relative;
+    height: 100vh; /* Full viewport height */
+    width: 100%; /* Full viewport width */
+    background-image: url('/Main/home.jpg'); /* Replace with your image URL */
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}

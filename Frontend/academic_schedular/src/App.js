@@ -15,6 +15,8 @@ import ExamCoordinator from "./Components/Sub/Maheesha/ExamHome";
 import ExamInfo from "./Components/Sub/Maheesha/ExamInfo";
 import CyberExamInfo from "./Components/Sub/Maheesha/CyberExamInfo";
 import NetworkExamInfo from "./Components/Sub/Maheesha/NetworkExamInfo";
+import ResourceManagement from "./Components/Sub/Lasindu/Resource/ResourceManagement";
+import SettingsPage from "./Components/Sub/Lasindu/Settings/SettingsPage";
 
 function App() {
   return (
@@ -35,6 +37,8 @@ function App() {
           <Route path="/ExamInfo" element={<ExamInfo/>}/>
           <Route path="/CyberExamInfo" element={<CyberExamInfo/>}/>
           <Route path="/NetworkExamInfo" element={<NetworkExamInfo/>}/>
+          <Route path="/resource" element={<ResourceManagement />} />
+          <Route path="/settings" element={<SettingsPage />} />
 
         </Routes>
       </Layout>
