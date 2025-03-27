@@ -13,10 +13,11 @@ import EditInvigilator from "./Components/Sub/Maheesha/EditInvigilator";
 import EditExam from "./Components/Sub/Maheesha/EditExam";
 import ExamCoordinator from "./Components/Sub/Maheesha/ExamHome";
 import ExamInfo from "./Components/Sub/Maheesha/ExamInfo";
-import CyberExamInfo from "./Components/Sub/Maheesha/CyberExamInfo";
-import NetworkExamInfo from "./Components/Sub/Maheesha/NetworkExamInfo";
 import ResourceManagement from "./Components/Sub/Lasindu/Resource/ResourceManagement";
 import SettingsPage from "./Components/Sub/Lasindu/Settings/SettingsPage";
+import EnglishExamInfo from "./Components/Sub/Maheesha/EnglishExamInfo";
+import ArtsExamInfo from "./Components/Sub/Maheesha/ArtsExamInfo";
+import EngineeringExamInfo from "./Components/Sub/Maheesha/EngineeringExamInfo";
 
 function App() {
   return (
@@ -35,10 +36,11 @@ function App() {
           <Route path="/hall/HallTable" element={<HallTable/>} />
           <Route path="/hall/edit" element={<EditHall />} />
           <Route path="/ExamInfo" element={<ExamInfo/>}/>
-          <Route path="/CyberExamInfo" element={<CyberExamInfo/>}/>
-          <Route path="/NetworkExamInfo" element={<NetworkExamInfo/>}/>
+          <Route path="/EnglishExamInfo" element={<EnglishExamInfo/>}/>
+          <Route path="/ArtsExamInfo" element={<ArtsExamInfo/>}/>
           <Route path="/resource" element={<ResourceManagement />} />
           <Route path="/settings" element={<SettingsPage />} />
+          <Route path="/EngineeringExamInfo" element={<EngineeringExamInfo/>}/>
 
         </Routes>
       </Layout>

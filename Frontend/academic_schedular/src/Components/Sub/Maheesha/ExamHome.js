@@ -1,4 +1,4 @@
-import React from "react";
+//import React from "react";
 import { 
     Container, Typography, Box, Button, Grid, CssBaseline, useTheme
 } from "@mui/material";
@@ -7,6 +7,8 @@ import { BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContaine
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
+import React, { useState } from "react";
+
 
 const localizer = momentLocalizer(moment);
 
@@ -70,6 +72,7 @@ const chartData = [
 const ExamCoordinator = () => {
     const navigate = useNavigate();
     const theme = useTheme();
+    const [currentDate, setCurrentDate] = useState(new Date());
 
     return (
         <Box sx={{ display: "flex", minHeight: "80vh", bgcolor: customColors.background, flexDirection: "column" }}>
@@ -158,9 +161,11 @@ const ExamCoordinator = () => {
                                                     if (exam.subject === "IT") {
                                                         navigate("/ExamInfo");
                                                     } else if (exam.subject === "English") {
-                                                        navigate("/CyberExamInfo");
+                                                        navigate("/EnglishExamInfo");
                                                     } else if (exam.subject === "Arts") {
-                                                        navigate("/NetworkExamInfo");
+                                                        navigate("/ArtsExamInfo");
+                                                    } else if (exam.subject === "Engineering") {
+                                                        navigate("/EngineeringExamInfo");
                                                     }
                                                 }}
                                             >
@@ -180,12 +185,21 @@ const ExamCoordinator = () => {
                             </Typography>
                             <Calendar
                                 localizer={localizer}
-                                events={calendarEvents}
+                                events={examData.map(exam => ({
+                                    title: exam.subject,
+                                    start: new Date(exam.date),
+                                    end: new Date(exam.date),
+                                    allDay: true,
+                                }))}
                                 startAccessor="start"
                                 endAccessor="end"
                                 style={{ height: 500 }}
+                                date={currentDate} // Ensure state updates the calendar
+                                onNavigate={(newDate) => setCurrentDate(newDate)} // Allow navigation
                                 defaultView="month"
-                                views={['month', 'week', 'day']}
+                                views={['month']}
+                                popup
+                                toolbar
                                 eventPropGetter={(event) => ({
                                     style: {
                                         backgroundColor: event.start < new Date() ? '#4caf50' : '#ff9800',

@@ -2,11 +2,11 @@ import React from "react";
 import { Container, Typography, Box, Paper, Button, Divider, Grid } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
-const CyberExamInfo = () => {
+const EnglishExamInfo = () => {
     const navigate = useNavigate();
 
     const examDetails = {
-        subject: "Cyber Security",
+        subject: "English",
         date: "2025-03-25",
         time: "9:00 AM - 12:00 PM",
         duration: "3 Hours",
@@ -65,4 +65,4 @@ const CyberExamInfo = () => {
     );
 };
 
-export default CyberExamInfo;
+export default EnglishExamInfo;

@@ -1,13 +1,13 @@
 import React from "react";
-import { Container, Typography, Box, Paper, Button, Divider } from "@mui/material";
+import { Container, Typography, Box, Paper, Button, Divider, Grid } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
-const NetworkExamInfo = () => {
+const EngineeringExamInfo = () => {
     const navigate = useNavigate();
 
     const examDetails = {
-        subject: "Network Management",
-        date: "2025-03-27",
+        subject: "Engineering",
+        date: "2025-03-25",
         time: "9:00 AM - 12:00 PM",
         duration: "3 Hours",
         hall: "Room 101, Main Building",
@@ -65,6 +65,4 @@ const NetworkExamInfo = () => {
     );
 };
 
-
-
-export default NetworkExamInfo;
+export default EngineeringExamInfo;

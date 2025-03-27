@@ -161,7 +161,7 @@ function EditExam() {
                         <Grid item xs={12}>
                             <TextField 
                                 fullWidth 
-                                label="Duration (minutes)" 
+                                label="Duration (hours)" 
                                 name="duration" 
                                 type="number" 
                                 variant="outlined" 
