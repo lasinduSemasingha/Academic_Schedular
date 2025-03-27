@@ -30,9 +30,10 @@ const getToBeCompletedExamsCount = (examData) => {
 };
 
 const examData = [
-    { subject: "Information Management", date: "2025-03-25", time: "9:00 AM - 12:00 PM" },
-    { subject: "Cyber Security", date: "2025-03-26", time: "1:00 PM - 4:00 PM" },
-    { subject: "Network Management", date: "2025-03-27", time: "1:00 PM - 4:00 PM" },
+    { subject: "IT", date: "2025-04-25", time: "9:00 AM - 12:00 PM" },
+    { subject: "English", date: "2025-04-26", time: "1:00 PM - 4:00 PM" },
+    { subject: "Arts", date: "2025-04-23", time: "1:00 PM - 4:00 PM" },
+    { subject: "Engineering", date: "2025-03-20", time: "12:00 PM - 4:00 PM" },
 ];
 
 // Function to convert time string to 24-hour format
@@ -154,11 +155,11 @@ const ExamCoordinator = () => {
                                                     alignSelf: "flex-start"
                                                 }} 
                                                 onClick={() => {
-                                                    if (exam.subject === "Information Management") {
+                                                    if (exam.subject === "IT") {
                                                         navigate("/ExamInfo");
-                                                    } else if (exam.subject === "Cyber Security") {
+                                                    } else if (exam.subject === "English") {
                                                         navigate("/CyberExamInfo");
-                                                    } else if (exam.subject === "Network Management") {
+                                                    } else if (exam.subject === "Arts") {
                                                         navigate("/NetworkExamInfo");
                                                     }
                                                 }}

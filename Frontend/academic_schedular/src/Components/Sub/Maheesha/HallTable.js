@@ -1,6 +1,21 @@
 import React, { useEffect, useState } from "react";
-import { Box, Typography, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Button } from "@mui/material";
+import {
+    Box,
+    Typography,
+    Paper,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+    Button,
+    Tooltip,
+    IconButton
+} from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 function HallTable() {
     const navigate = useNavigate();
@@ -35,8 +50,12 @@ function HallTable() {
                             <TableRow>
                                 <TableCell><b>Hall ID</b></TableCell>
                                 <TableCell><b>Hall Name</b></TableCell>
+                                <TableCell><b>Capacity</b></TableCell>
                                 <TableCell><b>Location</b></TableCell>
-                                <TableCell><b>Hall Date</b></TableCell>
+                                <TableCell><b>Facilities</b></TableCell>
+                                <TableCell><b>Assigned Exam</b></TableCell>
+                                <TableCell><b>Invigilator</b></TableCell>
+                                <TableCell><b>Status</b></TableCell>
                                 <TableCell><b>Actions</b></TableCell>
                             </TableRow>
                         </TableHead>
@@ -45,22 +64,42 @@ function HallTable() {
                                 <TableRow key={index}>
                                     <TableCell>{hall.hallId}</TableCell>
                                     <TableCell>{hall.hallName}</TableCell>
+                                    <TableCell>{hall.capacity}</TableCell>
                                     <TableCell>{hall.hallLocation}</TableCell>
-                                    <TableCell>{hall.hallDate}</TableCell>
+                                    <TableCell>{hall.facilities}</TableCell>
+                                    <TableCell>{hall.assignedExam}</TableCell>
+                                    <TableCell>{hall.invigilator}</TableCell>
+                                    <TableCell>{hall.status}</TableCell>
                                     <TableCell>
-                                        <Button variant="contained" color="secondary" onClick={() => handleEdit(index)} sx={{ mr: 1 }}>
-                                            Edit
-                                        </Button>
-                                        <Button variant="contained" color="error" onClick={() => handleDelete(index)}>
-                                            Delete
-                                        </Button>
+                                        <Tooltip title="Edit">
+                                                              <IconButton
+                                                                color="primary"
+                                                                onClick={() => handleEdit(index)}
+                                                                sx={{ mr: 1 }}
+                                                              >
+                                                                <EditIcon />
+                                                              </IconButton>
+                                                            </Tooltip>
+                                                            <Tooltip title="Delete">
+                                                              <IconButton
+                                                                color="error"
+                                                                onClick={() => handleDelete(index)}
+                                                              >
+                                                                <DeleteIcon />
+                                                              </IconButton>
+                                                            </Tooltip>
                                     </TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
                     </Table>
                 </TableContainer>
-                <Button variant="contained" color="primary" sx={{ mt: 2 }} onClick={() => navigate("/hall")}>
+                <Button
+                    variant="contained"
+                    color="primary"
+                    sx={{ mt: 2 }}
+                    onClick={() => navigate("/hall")}
+                >
                     View Form
                 </Button>
             </Paper>

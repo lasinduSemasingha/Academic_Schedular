@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Box, Typography, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Button } from "@mui/material";
+import {
+    Box, Typography, Paper, Table, TableBody, TableCell, TableContainer, 
+    TableHead, TableRow, Button, Tooltip, IconButton
+} from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 function ExamTable() {
     const navigate = useNavigate();
@@ -35,8 +40,13 @@ function ExamTable() {
                             <TableRow>
                                 <TableCell><b>Exam ID</b></TableCell>
                                 <TableCell><b>Exam Type</b></TableCell>
-                                <TableCell><b>Location</b></TableCell>
-                                <TableCell><b>Exam Date</b></TableCell>
+                                <TableCell><b>Subject</b></TableCell>
+                                <TableCell><b>Date & Time</b></TableCell>
+                                <TableCell><b>Duration (mins)</b></TableCell>
+                                <TableCell><b>Exam Hall</b></TableCell>
+                                <TableCell><b>Invigilator</b></TableCell>
+                                <TableCell><b>Total Marks</b></TableCell>
+                                <TableCell><b>Status</b></TableCell>
                                 <TableCell><b>Actions</b></TableCell>
                             </TableRow>
                         </TableHead>
@@ -45,15 +55,31 @@ function ExamTable() {
                                 <TableRow key={index}>
                                     <TableCell>{exam.examId}</TableCell>
                                     <TableCell>{exam.examType}</TableCell>
-                                    <TableCell>{exam.location}</TableCell>
+                                    <TableCell>{exam.subject}</TableCell>
                                     <TableCell>{exam.examDate}</TableCell>
+                                    <TableCell>{exam.duration}</TableCell>
+                                    <TableCell>{exam.examHall}</TableCell>
+                                    <TableCell>{exam.invigilator}</TableCell>
+                                    <TableCell>{exam.totalMarks}</TableCell>
+                                    <TableCell>{exam.status || "Scheduled"}</TableCell>
                                     <TableCell>
-                                        <Button variant="contained" color="secondary" onClick={() => handleEdit(index)} sx={{ mr: 1 }}>
-                                            Edit
-                                        </Button>
-                                        <Button variant="contained" color="error" onClick={() => handleDelete(index)}>
-                                            Delete
-                                        </Button>
+                                        <Tooltip title="Edit">
+                                            <IconButton
+                                                color="primary"
+                                                onClick={() => handleEdit(index)}
+                                                sx={{ mr: 1 }}
+                                                >
+                                                <EditIcon />
+                                            </IconButton>
+                                        </Tooltip>
+                                        <Tooltip title="Delete">
+                                            <IconButton
+                                                color="error"
+                                                onClick={() => handleDelete(index)}
+                                                >
+                                                <DeleteIcon />
+                                            </IconButton>
+                                        </Tooltip>
                                     </TableCell>
                                 </TableRow>
                             ))}
