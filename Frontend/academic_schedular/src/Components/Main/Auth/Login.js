@@ -14,7 +14,7 @@ const LoginPage = () => {
     setError(""); // Reset previous errors
 
     try {
-      const response = await axios.post("https://localhost:7009/user/auth", {
+      const response = await axios.post("https://localhost:7001/user/auth", {
         username,
         password,
       });

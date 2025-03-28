@@ -45,7 +45,7 @@ function App() {
           <Route path="/invigilator/edit" element={<EditInvigilator />} />
           <Route path="/hall" element={<Hall/>} />
           <Route path="/hall/HallTable" element={<HallTable/>} />
-          <Route path="/hall/edit" element={<EditHall />} />
+          {/* <Route path="/hall/edit" element={<EditHall />} /> */}
           <Route path="/ExamInfo" element={<ExamInfo/>}/>
           <Route path="/EnglishExamInfo" element={<EnglishExamInfo/>}/>
           <Route path="/ArtsExamInfo" element={<ArtsExamInfo/>}/>
