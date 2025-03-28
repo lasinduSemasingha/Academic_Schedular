@@ -15,6 +15,7 @@ import ExamCoordinator from "./Components/Sub/Maheesha/ExamHome";
 import ExamInfo from "./Components/Sub/Maheesha/ExamInfo";
 import ResourceManagement from "./Components/Sub/Lasindu/Resource/ResourceManagement";
 import SettingsPage from "./Components/Sub/Lasindu/Settings/SettingsPage";
+import LoginPage from "./Components/Main/Auth/Login";
 import EnglishExamInfo from "./Components/Sub/Maheesha/EnglishExamInfo";
 import ArtsExamInfo from "./Components/Sub/Maheesha/ArtsExamInfo";
 import EngineeringExamInfo from "./Components/Sub/Maheesha/EngineeringExamInfo";
@@ -40,6 +41,7 @@ function App() {
           <Route path="/ArtsExamInfo" element={<ArtsExamInfo/>}/>
           <Route path="/resource" element={<ResourceManagement />} />
           <Route path="/settings" element={<SettingsPage />} />
+          <Route path="/login" element={<LoginPage />} />
           <Route path="/EngineeringExamInfo" element={<EngineeringExamInfo/>}/>
 
         </Routes>
