@@ -14,11 +14,4 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="8.0.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Database\" />
-    <Folder Include="DTO\" />
-    <Folder Include="Services\User\" />
-    <Folder Include="Utilities\" />
-  </ItemGroup>
-
 </Project>

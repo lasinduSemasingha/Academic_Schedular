@@ -14,6 +14,7 @@ import EditExam from "./Components/Sub/Maheesha/EditExam";
 import ExamCoordinator from "./Components/Sub/Maheesha/ExamHome";
 import ResourceManagement from "./Components/Sub/Lasindu/Resource/ResourceManagement";
 import SettingsPage from "./Components/Sub/Lasindu/Settings/SettingsPage";
+import LoginPage from "./Components/Main/Auth/Login";
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
           <Route path="/hall/HallTable" element={<HallTable/>} />
           <Route path="/resource" element={<ResourceManagement />} />
           <Route path="/settings" element={<SettingsPage />} />
+          <Route path="/login" element={<LoginPage />} />
 
         </Routes>
       </Layout>
