@@ -4,9 +4,9 @@ import { Container, Typography, Box, Table, TableBody, TableCell, TableContainer
 
 const students = [
     { 
-        id: 'S001', 
-        name: 'Alice Johnson', 
-        email: 'alice@example.com', 
+        id: 'IT22444489', 
+        name: 'kaveesha nethmi', 
+        email: 'kavee@gmail.com', 
         contact: '0712345678', 
         dob: '2000-05-14', 
         faculty: 'Engineering', 
@@ -14,9 +14,9 @@ const students = [
         semester: 'Semester 1' 
     },
     { 
-        id: 'S002', 
-        name: 'Bob Smith', 
-        email: 'bob@example.com', 
+        id: 'IT25894489', 
+        name: 'heshani fernando', 
+        email: 'heshani@gmail.com', 
         contact: '0778765432', 
         dob: '2001-09-22', 
         faculty: 'Science', 
@@ -28,7 +28,7 @@ const students = [
     },
 
     {
-        id: 'S003', 
+        id: 'IT25895689', 
         name: 'chanudi himansala', 
         email: 'chanudi@example.com', 
         contact: '0778723432', 

@@ -26,38 +26,40 @@ function Student() {
     // Handle input changes
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-    
+
+        // Validate name (no numbers allowed)
         if (name === "name") {
-            // Validate name (no numbers allowed)
             if (/\d/.test(value)) {
+                // If numbers are entered, set an error and prevent the change
                 setErrors((prevErrors) => ({
                     ...prevErrors,
                     name: "Name cannot contain numbers."
                 }));
+                return;
             } else {
                 setErrors((prevErrors) => ({ ...prevErrors, name: "" }));
             }
         }
-    
+
         if (name === "contact") {
             // Allow only numeric values and limit to 10 digits
             if (!/^[0-9]*$/.test(value) || value.length > 10) {
                 return;
             }
         }
-    
+
         if (name === "studentId") {
             // Block input if studentId exceeds 10 characters
             if (value.length > 10) {
                 return;
             }
         }
-    
+
         setFormData({
             ...formData,
             [name]: value
         });
-    
+
         // Clear errors on input change
         setErrors({
             ...errors,
@@ -114,13 +116,14 @@ function Student() {
                 alignItems: "center", 
                 height: "100vh", 
                 width: "100%", 
-                py: 6
+                py: 6,
+                mt: 4,  // Adds space at the top of the screen
+                mb: 4   // Adds space at the bottom of the form
             }}
         >
-            
             <Paper elevation={3} sx={{ padding: 4, textAlign: "center", width: "100%", maxWidth: "600px" }}>
                 <Typography variant="h4" fontWeight="bold" gutterBottom>
-                    Student Management
+                    Student Registration 
                 </Typography>
                 
                 <form className="studentform" onSubmit={handleSubmit}>

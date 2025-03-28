@@ -2,6 +2,7 @@
 import { Container, Typography, Box, Button, Grid, Card, CardContent, LinearProgress } from '@mui/material';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate for navigation
 
+
 const StudentHome = () => {
     
     // Sample Data
@@ -32,6 +33,7 @@ const StudentHome = () => {
         navigate('/studenttable'); // Navigates to the /studenttable route
     };
 
+     
     return (
         <Container maxWidth="lg">
             {/* Header Section */}
