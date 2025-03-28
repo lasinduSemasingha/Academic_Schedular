@@ -4,7 +4,6 @@ import {
   AppBar,
   Toolbar,
   Typography,
-  Container,
   Box,
   Button,
   Drawer,
@@ -33,19 +32,14 @@ const Layout = ({ children }) => {
 
   useEffect(() => {
     // Check if the user is logged in from sessionStorage on page load
-    const userLoggedIn = sessionStorage.getItem("isLoggedIn");
+    const userLoggedIn = sessionStorage.getItem("isLoggedIn") === "true";
     if (userLoggedIn) {
       setIsLoggedIn(true);
     }
   }, []);
 
   const handleLogin = () => {
-    // Simulate login logic here
-
-    // After successful login, store the login status in sessionStorage
-    sessionStorage.setItem("isLoggedIn", "true");
-
-    setIsLoggedIn(true); // Update state to hide the button
+    
     navigate("/home"); // Example: Navigate to home page after login
   };
 

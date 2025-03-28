@@ -24,7 +24,7 @@ const LoginPage = () => {
       if (response.data.message === "Authentication successful") {
         sessionStorage.setItem("isLoggedIn", "true");
         localStorage.setItem("token", response.data.token);
-        navigate('/');
+        window.location.href= '/';
         // Redirect to another page if needed
       }
     } catch (err) {
