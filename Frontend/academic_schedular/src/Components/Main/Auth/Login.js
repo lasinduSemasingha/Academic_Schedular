@@ -1,14 +1,12 @@
 import React, { useState } from "react";
 import { TextField, Button, Container, Typography, Box, Grid, CircularProgress } from "@mui/material";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -45,6 +43,7 @@ const LoginPage = () => {
           padding: 4,
           borderRadius: 2,
           boxShadow: 3,
+          backgroundColor:'white'
         }}
       >
         <Typography variant="h5" gutterBottom>

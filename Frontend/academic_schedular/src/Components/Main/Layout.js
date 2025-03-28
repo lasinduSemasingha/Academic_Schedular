@@ -16,6 +16,8 @@ import { Link } from "react-router-dom";
 import { Home, AccountCircle, Schedule, Settings, Assignment } from "@mui/icons-material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
+import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
+
 
 const Layout = ({ children }) => {
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -82,23 +84,32 @@ const Layout = ({ children }) => {
           <Button sx={{ color: "white", mx: 1 }} component={Link} to="/">
             Home
           </Button>
-          <Button sx={{ color: "white", mx: 1 }} component={Link} to="/examHome">
-            Exam Home
-          </Button>
-          <Button sx={{ color: "white", mx: 1 }} component={Link} to="/profile">
-            Profile
-          </Button>
-          <Button sx={{ color: "white", mx: 1 }} component={Link} to="/resource">
-            Resources
-          </Button>
+          
           {!isLoggedIn ? (
             <Button onClick={handleLogin} component={Link} to="/login" sx={{ color: "white", mx: 1 }}>
               Login
             </Button>
           ) : (
-            <Button onClick={handleLogout} sx={{ color: "white", mx: 1 }}>
-              Logout
-            </Button>
+            <>
+              <Button sx={{ color: "white", mx: 1 }} component={Link} to="/examHome">
+                Exam Home
+              </Button>
+              <Button sx={{ color: "white", mx: 1 }} component={Link} to="/profile">
+                Profile
+              </Button>
+              <Button sx={{ color: "white", mx: 1 }} component={Link} to="/resource">
+                Resources
+              </Button>
+              <Button sx={{ color: "white", mx: 1 }} component={Link} to="/timetable">
+                Time Tables
+              </Button>
+              <Button onClick={handleLogout}  sx={{ color: "white", mx: 1 }}>
+                Logout
+              </Button>
+              <Button sx={{ color: "white", mx: 1 }}>
+                <NotificationsActiveIcon sx={{ fontSize: 30, color: 'white' }} />
+              </Button>
+            </>
           )}
           <Button color="inherit" onClick={toggleDrawer} sx={{ color: "white" }}>
             <FontAwesomeIcon icon={faBars} />

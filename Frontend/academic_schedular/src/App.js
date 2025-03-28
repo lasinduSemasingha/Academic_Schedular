@@ -8,13 +8,14 @@ import Hall from "./Components/Sub/Maheesha/Hall";
 import InvigilatorTable from "./Components/Sub/Maheesha/InvigilatorTable";
 import ExamTable from "./Components/Sub/Maheesha/ExamTable";
 import HallTable from "./Components/Sub/Maheesha/HallTable";
-import EditHall from "./Components/Sub/Maheesha/EditHall";
 import EditInvigilator from "./Components/Sub/Maheesha/EditInvigilator";
 import EditExam from "./Components/Sub/Maheesha/EditExam";
 import ExamCoordinator from "./Components/Sub/Maheesha/ExamHome";
 import ResourceManagement from "./Components/Sub/Lasindu/Resource/ResourceManagement";
 import SettingsPage from "./Components/Sub/Lasindu/Settings/SettingsPage";
 import LoginPage from "./Components/Main/Auth/Login";
+import AcademicSchedule from "./Components/Main/TimeTable/AcademicSchedule";
+import AddResources from "./Components/Sub/Lasindu/Resource/AddResources";
 
 function App() {
   return (
@@ -34,6 +35,10 @@ function App() {
           <Route path="/resource" element={<ResourceManagement />} />
           <Route path="/settings" element={<SettingsPage />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/timetable" element={<AcademicSchedule />} />
+
+          {/* Resource Endpoints*/}
+          <Route path="/addResource" element={<AddResources />} />
 
         </Routes>
       </Layout>
