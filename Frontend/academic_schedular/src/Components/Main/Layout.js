@@ -40,7 +40,7 @@ const Layout = ({ children }) => {
             Home
           </Button>
           <Button sx={{ color: "white", mx: 1 }} component={Link} to="/examHome">
-            Exam Home
+            Exam
           </Button>
           <Button sx={{ color: "white", mx: 1 }} component={Link} to="/profile">
             Profile

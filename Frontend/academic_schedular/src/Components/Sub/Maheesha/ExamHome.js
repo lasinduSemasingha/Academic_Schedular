@@ -34,7 +34,7 @@ const getToBeCompletedExamsCount = (examData) => {
 const examData = [
     { subject: "IT", date: "2025-04-25", time: "9:00 AM - 12:00 PM" },
     { subject: "English", date: "2025-04-26", time: "1:00 PM - 4:00 PM" },
-    { subject: "Arts", date: "2025-04-23", time: "1:00 PM - 4:00 PM" },
+    { subject: "Arts", date: "2025-03-31", time: "1:00 PM - 4:00 PM" },
     { subject: "Engineering", date: "2025-03-20", time: "12:00 PM - 4:00 PM" },
 ];
 
@@ -63,10 +63,9 @@ const calendarEvents = examData.map(exam => {
 
 const completedExamsCount = getCompletedExamsCount(examData);
 const toBeCompletedExamsCount = getToBeCompletedExamsCount(examData);
-
 const chartData = [
-    { name: "Completed", count: completedExamsCount, fill: "#4caf50" },
-    { name: "Upcoming", count: toBeCompletedExamsCount, fill: "#ff9800" },
+    { name: "Completed", count: completedExamsCount, fill: "#071739" },
+    { name: "Upcoming", count: toBeCompletedExamsCount, fill: "#4B6382" },
 ];
 
 const ExamCoordinator = () => {
@@ -93,6 +92,15 @@ const ExamCoordinator = () => {
                     <Button fullWidth variant="contained" color="primary" onClick={() => navigate("/hall/HallTable")}>Hall Allocations</Button>
                 </Grid>
             </Grid>
+
+            <Container maxWidth="md" sx={{ mt: 3, p: 3, bgcolor: customColors.cardBg, borderRadius: 2, boxShadow: 3 }}>
+                <Typography variant="h4" sx={{ fontWeight: 600, color: customColors.textPrimary, textAlign: "center", mb: 2 }}>
+                    Exam Coordinator
+                </Typography>
+                <Typography variant="body1" sx={{ color: customColors.textSecondary, textAlign: "Justify" }}>
+                The role of an Exam Coordinator is pivotal in ensuring that academic examinations are scheduled, organized, and executed seamlessly. This involves responsibilities such as creating and modifying exam schedules, assigning invigilators, and allocating examination halls efficiently. The Academic Scheduling System is designed to facilitate this process, preventing conflicts in scheduling, optimizing faculty and room assignments, and ensuring that examinations proceed without disruptions. Additionally, the system generates crucial reports, such as attendance records and final exam status, contributing to the overall efficiency of the academic administration. By automating various scheduling tasks, the Exam Coordinator can focus on overseeing the examination process and maintaining the integrity of the system.
+                </Typography> 
+            </Container>
             
             <Container maxWidth="x2" sx={{ mt: 3 }}>
                 <Grid container spacing={3} alignItems="stretch">
@@ -202,7 +210,7 @@ const ExamCoordinator = () => {
                                 toolbar
                                 eventPropGetter={(event) => ({
                                     style: {
-                                        backgroundColor: event.start < new Date() ? '#4caf50' : '#ff9800',
+                                        backgroundColor: event.start < new Date() ? '#071739' : '#4B6382',
                                         borderRadius: '4px',
                                         opacity: 0.8,
                                         color: 'white',

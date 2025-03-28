@@ -25,18 +25,15 @@ const ExamInfo = () => {
         <Container maxWidth="md" sx={{ mt: 5 }}>
             <Paper elevation={3} sx={{ p: 4, borderRadius: 2 }}>
                 <Typography variant="h4" gutterBottom color="primary" textAlign="center">
-                    Exam Details
+                    IT Exam Details
                 </Typography>
 
-                <Typography variant="h5" gutterBottom>
-                    {examDetails.subject}
-                </Typography>
-                <Divider sx={{ mb: 2 }} />
+                <Divider sx={{ mb: 2 }}/>
 
-                <Typography variant="body1"><strong>Date:</strong> {examDetails.date}</Typography>
-                <Typography variant="body1"><strong>Time:</strong> {examDetails.time}</Typography>
-                <Typography variant="body1"><strong>Duration:</strong> {examDetails.duration}</Typography>
-                <Typography variant="body1"><strong>Hall:</strong> {examDetails.hall}</Typography>
+                <Typography variant="body1" textAlign="center"><strong>Date:</strong> {examDetails.date}</Typography>
+                <Typography variant="body1" textAlign="center"><strong>Time:</strong> {examDetails.time}</Typography>
+                <Typography variant="body1" textAlign="center"><strong>Duration:</strong> {examDetails.duration}</Typography>
+                <Typography variant="body1" textAlign="center"><strong>Hall:</strong> {examDetails.hall}</Typography>
 
                 <Box sx={{ mt: 2 }}>
                     <Typography variant="h6">Invigilators</Typography>
@@ -58,7 +55,7 @@ const ExamInfo = () => {
 
                 <Box sx={{ textAlign: "center", mt: 4 }}>
                     <Button variant="contained" color="primary" onClick={() => navigate("/examHome")}>
-                        Back to Exam Dashboard
+                        Back to Dashboard
                     </Button>
                 </Box>
             </Paper>

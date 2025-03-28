@@ -42,7 +42,7 @@ function ExamTable() {
                                 <TableCell><b>Exam Type</b></TableCell>
                                 <TableCell><b>Subject</b></TableCell>
                                 <TableCell><b>Date & Time</b></TableCell>
-                                <TableCell><b>Duration (mins)</b></TableCell>
+                                <TableCell><b>Duration (hours)</b></TableCell>
                                 <TableCell><b>Exam Hall</b></TableCell>
                                 <TableCell><b>Invigilator</b></TableCell>
                                 <TableCell><b>Total Marks</b></TableCell>
