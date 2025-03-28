@@ -264,7 +264,7 @@ function Student() {
 
                         <Grid item xs={12}>
                             <Button type="submit" variant="contained" color="primary" sx={{ width: "25%" }}>
-                                Submit
+                                Update
                             </Button>
                         </Grid>
 

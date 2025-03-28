@@ -17,7 +17,7 @@ import SettingsPage from "./Components/Sub/Lasindu/Settings/SettingsPage";
 import Student from "./Components/Sub/Kaveesha/Student";
 import StudentHome from "./Components/Sub/Kaveesha/StudentHome";
 import Studenttable from "./Components/Sub/Kaveesha/Studenttable";
-
+import EditStudent from "./Components/Sub/Kaveesha/EditStudent";
 
 
 function App() {
@@ -41,6 +41,7 @@ function App() {
           <Route path="/student" element={<Student/>}/>
           <Route path="/studenttable" element={<Studenttable/>}/>
           <Route path="/studenthome" element={<StudentHome/>}/>
+          <Route path="/editstudent" element={<EditStudent/>}/>
         </Routes>
       </Layout>
     </Router>
