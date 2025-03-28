@@ -19,8 +19,12 @@ function Exam() {
     });
 
     const [error, setError] = useState("");
+    const [success, setSuccess] = useState("");
 
     const handleChange = (e) => {
+        if ((e.target.name === "duration" || e.target.name === "totalMarks") && isNaN(e.target.value)) {
+            return;
+        }
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
@@ -39,19 +43,46 @@ function Exam() {
         return "";
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
+        setError("");
+        setSuccess("");
+        
         const validationError = validateForm();
         if (validationError) {
             setError(validationError);
             return;
         }
 
-        let examList = JSON.parse(localStorage.getItem("exams")) || [];
-        examList.push(formData);
-        localStorage.setItem("exams", JSON.stringify(examList));
+        const requestBody = {
+            examtype: formData.examType,
+            subject: formData.subject,
+            datetime: formData.examDate,
+            duration: Number(formData.duration),
+            examhall: formData.examHall,
+            invigilator: formData.invigilator,
+            marks: Number(formData.totalMarks),
+            status: formData.status
+        };
 
-        navigate("/exam/ExamTable");
+        try {
+            const response = await fetch("https://localhost:7014/exam", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(requestBody)
+            });
+            
+            if (!response.ok) {
+                throw new Error("Failed to save exam details");
+            }
+            
+            setSuccess("Exam successfully scheduled!");
+            navigate("/exam/ExamTable");
+        } catch (error) {
+            setError(error.message);
+        }
     };
 
     return (
@@ -61,6 +92,7 @@ function Exam() {
                     Exam Management
                 </Typography>
                 {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
+                {success && <Alert severity="success" sx={{ mb: 2 }}>{success}</Alert>}
                 <form onSubmit={handleSubmit}>
                     <Grid container spacing={2}>
                         <Grid item xs={12}>
@@ -130,21 +162,13 @@ function Exam() {
                         </Grid>
                         <Grid item xs={12}>
                             <TextField
-                                select
                                 fullWidth
                                 label="Exam Hall"
                                 name="examHall"
                                 variant="outlined"
                                 required
                                 onChange={handleChange}
-                            >
-                                <MenuItem value="A12">A12</MenuItem>
-                                <MenuItem value="A13">A13</MenuItem>
-                                <MenuItem value="A14">A14</MenuItem>
-                                <MenuItem value="A15">A15</MenuItem>
-                                <MenuItem value="A16">A16</MenuItem>
-                                <MenuItem value="A17">A17</MenuItem>
-                            </TextField>
+                            />
                         </Grid>
                         <Grid item xs={12}>
                             <TextField
@@ -166,20 +190,6 @@ function Exam() {
                                 required
                                 onChange={handleChange}
                             />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <TextField
-                                select
-                                fullWidth
-                                label="Status"
-                                name="status"
-                                variant="outlined"
-                                onChange={handleChange}
-                                value={formData.status}
-                            >
-                                <MenuItem value="Scheduled">Scheduled</MenuItem>
-                                <MenuItem value="Canceled">Canceled</MenuItem>
-                            </TextField>
                         </Grid>
                         <Grid item xs={12}>
                             <Button type="submit" variant="contained" color="primary" fullWidth>
