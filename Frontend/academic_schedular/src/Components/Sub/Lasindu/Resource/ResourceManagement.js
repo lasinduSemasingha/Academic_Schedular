@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import {
   Card,
   CardContent,
@@ -6,6 +7,7 @@ import {
   Input,
   Grid,
   Typography,
+  Box,
 } from "@mui/material";
 import {
   Add,
@@ -59,6 +61,7 @@ const ResourceManagement = () => {
           <Typography variant="h4" fontWeight="bold" color={primaryColor}>
             Resource Management Dashboard
           </Typography>
+          
         </Grid>
         <Grid item xs={12} md={3}>
           <WidgetContainer>
@@ -113,9 +116,12 @@ const ResourceManagement = () => {
         <Grid item xs={12} md={6}>
   <Card sx={{ backgroundColor: cardBackground, p: 2 }}>
     <CardContent>
+      <Box display="flex" sx={{gap: '10px'}} alignItems="center" mb={2}>
       <Typography variant="h6" fontWeight="bold" color={primaryColor} gutterBottom>
         Resource List
       </Typography>
+      <Button sx={{ bgcolor: 'navy',color: "white", mx: 1 }} component={Link} to="/addresource">Add Resource</Button>
+      </Box>
       <TableContainer sx={{ maxHeight: 300, overflowY: "auto" }}>
         <Table stickyHeader>
           <TableHead>

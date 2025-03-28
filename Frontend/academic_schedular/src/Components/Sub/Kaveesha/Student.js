@@ -42,7 +42,7 @@ export default function Student() {
     e.preventDefault();
     if (validate()) {
       try {
-        await axios.post("https://localhost:7175/student", student);
+        await axios.post("https://localhost:7005/student", student);
         alert("Student added successfully!");
       } catch (error) {
         alert("Error adding student");

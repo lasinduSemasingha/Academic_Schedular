@@ -20,7 +20,7 @@ const AddResources = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("https://localhost:7188/resource", formData, {
+      const response = await axios.post("https://localhost:7002/resource", formData, {
         headers: { "Content-Type": "application/json" }
       });
       alert(`Venue added successfully with ID: ${formData.name}`);

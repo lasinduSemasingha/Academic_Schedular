@@ -66,7 +66,7 @@ function Exam() {
         };
 
         try {
-            const response = await fetch("https://localhost:7014/exam", {
+            const response = await fetch("https://localhost:7003/exam", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
