@@ -84,6 +84,26 @@ const Layout = ({ children }) => {
           <Button sx={{ color: "white", mx: 1 }} component={Link} to="/">
             Home
           </Button>
+          <Button sx={{ color: "white", mx: 1 }} component={Link} to="/examHome">
+            Exam Home
+          </Button>
+          <Button sx={{ color: "white", mx: 1 }} component={Link} to="/profile">
+            Profile
+          </Button>
+          <Button sx={{ color: "white", mx: 1 }} component={Link} to="/resource">
+            Resource
+          <Button color="inherit" component={Link} to="/studenthome">
+            Student
+          </Button>
+          </Button>
+          {!isLoggedIn ? (
+            <Button onClick={handleLogin} component={Link} to="/login" sx={{ color: "white", mx: 1 }}>
+              Login
+            </Button>
+          ) : (
+            <Button onClick={handleLogout} sx={{ color: "white", mx: 1 }}>
+              Logout
+            </Button>
           
           {!isLoggedIn ? (
             <Button onClick={handleLogin} component={Link} to="/login" sx={{ color: "white", mx: 1 }}>

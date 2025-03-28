@@ -14,6 +14,11 @@ import ExamCoordinator from "./Components/Sub/Maheesha/ExamHome";
 import ResourceManagement from "./Components/Sub/Lasindu/Resource/ResourceManagement";
 import SettingsPage from "./Components/Sub/Lasindu/Settings/SettingsPage";
 import LoginPage from "./Components/Main/Auth/Login";
+import Student from "./Components/Sub/Kaveesha/Student";
+import StudentHome from "./Components/Sub/Kaveesha/StudentHome";
+import Studenttable from "./Components/Sub/Kaveesha/Studenttable";
+import EditStudent from "./Components/Sub/Kaveesha/EditStudent";
+
 import AcademicSchedule from "./Components/Main/TimeTable/AcademicSchedule";
 import AddResources from "./Components/Sub/Lasindu/Resource/AddResources";
 
@@ -40,6 +45,10 @@ function App() {
           {/* Resource Endpoints*/}
           <Route path="/addResource" element={<AddResources />} />
 
+          <Route path="/student" element={<Student/>}/>
+          <Route path="/studenttable" element={<Studenttable/>}/>
+          <Route path="/studenthome" element={<StudentHome/>}/>
+          <Route path="/editstudent" element={<EditStudent/>}/>
         </Routes>
       </Layout>
     </Router>
