@@ -104,7 +104,7 @@ const Layout = ({ children }) => {
             <Button onClick={handleLogout} sx={{ color: "white", mx: 1 }}>
               Logout
             </Button>
-          
+          )}
           {!isLoggedIn ? (
             <Button onClick={handleLogin} component={Link} to="/login" sx={{ color: "white", mx: 1 }}>
               Login
