@@ -18,6 +18,7 @@ import Lecturer from "./Components/Sub/Manuji/Lecturer";
 import LecturerHome from "./Components/Sub/Manuji/LecturerHome";
 import LecturerTable from "./Components/Sub/Manuji/LecturerTable";
 import EditLecturer from "./Components/Sub/Manuji/EditLecturer";
+import LoginPage from "./Components/Main/Auth/Login";
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
           <Route path="/hall/HallTable" element={<HallTable/>} />
           <Route path="/resource" element={<ResourceManagement />} />
           <Route path="/settings" element={<SettingsPage />} />
+          <Route path="/login" element={<LoginPage />} />
 
           <Route path="/lecturer" element={<Lecturer />} />
           <Route path="/lecturerhome" element={<LecturerHome />} />

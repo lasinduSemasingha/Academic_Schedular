@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   AppBar,
   Toolbar,
@@ -19,6 +20,8 @@ import { faBars } from "@fortawesome/free-solid-svg-icons";
 
 const Layout = ({ children }) => {
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();
 
   const toggleDrawer = () => {
     setDrawerOpen(!drawerOpen);
@@ -28,14 +31,60 @@ const Layout = ({ children }) => {
     setDrawerOpen(false);
   };
 
+  useEffect(() => {
+    // Check if the user is logged in from sessionStorage on page load
+    const userLoggedIn = sessionStorage.getItem("isLoggedIn");
+    if (userLoggedIn) {
+      setIsLoggedIn(true);
+    }
+  }, []);
+
+  const handleLogin = () => {
+    // Simulate login logic here
+
+    // After successful login, store the login status in sessionStorage
+    sessionStorage.setItem("isLoggedIn", "true");
+
+    setIsLoggedIn(true); // Update state to hide the button
+    navigate("/home"); // Example: Navigate to home page after login
+  };
+
+  const handleLogout = () => {
+    // Remove the login status from sessionStorage on logout
+    sessionStorage.removeItem("isLoggedIn");
+    setIsLoggedIn(false); // Update state to show the login button
+    navigate("/login"); // Navigate to the login page after logout
+  };
+
   return (
-    <Box sx={{ minHeight: "100vh", backgroundColor: "#F4F7FC" }}>
+    <Box sx={{ minHeight: "100vh", backgroundImage: 'url(/Main/background.png)' }}>
       {/* AppBar */}
-      <AppBar sx={{ backgroundColor: "#024CAA" }} position="static">
+      <AppBar sx={{ backgroundColor: "#002e5f" }} position="static">
         <Toolbar>
-          <Typography variant="h5" fontWeight="bold" sx={{ flexGrow: 1, color: "white" }}>
-            Academic Scheduler
-          </Typography>
+        <Typography 
+          variant="h5" 
+          fontWeight="bold" 
+          sx={{
+            cursor: 'pointer',
+            flexGrow: 1,
+            fontSize: '30px',
+            fontWeight: 900,
+            textDecoration: 'none',
+            letterSpacing: '3px',
+            display: 'inline-block',
+            position: 'relative',
+            transition: 'transform 0.3s ease-in-out, color 0.3s ease-in-out', // Apply transition to transform and color
+            '&:hover span': {
+              transform: 'scale(1.1)', // Apply scale to spans directly
+              color: '#00d4ff', // Change color on hover
+              transitionDelay: '0.2s', // Delay the transformation and color change
+            },
+          }}
+        >
+          <span style={{ color: 'white', display: 'inline-block' }}>Academic</span>&nbsp;
+          <span style={{ color: '#ffcc00', display: 'inline-block' }}>Scheduler</span>
+        </Typography>
+
           <Button sx={{ color: "white", mx: 1 }} component={Link} to="/">
             Home
           </Button>
@@ -48,6 +97,15 @@ const Layout = ({ children }) => {
           <Button sx={{ color: "white", mx: 1 }} component={Link} to="/resource">
             Resources
           </Button>
+          {!isLoggedIn ? (
+            <Button onClick={handleLogin} component={Link} to="/login" sx={{ color: "white", mx: 1 }}>
+              Login
+            </Button>
+          ) : (
+            <Button onClick={handleLogout} sx={{ color: "white", mx: 1 }}>
+              Logout
+            </Button>
+          )}
           <Button color="inherit" component={Link} to="/lecturerhome">
             Lecturer
           </Button>
@@ -95,31 +153,32 @@ const Layout = ({ children }) => {
         </List>
       </Drawer>
 
-      {/* Main Content */}
-      <Box>
-        <Container sx={{ px: 2, py: 3 }}>{children}</Container>
-      </Box>
+      <Box sx={{ minHeight: "100vh", display: 'flex', flexDirection: 'column' }}>
+  {/* Main content */}
+  <Box sx={{ flex: 1 }}>
+    {/* Your page content goes here */}
+    {children}
+  </Box>
 
-      {/* Footer */}
-      <Box
-  component="footer"
-  sx={{
-    py: 2,
-    textAlign: "center",
-    bgcolor: "#024CAA",
-    color: "white",
-    mt: "auto",
-    width: "100%",
-    zIndex: 1000,
-    position: "relative", // Change from fixed to relative
-  }}
->
-  <Typography variant="body2">
-    © 2025 Academic Scheduler. All rights reserved.
-  </Typography>
+  {/* Footer */}
+  <Box
+    component="footer"
+    sx={{
+      py: 2,
+      textAlign: "center",
+      bgcolor: "#002e5f",
+      color: "white",
+      width: "100%",
+      zIndex: 1000,
+      position: "relative", // Change from fixed to relative
+    }}
+  >
+    <Typography variant="body2">
+      © 2025 Academic Scheduler. All rights reserved.
+    </Typography>
+  </Box>
 </Box>
-
-    </Box>
+</Box>
   );
 };
 
