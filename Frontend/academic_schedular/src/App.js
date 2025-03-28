@@ -17,6 +17,7 @@ import SettingsPage from "./Components/Sub/Lasindu/Settings/SettingsPage";
 import Lecturer from "./Components/Sub/Manuji/Lecturer";
 import LecturerHome from "./Components/Sub/Manuji/LecturerHome";
 import LecturerTable from "./Components/Sub/Manuji/LecturerTable";
+import EditLecturer from "./Components/Sub/Manuji/EditLecturer";
 
 function App() {
   return (
@@ -39,6 +40,7 @@ function App() {
           <Route path="/lecturer" element={<Lecturer />} />
           <Route path="/lecturerhome" element={<LecturerHome />} />
           <Route path="/lecturertable" element={<LecturerTable />} />
+          <Route path="/editlecturer" element={<EditLecturer />} />
         </Routes>
       </Layout>
     </Router>

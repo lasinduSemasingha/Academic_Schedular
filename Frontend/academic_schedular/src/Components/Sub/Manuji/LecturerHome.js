@@ -1,44 +1,38 @@
 import React from 'react';
 import { Container, Typography, Box, Button, Card, CardContent, Avatar } from '@mui/material';
+import { Link } from 'react-router-dom';
 
-export default function LecturerHomepage() {
+const LecturerHomepage = () => {
   return (
     <Container maxWidth="100%">
       {/* Navbar */}
       <Box display="flex" justifyContent="space-between" alignItems="center" mb={4}>
-        <Typography variant="h4" fontWeight="bold" sx={{ position: 'relative', zIndex: 2 }}>
+        <Typography variant="h4" fontWeight="bold">
           Lecturer Management Dashboard
         </Typography>
-        <Typography variant="h4" fontWeight="bold" color="white">Lecturer Management</Typography>
         <Box display="flex" gap={2}>
-          <Button variant="outlined" color="inherit">Profiles</Button>
-          <Button variant="outlined" color="inherit">Courses</Button>
-          <Button variant="outlined" color="inherit">Reports</Button>
-          <Button variant="outlined" color="inherit">Settings</Button>
+          <Button variant="outlined" color="inherit">Lecturer Directory</Button>
+          <Button variant="outlined" color="inherit">Lecture Timetable</Button>
+          <Button variant="outlined" color="inherit">Academic Settings</Button>
         </Box>
       </Box>
 
       <Box display="flex" flexDirection={{ xs: 'column', md: 'row' }} gap={4}>
         {/* Main Content */}
         <Box flex={2}>
-          {/* Dashboard Overview with Updated Colors */}
+          {/* Dashboard Overview */}
           <Box display="flex" gap={2} mb={4} flexWrap="wrap">
-            <Box p={3} bgcolor="#1976d2" color="white" textAlign="center" borderRadius={2} flex={1}>
-              <Typography variant="h6">Total Lecturers</Typography>
-              <Typography variant="h4" fontWeight="bold">120</Typography>
-            </Box>
-            <Box p={3} bgcolor="#1976d2" color="white" textAlign="center" borderRadius={2} flex={1}>
-              <Typography variant="h6">Upcoming Lectures</Typography>
-              <Typography variant="h4" fontWeight="bold">15</Typography>
-            </Box>
-            <Box p={3} bgcolor="#1976d2" color="white" textAlign="center" borderRadius={2} flex={1}>
-              <Typography variant="h6">Pending Approvals</Typography>
-              <Typography variant="h4" fontWeight="bold">5</Typography>
-            </Box>
-            <Box p={3} bgcolor="#1976d2" color="white" textAlign="center" borderRadius={2} flex={1}>
-              <Typography variant="h6">Notifications</Typography>
-              <Typography variant="h4" fontWeight="bold">3 New</Typography>
-            </Box>
+            {[ 
+              { title: "Total Lecturers", value: "120" },
+              { title: "Upcoming Lectures", value: "15" },
+              { title: "Pending Approvals", value: "5" },
+              { title: "Notifications", value: "3 New" }
+            ].map((item, index) => (
+              <Box key={index} p={3} bgcolor="#1976d2" color="white" textAlign="center" borderRadius={2} flex={1}>
+                <Typography variant="h6">{item.title}</Typography>
+                <Typography variant="h4" fontWeight="bold">{item.value}</Typography>
+              </Box>
+            ))}
           </Box>
 
           {/* Time Table & Schedule */}
@@ -66,22 +60,57 @@ export default function LecturerHomepage() {
 
         {/* Lecturer Profile on Right Side */}
         <Box flex={1}>
-          <Card sx={{ mb: 4, p: 3, display: 'flex', flexDirection: 'column', alignItems: 'center', boxShadow: 3, bgcolor: '#1976d2' }}>
-            <Avatar sx={{ width: 100, height: 100, mb: 2 }}>JD</Avatar>
+          <Card 
+            sx={{ 
+              mb: 4, 
+              p: 3, 
+              textAlign: 'center', 
+              borderRadius: 3, 
+              boxShadow: 4, 
+              background: 'linear-gradient(to right, #1976d2, #42a5f5)', 
+              color: 'white',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center'
+            }}
+          >
+            {/* Lecturer Avatar */}
+            <Avatar 
+              sx={{ width: 120, height: 120, mb: 2, boxShadow: 3 }} 
+              src="https://via.placeholder.com/120"
+            />
+
+            {/* Lecturer Information */}
             <CardContent>
-              <Typography variant="h5" mb={1} textAlign="center">Dr. John Doe</Typography>
-              <Typography variant="body1" textAlign="center">Department: Computer Science</Typography>
-              <Typography variant="body1" textAlign="center">Email: johndoe@example.com</Typography>
+              <Typography variant="h5" fontWeight="bold">Dr. John Doe</Typography>
+              <Typography variant="body1" mt={1}>Department: Computer Science</Typography>
+              <Typography variant="body2" mt={1}>johndoe@example.com</Typography>
+              <Box display="flex" justifyContent="center" mt={2}>
+                <Button variant="outlined" color="inherit">View Profile</Button>
+              </Box>
             </CardContent>
           </Card>
 
+          {/* Adding Lecturers Section */}
+          <Box p={3} bgcolor="white" boxShadow={2} borderRadius={2} textAlign="center">
+            <Typography variant="h5" mb={2}>Register New Lecturers</Typography>
+            <Typography>Complete the Form to Register a Lecturer</Typography>
+            <Box display="flex" justifyContent="center" mt={2}>
+              <Link to="/Lecturer" style={{ textDecoration: 'none' }}>
+                <Button variant="outlined" color="inherit">Click Here</Button>
+              </Link>
+            </Box>
+          </Box>
+
           {/* Announcements Section */}
-          <Box p={3} bgcolor="white" boxShadow={2} borderRadius={2}>
+          <Box p={3} bgcolor="white" boxShadow={2} borderRadius={2} mt={2}>
             <Typography variant="h5" mb={2}>Announcements</Typography>
-            <Typography>University will be closed on Monday due to maintenance.</Typography>
+            <Typography>You cannot use this site on Monday due to maintenance.</Typography>
           </Box>
         </Box>
       </Box>
     </Container>
   );
-}
+};
+
+export default LecturerHomepage;

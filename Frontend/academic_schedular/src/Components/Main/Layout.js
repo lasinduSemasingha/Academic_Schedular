@@ -48,11 +48,11 @@ const Layout = ({ children }) => {
           <Button sx={{ color: "white", mx: 1 }} component={Link} to="/resource">
             Resources
           </Button>
+          <Button color="inherit" component={Link} to="/lecturerhome">
+            Lecturer
+          </Button>
           <Button color="inherit" onClick={toggleDrawer} sx={{ color: "white" }}>
             <FontAwesomeIcon icon={faBars} />
-          </Button>
-          <Button color="inherit" component={Link} to="/lecturer">
-            Lecturer
           </Button>
         </Toolbar>
       </AppBar>
