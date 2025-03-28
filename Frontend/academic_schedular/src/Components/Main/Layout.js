@@ -105,6 +105,9 @@ const Layout = ({ children }) => {
               Logout
             </Button>
           )}
+          <Button color="inherit" component={Link} to="/lecturerhome">
+            Lecturer
+          </Button>
           {!isLoggedIn ? (
             <Button onClick={handleLogin} component={Link} to="/login" sx={{ color: "white", mx: 1 }}>
               Login

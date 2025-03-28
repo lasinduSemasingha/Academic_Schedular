@@ -14,6 +14,10 @@ import ExamCoordinator from "./Components/Sub/Maheesha/ExamHome";
 import ExamInfo from "./Components/Sub/Maheesha/ExamInfo";
 import ResourceManagement from "./Components/Sub/Lasindu/Resource/ResourceManagement";
 import SettingsPage from "./Components/Sub/Lasindu/Settings/SettingsPage";
+import Lecturer from "./Components/Sub/Manuji/Lecturer";
+import LecturerHome from "./Components/Sub/Manuji/LecturerHome";
+import LecturerTable from "./Components/Sub/Manuji/LecturerTable";
+import EditLecturer from "./Components/Sub/Manuji/EditLecturer";
 import LoginPage from "./Components/Main/Auth/Login";
 import EnglishExamInfo from "./Components/Sub/Maheesha/EnglishExamInfo";
 import ArtsExamInfo from "./Components/Sub/Maheesha/ArtsExamInfo";
@@ -54,10 +58,10 @@ function App() {
           {/* Resource Endpoints*/}
           <Route path="/addResource" element={<AddResources />} />
 
-          <Route path="/student" element={<Student/>}/>
-          <Route path="/studenttable" element={<Studenttable/>}/>
-          <Route path="/studenthome" element={<StudentHome/>}/>
-          <Route path="/editstudent" element={<EditStudent/>}/>
+          <Route path="/lecturer" element={<Lecturer />} />
+          <Route path="/lecturerhome" element={<LecturerHome />} />
+          <Route path="/lecturertable" element={<LecturerTable />} />
+          <Route path="/editlecturer" element={<EditLecturer />} />
         </Routes>
       </Layout>
     </Router>
