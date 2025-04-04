@@ -62,6 +62,13 @@ function App() {
           <Route path="/lecturerhome" element={<LecturerHome />} />
           <Route path="/lecturertable" element={<LecturerTable />} />
           <Route path="/editlecturer" element={<EditLecturer />} />
+
+          <Route path="/student" element={<Student />} />
+          <Route path="/studenthome" element={<StudentHome />} />
+          <Route path="/studenttable" element={<Studenttable />} />
+          <Route path="/editstudent" element={<EditStudent />} />
+
+          {/* Add other routes here */}
         </Routes>
       </Layout>
     </Router>
