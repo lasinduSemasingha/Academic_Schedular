@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Container, Typography, Box, Button, TextField, Alert } from '@mui/material';
+import { Container, Typography, Box, Button, TextField, MenuItem, Alert } from '@mui/material';
 
 const Lecturer = () => {
   const [formData, setFormData] = useState({
@@ -15,20 +15,30 @@ const Lecturer = () => {
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
+  useEffect(() => {
+    if (successMessage || errorMessage) {
+      const timer = setTimeout(() => {
+        setSuccessMessage('');
+        setErrorMessage('');
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [successMessage, errorMessage]);
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
 
     if (name === 'name' && !/^[a-zA-Z ]*$/.test(value)) {
-      setErrors((prevErrors) => ({ ...prevErrors, name: 'Only letters are allowed.' }));
+      setErrors((prevErrors) => ({ ...prevErrors, name: 'Only letters and spaces are allowed.' }));
       return;
     }
 
-    if (name === 'phonenumber' && (!/^[0-9]*$/.test(value) || value.length > 10)) {
+    if (name === 'phonenumber' && (!/^[0-9]*$/.test(value) || value.length > 9)) {
       return;
     }
 
-    setFormData({ ...formData, [name]: value });
-    setErrors({ ...errors, [name]: '' });
+    setFormData((prevFormData) => ({ ...prevFormData, [name]: value }));
+    setErrors((prevErrors) => ({ ...prevErrors, [name]: '' }));
   };
 
   const validateForm = () => {
@@ -51,8 +61,8 @@ const Lecturer = () => {
     if (!formData.phonenumber.trim()) {
       newErrors.phonenumber = 'Phone number is required.';
       isValid = false;
-    } else if (!/^[0-9]{10}$/.test(formData.phonenumber)) {
-      newErrors.phonenumber = 'Phone number must be exactly 10 digits.';
+    } else if (!/^[0-9]{9}$/.test(formData.phonenumber)) {
+      newErrors.phonenumber = 'Phone number must be exactly 9 digits.';
       isValid = false;
     }
 
@@ -63,6 +73,9 @@ const Lecturer = () => {
 
     if (!formData.description.trim()) {
       newErrors.description = 'Description is required.';
+      isValid = false;
+    } else if (formData.description.length < 10) {
+      newErrors.description = 'Description must be at least 10 characters long.';
       isValid = false;
     }
 
@@ -75,8 +88,13 @@ const Lecturer = () => {
     if (validateForm()) {
       try {
         const response = await axios.post('https://localhost:7004/lecturer', formData, {
+        const response = await axios.post('https://localhost:7025/lecturer', {
+          ...formData,
+          phonenumber: parseInt(formData.phonenumber, 10), // Convert phone number to integer
+        }, {
           headers: { 'Content-Type': 'application/json' },
         });
+
         console.log('Form submitted successfully:', response.data);
         setSuccessMessage('Lecturer registered successfully!');
         setErrorMessage('');
@@ -105,11 +123,21 @@ const Lecturer = () => {
               {successMessage && <Alert severity="success">{successMessage}</Alert>}
               {errorMessage && <Alert severity="error">{errorMessage}</Alert>}
               <Box component="form" onSubmit={handleSubmit}>
-                <TextField fullWidth label="Lecturer Name" name="name" margin="normal" required value={formData.name} onChange={handleInputChange} error={!!errors.name} helperText={errors.name} />
-                <TextField fullWidth label="Email Address" type="email" name="email" margin="normal" required value={formData.email} onChange={handleInputChange} error={!!errors.email} helperText={errors.email} />
-                <TextField fullWidth label="Phone Number" name="phonenumber" margin="normal" required value={formData.phonenumber} onChange={handleInputChange} error={!!errors.phonenumber} helperText={errors.phonenumber} />
-                <TextField fullWidth label="Department" name="department" margin="normal" required value={formData.department} onChange={handleInputChange} error={!!errors.department} helperText={errors.department} />
-                <TextField fullWidth label="Description" name="description" multiline rows={4} margin="normal" required value={formData.description} onChange={handleInputChange} error={!!errors.description} helperText={errors.description} />
+                <TextField fullWidth label="Lecturer Name" name="name" margin="normal" required 
+                  value={formData.name} onChange={handleInputChange} error={!!errors.name} helperText={errors.name} />
+                <TextField fullWidth label="Email Address" type="email" name="email" margin="normal" required 
+                  value={formData.email} onChange={handleInputChange} error={!!errors.email} helperText={errors.email} />
+                <TextField fullWidth label="Phone Number" name="phonenumber" margin="normal" required 
+                  inputProps={{ maxLength: 9 }} value={formData.phonenumber} onChange={handleInputChange} 
+                  error={!!errors.phonenumber} helperText={errors.phonenumber} />
+                <TextField fullWidth select label="Department" name="department" margin="normal" required 
+                  value={formData.department} onChange={handleInputChange} error={!!errors.department} helperText={errors.department}>
+                  <MenuItem value="IT">IT</MenuItem>
+                  <MenuItem value="Engineering">Engineering</MenuItem>
+                  <MenuItem value="Business">Business</MenuItem>
+                </TextField>
+                <TextField fullWidth label="Description" name="description" multiline rows={4} margin="normal" required 
+                  value={formData.description} onChange={handleInputChange} error={!!errors.description} helperText={errors.description} />
                 <Button type="submit" variant="contained" color="primary" sx={{ mt: 2 }}>Submit</Button>
               </Box>
             </Box>
