@@ -87,14 +87,13 @@ const Lecturer = () => {
     e.preventDefault();
     if (validateForm()) {
       try {
-        const response = await axios.post('https://localhost:7004/lecturer', formData, {
-        const response = await axios.post('https://localhost:7025/lecturer', {
+        const response = await axios.post('https://localhost:7004/lecturer', {
           ...formData,
           phonenumber: parseInt(formData.phonenumber, 10), // Convert phone number to integer
         }, {
           headers: { 'Content-Type': 'application/json' },
         });
-
+  
         console.log('Form submitted successfully:', response.data);
         setSuccessMessage('Lecturer registered successfully!');
         setErrorMessage('');
@@ -112,6 +111,7 @@ const Lecturer = () => {
       }
     }
   };
+  
 
   return (
     <Box>
