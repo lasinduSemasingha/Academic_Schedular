@@ -8,10 +8,10 @@ import Hall from "./Components/Sub/Maheesha/Hall";
 import InvigilatorTable from "./Components/Sub/Maheesha/InvigilatorTable";
 import ExamTable from "./Components/Sub/Maheesha/ExamTable";
 import HallTable from "./Components/Sub/Maheesha/HallTable";
-import EditHall from "./Components/Sub/Maheesha/EditHall";
 import EditInvigilator from "./Components/Sub/Maheesha/EditInvigilator";
 import EditExam from "./Components/Sub/Maheesha/EditExam";
 import ExamCoordinator from "./Components/Sub/Maheesha/ExamHome";
+import ExamInfo from "./Components/Sub/Maheesha/ExamInfo";
 import ResourceManagement from "./Components/Sub/Lasindu/Resource/ResourceManagement";
 import SettingsPage from "./Components/Sub/Lasindu/Settings/SettingsPage";
 import Lecturer from "./Components/Sub/Manuji/Lecturer";
@@ -19,6 +19,16 @@ import LecturerHome from "./Components/Sub/Manuji/LecturerHome";
 import LecturerTable from "./Components/Sub/Manuji/LecturerTable";
 import EditLecturer from "./Components/Sub/Manuji/EditLecturer";
 import LoginPage from "./Components/Main/Auth/Login";
+import EnglishExamInfo from "./Components/Sub/Maheesha/EnglishExamInfo";
+import ArtsExamInfo from "./Components/Sub/Maheesha/ArtsExamInfo";
+import EngineeringExamInfo from "./Components/Sub/Maheesha/EngineeringExamInfo";
+import Student from "./Components/Sub/Kaveesha/Student";
+import StudentHome from "./Components/Sub/Kaveesha/StudentHome";
+import Studenttable from "./Components/Sub/Kaveesha/Studenttable";
+import EditStudent from "./Components/Sub/Kaveesha/EditStudent";
+
+import AcademicSchedule from "./Components/Main/TimeTable/AcademicSchedule";
+import AddResources from "./Components/Sub/Lasindu/Resource/AddResources";
 
 function App() {
   return (
@@ -35,14 +45,30 @@ function App() {
           <Route path="/invigilator/edit" element={<EditInvigilator />} />
           <Route path="/hall" element={<Hall/>} />
           <Route path="/hall/HallTable" element={<HallTable/>} />
+          {/* <Route path="/hall/edit" element={<EditHall />} /> */}
+          <Route path="/ExamInfo" element={<ExamInfo/>}/>
+          <Route path="/EnglishExamInfo" element={<EnglishExamInfo/>}/>
+          <Route path="/ArtsExamInfo" element={<ArtsExamInfo/>}/>
           <Route path="/resource" element={<ResourceManagement />} />
           <Route path="/settings" element={<SettingsPage />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/EngineeringExamInfo" element={<EngineeringExamInfo/>}/>
+          <Route path="/timetable" element={<AcademicSchedule />} />
+
+          {/* Resource Endpoints*/}
+          <Route path="/addResource" element={<AddResources />} />
 
           <Route path="/lecturer" element={<Lecturer />} />
           <Route path="/lecturerhome" element={<LecturerHome />} />
           <Route path="/lecturertable" element={<LecturerTable />} />
           <Route path="/editlecturer" element={<EditLecturer />} />
+
+          <Route path="/student" element={<Student />} />
+          <Route path="/studenthome" element={<StudentHome />} />
+          <Route path="/studenttable" element={<Studenttable />} />
+          <Route path="/editstudent" element={<EditStudent />} />
+
+          {/* Add other routes here */}
         </Routes>
       </Layout>
     </Router>

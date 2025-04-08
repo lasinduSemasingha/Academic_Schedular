@@ -87,6 +87,7 @@ const Lecturer = () => {
     e.preventDefault();
     if (validateForm()) {
       try {
+        const response = await axios.post('https://localhost:7004/lecturer', formData, {
         const response = await axios.post('https://localhost:7025/lecturer', {
           ...formData,
           phonenumber: parseInt(formData.phonenumber, 10), // Convert phone number to integer
