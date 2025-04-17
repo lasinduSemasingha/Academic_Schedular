@@ -29,6 +29,7 @@ import EditStudent from "./Components/Sub/Kaveesha/EditStudent";
 
 import AcademicSchedule from "./Components/Main/TimeTable/AcademicSchedule";
 import AddResources from "./Components/Sub/Lasindu/Resource/AddResources";
+import EditResource from "./Components/Sub/Lasindu/Resource/EditResource";
 
 function App() {
   return (
@@ -49,7 +50,7 @@ function App() {
           <Route path="/ExamInfo" element={<ExamInfo/>}/>
           <Route path="/EnglishExamInfo" element={<EnglishExamInfo/>}/>
           <Route path="/ArtsExamInfo" element={<ArtsExamInfo/>}/>
-          <Route path="/resource" element={<ResourceManagement />} />
+          
           <Route path="/settings" element={<SettingsPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/EngineeringExamInfo" element={<EngineeringExamInfo/>}/>
@@ -57,6 +58,8 @@ function App() {
 
           {/* Resource Endpoints*/}
           <Route path="/addResource" element={<AddResources />} />
+          <Route path="/resource" element={<ResourceManagement />} />
+          <Route path="/editresource/:id" element={<EditResource />} />
 
           <Route path="/lecturer" element={<Lecturer />} />
           <Route path="/lecturerhome" element={<LecturerHome />} />

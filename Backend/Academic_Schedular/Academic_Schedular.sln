@@ -29,6 +29,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CoreSystemAPI", "CoreSystem
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoreSystemBackendAPI", "CoreSystemBackendAPI\CoreSystemBackendAPI.csproj", "{8102E879-5D3C-4CFB-BB79-EC9B6E433212}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NewFolder1", "NewFolder1", "{3BE48E0A-848E-439E-94FF-116D5C4A8022}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
