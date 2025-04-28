@@ -40,7 +40,7 @@ function App() {
           <Route path="/exam" element={<Exam />} />
           <Route path="/examHome" element={<ExamCoordinator />} />
           <Route path="/exam/ExamTable" element={<ExamTable/>}/>
-          <Route path="/exam/edit" element={<EditExam/>}/>
+          <Route path="/exam/edit/:id" element={<EditExam/>}/>
           <Route path="/invigilator" element={<Invigilators />} />
           <Route path="/invigilator/InvigilatorTable" element={<InvigilatorTable />} />
           <Route path="/invigilator/edit" element={<EditInvigilator />} />
