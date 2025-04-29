@@ -1,6 +1,6 @@
 ﻿namespace StudentBackendAPI.Entities
 {
-    public class ResourceEntity
+    public class StudentEntity
     {
         public int sId { get; set; }
         public string name { get; set; } = string.Empty;
