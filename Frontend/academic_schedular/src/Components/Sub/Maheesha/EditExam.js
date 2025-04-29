@@ -1,69 +1,93 @@
 import React, { useState, useEffect } from "react";
-import { 
-    Box, Typography, Paper, Grid, TextField, MenuItem, Button 
+import {
+    Box, Typography, Paper, Grid, TextField, MenuItem, Button
 } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 function EditExam() {
     const navigate = useNavigate();
+    const { id } = useParams();
     const [formData, setFormData] = useState({
-        examId: "",
-        examType: "",
+        examtype: "",
         subject: "",
-        examDate: "",
+        datetime: "",
         duration: "",
-        examHall: "",
+        examhall: "",
         invigilator: "",
-        totalMarks: "",
+        marks: "",
         status: "Scheduled",
     });
-    const [editIndex, setEditIndex] = useState(null);
     const [errors, setErrors] = useState({});
+    const [loading, setLoading] = useState(true);
+    const [allExams, setAllExams] = useState([]);
 
     useEffect(() => {
-        const storedExam = JSON.parse(localStorage.getItem("editExam"));
-        if (storedExam) {
-            setFormData({
-                examId: storedExam.examId,
-                examType: storedExam.examType,
-                subject: storedExam.subject,
-                examDate: storedExam.examDate,
-                duration: storedExam.duration,
-                examHall: storedExam.examHall,
-                invigilator: storedExam.invigilator,
-                totalMarks: storedExam.totalMarks,
-                status: storedExam.status || "Scheduled",
-            });
-            setEditIndex(storedExam.index);
-        }
-    }, []);
+        const fetchExam = async () => {
+            try {
+                const res = await fetch(`https://localhost:7003/exam/${id}`);
+                if (!res.ok) throw new Error("Failed to fetch exam data");
+                const data = await res.json();
+                console.log("Data: ",data);
+                setFormData({
+                    examtype: data.data.examtype || "",
+                    subject: data.data.subject || "",
+                    datetime: data.data.datetime || "",
+                    duration: data.data.duration,
+                    examhall: data.data.examhall || "",
+                    invigilator: data.data.invigilator || "",
+                    marks: data.data.marks || "",
+                    status: data.data.status || "Scheduled",
+                });
+            } catch (err) {
+                console.error(err);
+                alert("Error fetching exam data.");
+            } finally {
+                setLoading(false);
+            }
+        };
+    
+        fetchExam();
+    }, [id]);
+    
 
     const validateForm = () => {
-        let newErrors = {};
-        if (!formData.examId.trim()) {
-            newErrors.examId = "Exam ID is required";
-        }
-        if (!formData.examType) {
-            newErrors.examType = "Exam Type is required";
-        }
-        if (!formData.subject) {
-            newErrors.subject = "Subject is required";
-        }
-        if (!formData.examDate) {
-            newErrors.examDate = "Exam Date & Time is required";
-        }
-        if (!formData.duration || isNaN(formData.duration) || formData.duration <= 0) {
+        const newErrors = {};
+        const startTime = new Date(formData.datetime);
+        const duration = parseFloat(formData.duration);
+        const endTime = new Date(startTime.getTime() + duration * 60 * 60 * 1000);
+
+        if (!formData.examtype) newErrors.examtype = "Exam Type is required";
+        if (!formData.subject) newErrors.subject = "Subject is required";
+        if (!formData.datetime) newErrors.datetime = "Date & Time is required";
+        if (!formData.duration || isNaN(duration) || duration <= 0)
             newErrors.duration = "Valid Duration is required";
+        if (!formData.examhall) newErrors.examhall = "Exam Hall is required";
+        if (!formData.invigilator.trim()) newErrors.invigilator = "Invigilator is required";
+        if (!formData.marks || isNaN(formData.marks) || formData.marks <= 0)
+            newErrors.marks = "Valid Total Marks is required";
+
+        // Conflict check
+        const overlapping = allExams.find(exam => {
+            const examStart = new Date(exam.datetime);
+            const examEnd = new Date(examStart.getTime() + exam.duration * 60 * 60 * 1000);
+
+            const overlaps = startTime < examEnd && endTime > examStart;
+
+            return (
+                (exam.examhall === formData.examhall && overlaps) ||
+                (exam.invigilator === formData.invigilator && overlaps)
+            );
+        });
+
+        if (overlapping) {
+            if (overlapping.examhall === formData.examhall) {
+                newErrors.examhall = `Conflict: ${formData.examhall} is already booked.`;
+            }
+            if (overlapping.invigilator === formData.invigilator) {
+                newErrors.invigilator = `Conflict: ${formData.invigilator} is already assigned.`;
+            }
         }
-        if (!formData.examHall) {
-            newErrors.examHall = "Exam Hall is required";
-        }
-        if (!formData.invigilator.trim()) {
-            newErrors.invigilator = "Invigilator name is required";
-        }
-        if (!formData.totalMarks || isNaN(formData.totalMarks) || formData.totalMarks <= 0) {
-            newErrors.totalMarks = "Valid Total Marks is required";
-        }
+
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
@@ -72,51 +96,41 @@ function EditExam() {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         if (!validateForm()) return;
 
-        let examList = JSON.parse(localStorage.getItem("exams")) || [];
-        if (editIndex !== null) {
-            examList[editIndex] = formData;
+        try {
+            const res = await fetch(`https://localhost:7003/exam/${id}`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(formData),
+            });
+
+            if (!res.ok) throw new Error("Failed to update exam");
+
+            navigate("/exam/ExamTable");
+        } catch (err) {
+            console.error(err);
+            alert("Error updating exam.");
         }
-        localStorage.setItem("exams", JSON.stringify(examList));
-        navigate("/exam/ExamTable");
     };
 
+    if (loading) return <Typography variant="h6" textAlign="center">Loading...</Typography>;
+
     return (
-        <Box sx={{ textAlign: "center", py: 6 }}>
-            <Paper elevation={3} sx={{ padding: 4, textAlign: "center" }}>
+        <Box sx={{ textAlign: "center", py: 6, px: 3, maxWidth: 1000, margin: "0 auto" }}>
+            <Paper elevation={3} sx={{ padding: 4 }}>
                 <Typography variant="h4" fontWeight="bold" gutterBottom>
                     Edit Exam
                 </Typography>
                 <form onSubmit={handleSubmit}>
                     <Grid container spacing={2}>
                         <Grid item xs={12}>
-                            <TextField 
-                                fullWidth 
-                                label="Exam ID" 
-                                name="examId" 
-                                variant="outlined" 
-                                required 
-                                value={formData.examId} 
-                                onChange={handleChange}
-                                error={!!errors.examId}
-                                helperText={errors.examId}
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <TextField 
-                                select 
-                                fullWidth 
-                                label="Exam Type" 
-                                name="examType" 
-                                variant="outlined" 
-                                required 
-                                value={formData.examType} 
-                                onChange={handleChange}
-                                error={!!errors.examType}
-                                helperText={errors.examType}
+                            <TextField
+                                select fullWidth label="Exam Type" name="examtype"
+                                value={formData.examtype} onChange={handleChange}
+                                error={!!errors.examtype} helperText={errors.examtype}
                             >
                                 <MenuItem value="Midterm">Midterm</MenuItem>
                                 <MenuItem value="Final">Final</MenuItem>
@@ -125,17 +139,10 @@ function EditExam() {
                             </TextField>
                         </Grid>
                         <Grid item xs={12}>
-                            <TextField 
-                                select 
-                                fullWidth 
-                                label="Subject" 
-                                name="subject" 
-                                variant="outlined" 
-                                required 
-                                value={formData.subject} 
-                                onChange={handleChange}
-                                error={!!errors.subject}
-                                helperText={errors.subject}
+                            <TextField
+                                select fullWidth label="Subject" name="subject"
+                                value={formData.subject} onChange={handleChange}
+                                error={!!errors.subject} helperText={errors.subject}
                             >
                                 <MenuItem value="Arts">Arts</MenuItem>
                                 <MenuItem value="English">English</MenuItem>
@@ -144,94 +151,56 @@ function EditExam() {
                             </TextField>
                         </Grid>
                         <Grid item xs={12}>
-                            <TextField 
-                                fullWidth 
-                                label="Exam Date & Time" 
-                                name="examDate" 
-                                type="datetime-local" 
-                                InputLabelProps={{ shrink: true }} 
-                                variant="outlined" 
-                                required 
-                                value={formData.examDate} 
-                                onChange={handleChange}
-                                error={!!errors.examDate}
-                                helperText={errors.examDate}
+                            <TextField
+                                fullWidth type="datetime-local" label="Exam Date & Time" name="datetime"
+                                value={formData.datetime} onChange={handleChange}
+                                InputLabelProps={{ shrink: true }}
+                                error={!!errors.datetime} helperText={errors.datetime}
                             />
                         </Grid>
                         <Grid item xs={12}>
-                            <TextField 
-                                fullWidth 
-                                label="Duration (hours)" 
-                                name="duration" 
-                                type="number" 
-                                variant="outlined" 
-                                required 
-                                value={formData.duration} 
-                                onChange={handleChange}
-                                error={!!errors.duration}
-                                helperText={errors.duration}
+                            <TextField
+                                fullWidth type="number" label="Duration (hours)" name="duration"
+                                value={formData.duration} onChange={handleChange}
+                                error={!!errors.duration} helperText={errors.duration}
                             />
                         </Grid>
                         <Grid item xs={12}>
-                            <TextField 
-                                select 
-                                fullWidth 
-                                label="Exam Hall" 
-                                name="examHall" 
-                                variant="outlined" 
-                                required 
-                                value={formData.examHall} 
-                                onChange={handleChange}
-                                error={!!errors.examHall}
-                                helperText={errors.examHall}
+                            <TextField
+                                select fullWidth label="Exam Hall" name="examhall"
+                                value={formData.examhall} onChange={handleChange}
+                                error={!!errors.examhall} helperText={errors.examhall}
                             >
                                 <MenuItem value="A12">A12</MenuItem>
                                 <MenuItem value="A13">A13</MenuItem>
                                 <MenuItem value="A14">A14</MenuItem>
                                 <MenuItem value="A15">A15</MenuItem>
                                 <MenuItem value="A16">A16</MenuItem>
-                                <MenuItem value="A17">A17</MenuItem>
+                                <MenuItem value="Main">Main</MenuItem>
                             </TextField>
                         </Grid>
                         <Grid item xs={12}>
-                            <TextField 
-                                fullWidth 
-                                label="Invigilator" 
-                                name="invigilator" 
-                                variant="outlined" 
-                                required 
-                                value={formData.invigilator} 
-                                onChange={handleChange}
-                                error={!!errors.invigilator}
-                                helperText={errors.invigilator}
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <TextField 
-                                fullWidth 
-                                label="Total Marks" 
-                                name="totalMarks" 
-                                type="number" 
-                                variant="outlined" 
-                                required 
-                                value={formData.totalMarks} 
-                                onChange={handleChange}
-                                error={!!errors.totalMarks}
-                                helperText={errors.totalMarks}
+                            <TextField
+                                fullWidth label="Invigilator" name="invigilator"
+                                value={formData.invigilator} onChange={handleChange}
+                                error={!!errors.invigilator} helperText={errors.invigilator}
                             />
                         </Grid>
                         <Grid item xs={12}>
                             <TextField
-                                select
-                                fullWidth 
-                                label="Status (Optional)" 
-                                name="status" 
-                                variant="outlined" 
-                                value={formData.status} 
-                                onChange={handleChange}
+                                fullWidth type="number" label="Total Marks" name="marks"
+                                value={formData.marks} onChange={handleChange}
+                                error={!!errors.marks} helperText={errors.marks}
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField
+                                select fullWidth label="Status" name="status"
+                                value={formData.status} onChange={handleChange}
                             >
                                 <MenuItem value="Scheduled">Scheduled</MenuItem>
                                 <MenuItem value="Canceled">Canceled</MenuItem>
+                                <MenuItem value="Completed">Completed</MenuItem>
                             </TextField>
                         </Grid>
                         <Grid item xs={12}>

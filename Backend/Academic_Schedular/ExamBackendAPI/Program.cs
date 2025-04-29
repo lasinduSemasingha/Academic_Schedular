@@ -1,6 +1,6 @@
 using ExamBackendAPI.Data;
 using ExamBackendAPI.Services.Exam;
-using ExamBackendAPI.Endpoints;
+//using ExamBackendAPI.Endpoints;
 using ExamBackendAPI.Endpoints.ExamEndPoint;
 
 var builder = WebApplication.CreateBuilder(args);
