@@ -1,0 +1,14 @@
+﻿C:\Users\LASINDU\Desktop\ITPM\Backend\Academic_Schedular\ExamBackendAPI\Data\ApplicationDbContext.cs
+C:\Users\LASINDU\Desktop\ITPM\Backend\Academic_Schedular\ExamBackendAPI\Dto\ExamDto.cs
+C:\Users\LASINDU\Desktop\ITPM\Backend\Academic_Schedular\ExamBackendAPI\Endpoints\ExamEndPoint\ExamEndPoint.cs
+C:\Users\LASINDU\Desktop\ITPM\Backend\Academic_Schedular\ExamBackendAPI\Entities\Exam.cs
+C:\Users\LASINDU\Desktop\ITPM\Backend\Academic_Schedular\ExamBackendAPI\Program.cs
+C:\Users\LASINDU\Desktop\ITPM\Backend\Academic_Schedular\ExamBackendAPI\Services\Exam\ExamMain.cs
+C:\Users\LASINDU\Desktop\ITPM\Backend\Academic_Schedular\ExamBackendAPI\Services\Exam\IExamService.cs
+C:\Users\LASINDU\Desktop\ITPM\Backend\Academic_Schedular\ExamBackendAPI\obj\Debug\net9.0\ExamBackendAPI.GlobalUsings.g.cs
+C:\Users\LASINDU\Desktop\ITPM\Backend\Academic_Schedular\ExamBackendAPI\obj\Debug\net9.0\.NETCoreApp,Version=v9.0.AssemblyAttributes.cs
+C:\Users\LASINDU\Desktop\ITPM\Backend\Academic_Schedular\ExamBackendAPI\obj\Debug\net9.0\ExamBackendAPI.AssemblyInfo.cs
+C:\Users\LASINDU\Desktop\ITPM\Backend\Academic_Schedular\ExamBackendAPI\obj\Debug\net9.0\ExamBackendAPI.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\LASINDU\Desktop\ITPM\Backend\Academic_Schedular\ExamBackendAPI\appsettings.Development.json
+C:\Users\LASINDU\Desktop\ITPM\Backend\Academic_Schedular\ExamBackendAPI\appsettings.json
+C:\Users\LASINDU\Desktop\ITPM\Backend\Academic_Schedular\ExamBackendAPI\Properties\launchSettings.json
