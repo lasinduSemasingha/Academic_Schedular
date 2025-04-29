@@ -1,0 +1,14 @@
+﻿C:\Users\LASINDU\Desktop\ITPM\Backend\Academic_Schedular\CoreSystemBackendAPI\Data\ApplicationDbContext.cs
+C:\Users\LASINDU\Desktop\ITPM\Backend\Academic_Schedular\CoreSystemBackendAPI\Dto\ResourceDto.cs
+C:\Users\LASINDU\Desktop\ITPM\Backend\Academic_Schedular\CoreSystemBackendAPI\Endpoints\Resources\ResourceEndpoint.cs
+C:\Users\LASINDU\Desktop\ITPM\Backend\Academic_Schedular\CoreSystemBackendAPI\Entities\ResourceEntity.cs
+C:\Users\LASINDU\Desktop\ITPM\Backend\Academic_Schedular\CoreSystemBackendAPI\Program.cs
+C:\Users\LASINDU\Desktop\ITPM\Backend\Academic_Schedular\CoreSystemBackendAPI\Services\Resources\IResourcesService.cs
+C:\Users\LASINDU\Desktop\ITPM\Backend\Academic_Schedular\CoreSystemBackendAPI\Services\Resources\ResourcesMain.cs
+C:\Users\LASINDU\Desktop\ITPM\Backend\Academic_Schedular\CoreSystemBackendAPI\obj\Debug\net9.0\CoreSystemBackendAPI.GlobalUsings.g.cs
+C:\Users\LASINDU\Desktop\ITPM\Backend\Academic_Schedular\CoreSystemBackendAPI\obj\Debug\net9.0\.NETCoreApp,Version=v9.0.AssemblyAttributes.cs
+C:\Users\LASINDU\Desktop\ITPM\Backend\Academic_Schedular\CoreSystemBackendAPI\obj\Debug\net9.0\CoreSystemBackendAPI.AssemblyInfo.cs
+C:\Users\LASINDU\Desktop\ITPM\Backend\Academic_Schedular\CoreSystemBackendAPI\obj\Debug\net9.0\CoreSystemBackendAPI.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\LASINDU\Desktop\ITPM\Backend\Academic_Schedular\CoreSystemBackendAPI\appsettings.Development.json
+C:\Users\LASINDU\Desktop\ITPM\Backend\Academic_Schedular\CoreSystemBackendAPI\appsettings.json
+C:\Users\LASINDU\Desktop\ITPM\Backend\Academic_Schedular\CoreSystemBackendAPI\Properties\launchSettings.json
