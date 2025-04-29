@@ -86,7 +86,7 @@ function Exam() {
     };
 
     return (
-        <Box sx={{ textAlign: "center", py: 6 }}>
+        <Box sx={{ textAlign: "center", py: 6, px: 3, maxWidth: 1000, margin: "0 auto"}}>
             <Paper elevation={3} sx={{ padding: 4, textAlign: "center" }}>
                 <Typography variant="h4" fontWeight="bold" gutterBottom>
                     Exam Management

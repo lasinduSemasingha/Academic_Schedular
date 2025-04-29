@@ -33,8 +33,8 @@ const getToBeCompletedExamsCount = (examData) => {
 
 const examData = [
     { subject: "IT", date: "2025-04-25", time: "9:00 AM - 12:00 PM" },
-    { subject: "English", date: "2025-04-26", time: "1:00 PM - 4:00 PM" },
-    { subject: "Arts", date: "2025-03-31", time: "1:00 PM - 4:00 PM" },
+    { subject: "English", date: "2025-05-26", time: "1:00 PM - 4:00 PM" },
+    { subject: "Arts", date: "2025-04-30", time: "1:00 PM - 4:00 PM" },
     { subject: "Engineering", date: "2025-03-20", time: "12:00 PM - 4:00 PM" },
 ];
 
@@ -84,6 +84,9 @@ const ExamCoordinator = () => {
                 </Grid>
                 <Grid item xs={3}>
                     <Button fullWidth variant="contained" color="primary" onClick={() => navigate("/exam/ExamTable")}>Exam Schedules</Button>
+                </Grid>
+                <Grid item xs={3}>
+                    <Button fullWidth variant="contained" color="primary" onClick={() => navigate("/exam/ExamTable")}>Exam Time Tables</Button>
                 </Grid>
                 <Grid item xs={3}>
                     <Button fullWidth variant="contained" color="primary" onClick={() => navigate("/invigilator/InvigilatorTable")}>Invigilators</Button>
