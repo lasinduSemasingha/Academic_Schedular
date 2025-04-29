@@ -1,0 +1,13 @@
+﻿C:\Users\LASINDU\Desktop\ITPM\Backend\Academic_Schedular\StudentBackendAPI\Data\ApplicationDbContext.cs
+C:\Users\LASINDU\Desktop\ITPM\Backend\Academic_Schedular\StudentBackendAPI\Dto\StudentRegister.cs
+C:\Users\LASINDU\Desktop\ITPM\Backend\Academic_Schedular\StudentBackendAPI\Endpoints\StudentEndpoint.cs
+C:\Users\LASINDU\Desktop\ITPM\Backend\Academic_Schedular\StudentBackendAPI\Program.cs
+C:\Users\LASINDU\Desktop\ITPM\Backend\Academic_Schedular\StudentBackendAPI\Services\IStudentService.cs
+C:\Users\LASINDU\Desktop\ITPM\Backend\Academic_Schedular\StudentBackendAPI\Services\StudentMain.cs
+C:\Users\LASINDU\Desktop\ITPM\Backend\Academic_Schedular\StudentBackendAPI\obj\Debug\net9.0\StudentBackendAPI.GlobalUsings.g.cs
+C:\Users\LASINDU\Desktop\ITPM\Backend\Academic_Schedular\StudentBackendAPI\obj\Debug\net9.0\.NETCoreApp,Version=v9.0.AssemblyAttributes.cs
+C:\Users\LASINDU\Desktop\ITPM\Backend\Academic_Schedular\StudentBackendAPI\obj\Debug\net9.0\StudentBackendAPI.AssemblyInfo.cs
+C:\Users\LASINDU\Desktop\ITPM\Backend\Academic_Schedular\StudentBackendAPI\obj\Debug\net9.0\StudentBackendAPI.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\LASINDU\Desktop\ITPM\Backend\Academic_Schedular\StudentBackendAPI\appsettings.Development.json
+C:\Users\LASINDU\Desktop\ITPM\Backend\Academic_Schedular\StudentBackendAPI\appsettings.json
+C:\Users\LASINDU\Desktop\ITPM\Backend\Academic_Schedular\StudentBackendAPI\Properties\launchSettings.json
