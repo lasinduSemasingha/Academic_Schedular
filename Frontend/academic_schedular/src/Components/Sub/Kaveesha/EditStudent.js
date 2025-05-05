@@ -1,13 +1,14 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { 
-  Box, 
-  Typography, 
-  Paper, 
-  Grid, 
+  Container, 
   TextField, 
-  MenuItem, 
-  Button,
+  Button, 
+  Typography, 
+  Grid, 
+  Paper,
+  Box,
   InputAdornment,
+  MenuItem,
   CircularProgress,
   Alert,
   Snackbar
@@ -22,11 +23,12 @@ import {
   Book as BookIcon,
   Numbers as NumbersIcon
 } from "@mui/icons-material";
+import axios from "axios";
 import { useTheme } from '@mui/material/styles';
 
-function StudentRegistration() {
+export default function StudentRegistration() {
   const theme = useTheme();
-  const [formData, setFormData] = useState({
+  const [student, setStudent] = useState({
     name: "",
     studentId: "",
     email: "",
@@ -38,13 +40,7 @@ function StudentRegistration() {
     semester: ""
   });
   
-  const [errors, setErrors] = useState({
-    name: "",
-    studentId: "",
-    email: "",
-    contact: ""
-  });
-
+  const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [snackbar, setSnackbar] = useState({
     open: false,
@@ -53,80 +49,51 @@ function StudentRegistration() {
   });
 
   const faculties = [
-    "Faculty of Computing",
-    "Faculty of Engineering",
-    "Faculty of Humanities and Sciences",
-    "School of Architecture",
-    "Faculty of Business"
+    "Engineering",
+    "Medicine",
+    "Science",
+    "Business",
+    "Arts",
+    "Law"
   ];
 
-  const years = ["Year 1", "Year 2", "Year 3", "Year 4"];
-  const semesters = ["Semester 1", "Semester 2"];
+  const years = ["1", "2", "3", "4"];
+  const semesters = ["1", "2"];
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-
-    // Validate name (no numbers allowed)
-    if (name === "name") {
-      if (/\d/.test(value)) {
-        setErrors(prev => ({ ...prev, name: "Name cannot contain numbers" }));
-        return;
-      }
-    }
-
-    if (name === "contact") {
-      if (!/^[0-9]*$/.test(value) || value.length > 10) return;
-    }
-
-    if (name === "studentId" && value.length > 10) return;
-
-    setFormData(prev => ({ ...prev, [name]: value }));
-    setErrors(prev => ({ ...prev, [name]: "" }));
+  const validate = () => {
+    let tempErrors = {};
+    tempErrors.name = student.name ? "" : "Name is required";
+    tempErrors.studentId = student.studentId ? "" : "Student ID is required";
+    tempErrors.email = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(student.email) ? "" : "Invalid email format";
+    tempErrors.contact = /^[0-9]{10}$/.test(student.contact) ? "" : "Contact must be 10 digits";
+    tempErrors.dob = student.dob ? "" : "Date of Birth is required";
+    tempErrors.address = student.address ? "" : "Address is required";
+    tempErrors.faculty = student.faculty ? "" : "Faculty is required";
+    tempErrors.year = student.year ? "" : "Year is required";
+    tempErrors.semester = student.semester ? "" : "Semester is required";
+    setErrors(tempErrors);
+    return Object.values(tempErrors).every(x => x === "");
   };
 
-  const validateForm = () => {
-    let isValid = true;
-    const newErrors = { ...errors };
-
-    if (/\d/.test(formData.name)) {
-      newErrors.name = "Name cannot contain numbers";
-      isValid = false;
-    }
-
-    if (formData.studentId.length !== 10) {
-      newErrors.studentId = "Student ID must be 10 characters";
-      isValid = false;
-    }
-
-    if (formData.contact.length !== 10) {
-      newErrors.contact = "Contact must be 10 digits";
-      isValid = false;
-    }
-
-    if (!formData.email.includes("@")) {
-      newErrors.email = "Please enter a valid email";
-      isValid = false;
-    }
-
-    setErrors(newErrors);
-    return isValid;
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setStudent(prev => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!validateForm()) return;
+    if (!validate()) return;
     
     setIsSubmitting(true);
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      await axios.post("https://localhost:7005/student", student);
       setSnackbar({
         open: true,
-        message: "Student information updated successfully!",
+        message: "Student updated successfully!",
         severity: "success"
       });
       // Reset form after successful submission
-      setFormData({
+      setStudent({
         name: "",
         studentId: "",
         email: "",
@@ -138,10 +105,10 @@ function StudentRegistration() {
         semester: ""
       });
     } catch (error) {
-      console.error("Update error:", error);
+      console.error("Registration error:", error);
       setSnackbar({
         open: true,
-        message: "Error updating student information",
+        message: "Error updating student. Please try again.",
         severity: "error"
       });
     } finally {
@@ -154,69 +121,45 @@ function StudentRegistration() {
   };
 
   return (
-    <Box 
-      sx={{ 
-        display: "flex", 
-        justifyContent: "center", 
-        alignItems: "center", 
-        minHeight: "100vh",
-        py: 4,
-        backgroundColor: theme.palette.grey[50]
-      }}
-    >
-      <Paper 
-        elevation={4} 
-        sx={{ 
-          padding: 4, 
-          width: "100%", 
-          maxWidth: "800px",
-          borderRadius: 3
-        }}
-      >
-        <Typography 
-          variant="h4" 
-          component="h1"
-          sx={{ 
+    <Container maxWidth="md" sx={{ py: 4 }}>
+      <Paper elevation={4} sx={{ 
+        padding: 4, 
+        borderRadius: 4,
+        background: theme.palette.background.paper
+      }}>
+        <Box sx={{ textAlign: 'center', mb: 4 }}>
+          <Typography variant="h4" component="h1" sx={{ 
             fontWeight: 700,
             color: theme.palette.primary.main,
-            mb: 2,
-            textAlign: "center"
-          }}
-        >
-          Update Student Registration
-        </Typography>
-        
-        <Typography 
-          variant="body1" 
-          color="text.secondary"
-          sx={{ mb: 4, textAlign: "center" }}
-        >
-          Please update the student information below
-        </Typography>
+            mb: 1
+          }}>
+            Student Registration
+          </Typography>
+          <Typography variant="body1" color="text.secondary">
+            Please fill in all required fields to register a new student
+          </Typography>
+        </Box>
 
         <form onSubmit={handleSubmit}>
           <Grid container spacing={3}>
-            {/* Personal Information Section */}
+            {/* Personal Information */}
             <Grid item xs={12}>
-              <Typography 
-                variant="subtitle1" 
-                sx={{ 
-                  mb: 1,
-                  color: theme.palette.text.secondary,
-                  fontWeight: 600
-                }}
-              >
+              <Typography variant="subtitle1" sx={{ 
+                mb: 1,
+                color: theme.palette.text.secondary,
+                fontWeight: 600
+              }}>
                 Personal Information
               </Typography>
             </Grid>
-
+            
             <Grid item xs={12} md={6}>
               <TextField
                 fullWidth
                 label="Full Name"
                 name="name"
-                value={formData.name}
-                onChange={handleInputChange}
+                value={student.name}
+                onChange={handleChange}
                 error={!!errors.name}
                 helperText={errors.name}
                 InputProps={{
@@ -228,14 +171,14 @@ function StudentRegistration() {
                 }}
               />
             </Grid>
-
+            
             <Grid item xs={12} md={6}>
               <TextField
                 fullWidth
                 label="Student ID"
                 name="studentId"
-                value={formData.studentId}
-                onChange={handleInputChange}
+                value={student.studentId}
+                onChange={handleChange}
                 error={!!errors.studentId}
                 helperText={errors.studentId}
                 InputProps={{
@@ -247,15 +190,15 @@ function StudentRegistration() {
                 }}
               />
             </Grid>
-
+            
             <Grid item xs={12} md={6}>
               <TextField
                 fullWidth
                 label="Email"
                 name="email"
                 type="email"
-                value={formData.email}
-                onChange={handleInputChange}
+                value={student.email}
+                onChange={handleChange}
                 error={!!errors.email}
                 helperText={errors.email}
                 InputProps={{
@@ -267,14 +210,14 @@ function StudentRegistration() {
                 }}
               />
             </Grid>
-
+            
             <Grid item xs={12} md={6}>
               <TextField
                 fullWidth
                 label="Contact Number"
                 name="contact"
-                value={formData.contact}
-                onChange={handleInputChange}
+                value={student.contact}
+                onChange={handleChange}
                 error={!!errors.contact}
                 helperText={errors.contact}
                 InputProps={{
@@ -286,16 +229,20 @@ function StudentRegistration() {
                 }}
               />
             </Grid>
-
+            
             <Grid item xs={12} md={6}>
               <TextField
                 fullWidth
                 label="Date of Birth"
                 name="dob"
                 type="date"
-                InputLabelProps={{ shrink: true }}
-                value={formData.dob}
-                onChange={handleInputChange}
+                value={student.dob}
+                onChange={handleChange}
+                error={!!errors.dob}
+                helperText={errors.dob}
+                InputLabelProps={{
+                  shrink: true,
+                }}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
@@ -305,14 +252,16 @@ function StudentRegistration() {
                 }}
               />
             </Grid>
-
+            
             <Grid item xs={12} md={6}>
               <TextField
                 fullWidth
                 label="Address"
                 name="address"
-                value={formData.address}
-                onChange={handleInputChange}
+                value={student.address}
+                onChange={handleChange}
+                error={!!errors.address}
+                helperText={errors.address}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
@@ -323,28 +272,27 @@ function StudentRegistration() {
               />
             </Grid>
 
-            {/* Academic Information Section */}
+            {/* Academic Information */}
             <Grid item xs={12} sx={{ mt: 2 }}>
-              <Typography 
-                variant="subtitle1" 
-                sx={{ 
-                  mb: 1,
-                  color: theme.palette.text.secondary,
-                  fontWeight: 600
-                }}
-              >
+              <Typography variant="subtitle1" sx={{ 
+                mb: 1,
+                color: theme.palette.text.secondary,
+                fontWeight: 600
+              }}>
                 Academic Information
               </Typography>
             </Grid>
-
+            
             <Grid item xs={12} md={6}>
               <TextField
                 select
                 fullWidth
-                label="Faculty/Department"
+                label="Faculty"
                 name="faculty"
-                value={formData.faculty}
-                onChange={handleInputChange}
+                value={student.faculty}
+                onChange={handleChange}
+                error={!!errors.faculty}
+                helperText={errors.faculty}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
@@ -353,22 +301,24 @@ function StudentRegistration() {
                   ),
                 }}
               >
-                {faculties.map((faculty) => (
-                  <MenuItem key={faculty} value={faculty}>
-                    {faculty}
+                {faculties.map((option) => (
+                  <MenuItem key={option} value={option}>
+                    {option}
                   </MenuItem>
                 ))}
               </TextField>
             </Grid>
-
+            
             <Grid item xs={6} md={3}>
               <TextField
                 select
                 fullWidth
-                label="Academic Year"
+                label="Year"
                 name="year"
-                value={formData.year}
-                onChange={handleInputChange}
+                value={student.year}
+                onChange={handleChange}
+                error={!!errors.year}
+                helperText={errors.year}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
@@ -377,26 +327,28 @@ function StudentRegistration() {
                   ),
                 }}
               >
-                {years.map((year) => (
-                  <MenuItem key={year} value={year}>
-                    {year}
+                {years.map((option) => (
+                  <MenuItem key={option} value={option}>
+                    Year {option}
                   </MenuItem>
                 ))}
               </TextField>
             </Grid>
-
+            
             <Grid item xs={6} md={3}>
               <TextField
                 select
                 fullWidth
                 label="Semester"
                 name="semester"
-                value={formData.semester}
-                onChange={handleInputChange}
+                value={student.semester}
+                onChange={handleChange}
+                error={!!errors.semester}
+                helperText={errors.semester}
               >
-                {semesters.map((semester) => (
-                  <MenuItem key={semester} value={semester}>
-                    {semester}
+                {semesters.map((option) => (
+                  <MenuItem key={option} value={option}>
+                    Semester {option}
                   </MenuItem>
                 ))}
               </TextField>
@@ -404,20 +356,20 @@ function StudentRegistration() {
 
             {/* Submit Button */}
             <Grid item xs={12} sx={{ mt: 2, textAlign: "center" }}>
-              <Button
-                type="submit"
-                variant="contained"
-                color="primary"
-                size="large"
-                disabled={isSubmitting}
-                sx={{
-                  px: 6,
-                  py: 1.5,
-                  borderRadius: 2,
-                  fontSize: '1rem',
-                  minWidth: '200px'
-                }}
-              >
+                          <Button
+                            type="submit"
+                            variant="contained"
+                            color="primary"
+                            size="large"
+                            disabled={isSubmitting}
+                            sx={{
+                              px: 6,
+                              py: 1.5,
+                              borderRadius: 2,
+                              fontSize: '1rem',
+                              minWidth: '200px'
+                            }}
+                          >
                 {isSubmitting ? (
                   <>
                     <CircularProgress size={24} color="inherit" sx={{ mr: 2 }} />
@@ -446,8 +398,6 @@ function StudentRegistration() {
           {snackbar.message}
         </Alert>
       </Snackbar>
-    </Box>
+    </Container>
   );
 }
-
-export default StudentRegistration;
