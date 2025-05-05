@@ -133,10 +133,10 @@ export default function StudentRegistration() {
             color: theme.palette.primary.main,
             mb: 1
           }}>
-            Student Registration
+            Update Student Profile
           </Typography>
           <Typography variant="body1" color="text.secondary">
-            Please fill in all required fields to register a new student
+            Please fill in all required fields to update a student
           </Typography>
         </Box>
 
