@@ -1,151 +1,288 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Container, Typography, Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, TextField, Grid } from '@mui/material';
+import { 
+  Container, 
+  Typography, 
+  Box, 
+  Table, 
+  TableBody, 
+  TableCell, 
+  TableContainer, 
+  TableHead, 
+  TableRow, 
+  Paper, 
+  Button, 
+  TextField, 
+  Grid,
+  IconButton,
+  Tooltip,
+  Avatar,
+  useTheme,
+  TablePagination,
+  InputAdornment,
+  Divider,
+  Card,
+  CardContent
+} from '@mui/material';
+import { 
+  Search as SearchIcon,
+  Edit as EditIcon,
+  Delete as DeleteIcon,
+  PictureAsPdf as PdfIcon,
+  FilterList as FilterIcon,
+  Refresh as RefreshIcon,
+  Person as PersonIcon,
+  CalendarToday as CalendarIcon
+} from '@mui/icons-material';
 
-const students = [
-    { 
-        id: 'IT22444489', 
-        name: 'kaveesha nethmi', 
-        email: 'kavee@gmail.com', 
-        contact: '0712345678', 
-        dob: '2000-05-14', 
-        faculty: 'Engineering', 
-        year: '2nd Year', 
-        semester: 'Semester 1' 
-    },
-    { 
-        id: 'IT25894489', 
-        name: 'heshani fernando', 
-        email: 'heshani@gmail.com', 
-        contact: '0778765432', 
-        dob: '2001-09-22', 
-        faculty: 'Science', 
-        year: '1st Year', 
-        semester: 'Semester 2' 
+const StudentTable = () => {
+    const navigate = useNavigate();
+    const theme = useTheme();
+    
+    // Sample student data with address field
+    const students = [
+        { 
+            id: 'IT22444489', 
+            name: 'Kaveesha Nethmi', 
+            email: 'kavee@gmail.com', 
+            contact: '0712345678',
+            dob: '2000-05-14',
+            address: '123 Main Street, Colombo 05, Sri Lanka',
+            faculty: 'Engineering', 
+            year: '2nd Year', 
+            semester: 'Semester 1',
+            avatar: '/avatars/1.jpg'
+        },
+        { 
+            id: 'IT25894489', 
+            name: 'Heshani Fernando', 
+            email: 'heshani@gmail.com', 
+            contact: '0778765432',
+            dob: '2001-09-22',
+            address: '456 Oak Avenue, Kandy, Sri Lanka',
+            faculty: 'Science', 
+            year: '1st Year', 
+            semester: 'Semester 2',
+            avatar: '/avatars/2.jpg'
+        },
+        { 
+            id: 'IT25895689', 
+            name: 'Chanudi Himansala', 
+            email: 'chanudi@example.com', 
+            contact: '0778723432',
+            dob: '2000-09-22',
+            address: '789 Pine Road, Galle, Sri Lanka',
+            faculty: 'Science', 
+            year: '1st Year', 
+            semester: 'Semester 2',
+            avatar: '/avatars/3.jpg'
+        }
+    ];
 
-
-        
-    },
-
-    {
-        id: 'IT25895689', 
-        name: 'chanudi himansala', 
-        email: 'chanudi@example.com', 
-        contact: '0778723432', 
-        dob: '2000-09-22', 
-        faculty: 'Science', 
-        year: '1st Year', 
-        semester: 'Semester 2' 
-    },
-    // Add more students as needed
-];
-
-const Studenttable = () => {
-    const navigate = useNavigate();  // Use navigate hook
-
-    const [searchQuery, setSearchQuery] = useState('');  // State for search query
-    const [filteredStudents, setFilteredStudents] = useState(students);  // Filtered student list based on search query
+    const [searchQuery, setSearchQuery] = useState('');
+    const [filteredStudents, setFilteredStudents] = useState(students);
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(5);
 
     const handleEdit = (studentId) => {
-        navigate("/editstudent", { state: { studentId } });  // Pass studentId to EditStudent
+        navigate("/editstudent", { state: { studentId } });
     };
 
     const handleSearch = (event) => {
         const query = event.target.value;
         setSearchQuery(query);
         
-        // Filter students based on search query (can be by name or ID)
         const filtered = students.filter(
             (student) =>
                 student.name.toLowerCase().includes(query.toLowerCase()) ||
-                student.id.toLowerCase().includes(query.toLowerCase())
+                student.id.toLowerCase().includes(query.toLowerCase()) ||
+                student.address.toLowerCase().includes(query.toLowerCase())
         );
         setFilteredStudents(filtered);
+        setPage(0);
     };
 
     const handleGenerateReport = () => {
         alert('Generating Student Enrollment Report...');
     };
 
+    const handleRefresh = () => {
+        setSearchQuery('');
+        setFilteredStudents(students);
+    };
+
+    const handleChangePage = (event, newPage) => {
+        setPage(newPage);
+    };
+
+    const handleChangeRowsPerPage = (event) => {
+        setRowsPerPage(parseInt(event.target.value, 10));
+        setPage(0);
+    };
+
+    const emptyRows =
+        page > 0 ? Math.max(0, (1 + page) * rowsPerPage - filteredStudents.length) : 0;
+
     return (
-        <Container maxWidth="lg">
-            <Box sx={{ mt: 4, p: 3, boxShadow: 3, borderRadius: 2, bgcolor: 'background.paper' }}>
-                <Typography variant="h4" gutterBottom align="center">
-                    Student Details
-                </Typography>
-
-                {/* Search Bar and Generate Report Button in One Line */}
-                <Grid container spacing={2} alignItems="center" sx={{ mb: 3 }} justifyContent="space-between">
-                    {/* Search bar on the left */}
-                    <Grid item xs={12} sm={4}>
-                        <TextField
-                            label="Search by Name or ID"
-                            variant="outlined"
-                            value={searchQuery}
-                            onChange={handleSearch}
-                            size="small"
-                            fullWidth
-                        />
+        <Container maxWidth="xl" sx={{ py: 4 }}>
+            <Paper elevation={3} sx={{ p: 4, borderRadius: 3 }}>
+                {/* Header Section */}
+                <Box sx={{ mb: 4 }}>
+                    <Typography variant="h4" component="h1" sx={{ 
+                        fontWeight: 700,
+                        color: theme.palette.primary.main,
+                        mb: 1
+                    }}>
+                        Student Details
+                    </Typography>
+                    
+                    {/* Search and Action Buttons */}
+                    <Grid container spacing={2} alignItems="center" sx={{ mb: 2 }}>
+                        <Grid item xs={12} sm={6} md={4}>
+                            <TextField
+                                fullWidth
+                                label="Search by Name, ID or Address"
+                                variant="outlined"
+                                value={searchQuery}
+                                onChange={handleSearch}
+                                size="small"
+                                InputProps={{
+                                    startAdornment: (
+                                        <InputAdornment position="start">
+                                            <SearchIcon />
+                                        </InputAdornment>
+                                    ),
+                                }}
+                            />
+                        </Grid>
+                        <Grid item xs={12} sm={6} md={8} sx={{ 
+                            display: 'flex', 
+                            justifyContent: 'flex-end',
+                            gap: 2
+                        }}>
+                            <Tooltip title="Refresh">
+                                <IconButton onClick={handleRefresh}>
+                                    <RefreshIcon />
+                                </IconButton>
+                            </Tooltip>
+                            <Tooltip title="Filters">
+                                <IconButton>
+                                    <FilterIcon />
+                                </IconButton>
+                            </Tooltip>
+                            <Button 
+                                variant="contained" 
+                                color="secondary" 
+                                startIcon={<PdfIcon />}
+                                onClick={handleGenerateReport}
+                            >
+                                Student Enrollment Report
+                            </Button>
+                        </Grid>
                     </Grid>
+                </Box>
 
-                    {/* "Generate Enrollment Report" button on the right */}
-                    <Grid item xs={12} sm={4} display="flex" justifyContent="flex-end">
-                        <Button variant="contained" color="secondary" onClick={handleGenerateReport}>
-                            Student Enrollment Report
-                        </Button>
-                    </Grid>
-                </Grid>
-
-                {/* Table */}
-                <TableContainer component={Paper}>
+                {/* Student Table */}
+                <TableContainer component={Paper} sx={{ borderRadius: 2, mb: 4 }}>
                     <Table>
-                        <TableHead>
+                        <TableHead sx={{ backgroundColor: theme.palette.grey[100] }}>
                             <TableRow>
-                                <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>Student ID</TableCell>
-                                <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>Student Name</TableCell>
-                                <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>Email</TableCell>
-                                <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>Contact Number</TableCell>
-                                <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>Date Of Birth</TableCell>
-                                <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>Faculty</TableCell>
-                                <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>Year</TableCell>
-                                <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>Semester</TableCell>
-                                <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>Edit</TableCell>
-                                <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>Delete</TableCell>
+                                <TableCell sx={{ fontWeight: 700 }}>Student ID</TableCell>
+                                <TableCell sx={{ fontWeight: 700 }}>Student Name</TableCell>
+                                <TableCell sx={{ fontWeight: 700 }}>Email</TableCell>
+                                <TableCell sx={{ fontWeight: 700 }}>Contact</TableCell>
+                                <TableCell sx={{ fontWeight: 700 }}>Date of Birth</TableCell>
+                                <TableCell sx={{ fontWeight: 700, minWidth: '200px' }}>Address</TableCell>
+                                <TableCell sx={{ fontWeight: 700 }}>Faculty</TableCell>
+                                <TableCell sx={{ fontWeight: 700 }}>Year</TableCell>
+                                <TableCell sx={{ fontWeight: 700 }}>Semester</TableCell>
+                                <TableCell sx={{ fontWeight: 700 }} align="center">Actions</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {filteredStudents.map((student) => (
-                                <TableRow key={student.id}>
+                            {(rowsPerPage > 0
+                                ? filteredStudents.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                : filteredStudents
+                            ).map((student) => (
+                                <TableRow key={student.id} hover>
                                     <TableCell>{student.id}</TableCell>
-                                    <TableCell>{student.name}</TableCell>
+                                    <TableCell>
+                                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                                            <Avatar src={student.avatar} sx={{ width: 32, height: 32 }}>
+                                                <PersonIcon />
+                                            </Avatar>
+                                            {student.name}
+                                        </Box>
+                                    </TableCell>
                                     <TableCell>{student.email}</TableCell>
                                     <TableCell>{student.contact}</TableCell>
-                                    <TableCell>{student.dob}</TableCell>
+                                    <TableCell>
+                                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                                            <CalendarIcon fontSize="small" color="action" />
+                                            {student.dob}
+                                        </Box>
+                                    </TableCell>
+                                    <TableCell sx={{ whiteSpace: 'normal' }}>{student.address}</TableCell>
                                     <TableCell>{student.faculty}</TableCell>
                                     <TableCell>{student.year}</TableCell>
                                     <TableCell>{student.semester}</TableCell>
-                                    <TableCell>
-                                        <Button
-                                            variant="contained"
-                                            color="primary"
-                                            size="small"
-                                            sx={{ mr: 1 }}
-                                            onClick={() => handleEdit(student.id)}  // Pass student ID to handleEdit
-                                        >
-                                            Edit
-                                        </Button>
-                                    </TableCell>
-                                    <TableCell>
-                                        <Button variant="outlined" color="secondary" size="small">Delete</Button>
+                                    <TableCell align="center" sx={{ whiteSpace: 'nowrap' }}>
+                                        <Tooltip title="Edit">
+                                            <IconButton 
+                                                color="primary" 
+                                                onClick={() => handleEdit(student.id)}
+                                                sx={{ mr: 1 }}
+                                            >
+                                                <EditIcon />
+                                            </IconButton>
+                                        </Tooltip>
+                                        <Tooltip title="Delete">
+                                            <IconButton color="error">
+                                                <DeleteIcon />
+                                            </IconButton>
+                                        </Tooltip>
                                     </TableCell>
                                 </TableRow>
                             ))}
+                            
+                            {emptyRows > 0 && (
+                                <TableRow style={{ height: 53 * emptyRows }}>
+                                    <TableCell colSpan={10} />
+                                </TableRow>
+                            )}
                         </TableBody>
                     </Table>
                 </TableContainer>
-            </Box>
+
+                <TablePagination
+                    rowsPerPageOptions={[5, 10, 25]}
+                    component="div"
+                    count={filteredStudents.length}
+                    rowsPerPage={rowsPerPage}
+                    page={page}
+                    onPageChange={handleChangePage}
+                    onRowsPerPageChange={handleChangeRowsPerPage}
+                />
+
+                {/* Enrollment Report Section */}
+                <Divider sx={{ my: 4 }} />
+                <Card variant="outlined" sx={{ borderRadius: 2 }}>
+                    <CardContent>
+                        <Typography variant="h6" component="h2" sx={{ 
+                            fontWeight: 600,
+                            mb: 2,
+                            color: theme.palette.secondary.main
+                        }}>
+                            STUDENT ENROLLMENT REPORT
+                        </Typography>
+                        <Typography variant="body1" color="text.secondary">
+                            Click the "Student Enrollment Report" button above to generate a comprehensive report of all student enrollments.
+                        </Typography>
+                    </CardContent>
+                </Card>
+            </Paper>
         </Container>
     );
 };
 
-export default Studenttable;
+export default StudentTable;
