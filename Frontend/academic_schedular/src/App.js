@@ -30,6 +30,7 @@ import EditStudent from "./Components/Sub/Kaveesha/EditStudent";
 import AcademicSchedule from "./Components/Main/TimeTable/AcademicSchedule";
 import AddResources from "./Components/Sub/Lasindu/Resource/AddResources";
 import EditResource from "./Components/Sub/Lasindu/Resource/EditResource";
+import UploadAnswerSheet from "./Components/MarkingManager/UploadAnswerSheet";
 
 function App() {
   return (
@@ -71,7 +72,8 @@ function App() {
           <Route path="/studenttable" element={<Studenttable />} />
           <Route path="/editstudent" element={<EditStudent />} />
 
-          {/* Add other routes here */}
+          {/* marking manager */}
+          <Route path="/marking-manager" element={<UploadAnswerSheet />} />
         </Routes>
       </Layout>
     </Router>
