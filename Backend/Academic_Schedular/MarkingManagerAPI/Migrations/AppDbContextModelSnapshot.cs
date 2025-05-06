@@ -34,6 +34,9 @@ namespace MarkingManagerAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("AnswerSheetId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("DateScored")
                         .HasColumnType("datetime2");
 
@@ -53,6 +56,8 @@ namespace MarkingManagerAPI.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AnswerSheetId");
 
                     b.ToTable("StudentMarks");
                 });
@@ -76,6 +81,10 @@ namespace MarkingManagerAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("StudentId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("AnswerSheetId");
@@ -95,12 +104,27 @@ namespace MarkingManagerAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("StudentId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("UploadDate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
                     b.ToTable("AnswerSheets");
+                });
+
+            modelBuilder.Entity("MarkingManagerAPI.Entity.StudentMark", b =>
+                {
+                    b.HasOne("MarkingManagerAPI.Models.AnswerSheet", "AnswerSheet")
+                        .WithMany("StudentMarks")
+                        .HasForeignKey("AnswerSheetId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AnswerSheet");
                 });
 
             modelBuilder.Entity("MarkingManagerAPI.Models.Answer", b =>
@@ -117,6 +141,8 @@ namespace MarkingManagerAPI.Migrations
             modelBuilder.Entity("MarkingManagerAPI.Models.AnswerSheet", b =>
                 {
                     b.Navigation("Answers");
+
+                    b.Navigation("StudentMarks");
                 });
 #pragma warning restore 612, 618
         }

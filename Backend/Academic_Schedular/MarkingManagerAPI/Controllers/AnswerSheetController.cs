@@ -28,10 +28,18 @@ namespace MarkingManagerAPI.Controllers
             if (file == null || file.Length == 0)
                 return BadRequest("No file uploaded.");
 
+            // Extract StudentId from filename (e.g., "12345_MidTerm.pdf" -> "12345")
+            var fileNameWithoutExt = Path.GetFileNameWithoutExtension(file.FileName);
+            var studentId = fileNameWithoutExt.Split('_').FirstOrDefault();
+
+            if (string.IsNullOrWhiteSpace(studentId))
+                return BadRequest("Invalid file name format. Cannot extract Student ID.");
+
             var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "UploadedFiles");
             Directory.CreateDirectory(uploadsFolder);
 
-            var filePath = Path.Combine(uploadsFolder, Guid.NewGuid() + Path.GetExtension(file.FileName));
+            var savedFileName = Guid.NewGuid() + Path.GetExtension(file.FileName);
+            var filePath = Path.Combine(uploadsFolder, savedFileName);
 
             using (var stream = System.IO.File.Create(filePath))
             {
@@ -64,19 +72,20 @@ namespace MarkingManagerAPI.Controllers
                 if (answers == null)
                     return BadRequest("Deserialization failed. Raw output: " + output);
 
-                // Save to database
                 var answerSheet = new AnswerSheet
                 {
+                    StudentId = studentId,
                     FileName = file.FileName,
                     UploadDate = DateTime.UtcNow
                 };
 
                 _context.AnswerSheets.Add(answerSheet);
-                await _context.SaveChangesAsync();  // Save AnswerSheet first to get the Id
+                await _context.SaveChangesAsync();
 
                 var answerEntities = answers.Select(a => new Answer
                 {
                     AnswerSheetId = answerSheet.Id,
+                    StudentId = studentId,
                     Question = a.Question,
                     AnswerText = a.Answer
                 }).ToList();
@@ -135,18 +144,23 @@ namespace MarkingManagerAPI.Controllers
                         PropertyNameCaseInsensitive = true
                     });
 
+                    // Extract studentId from file name before extension
+                    var studentId = Path.GetFileNameWithoutExtension(file.FileName);
+
                     var answerSheet = new AnswerSheet
                     {
                         FileName = file.FileName,
-                        UploadDate = DateTime.UtcNow
+                        UploadDate = DateTime.UtcNow,
+                        StudentId = studentId
                     };
 
                     _context.AnswerSheets.Add(answerSheet);
-                    await _context.SaveChangesAsync();  // Save AnswerSheet first to get the Id
+                    await _context.SaveChangesAsync();
 
                     var answerEntities = answers.Select(a => new Answer
                     {
                         AnswerSheetId = answerSheet.Id,
+                        StudentId = studentId,
                         Question = a.Question,
                         AnswerText = a.Answer
                     }).ToList();
@@ -174,18 +188,17 @@ namespace MarkingManagerAPI.Controllers
         }
 
 
-
-        [HttpGet]
-        public IActionResult GetExtractedAnswers()
-        {
-            return Ok(StoredAnswers);
-        }
-
         [HttpPost("submit-marks")]
         public async Task<IActionResult> SubmitMarks([FromBody] MarkSubmissionDto submission)
         {
             if (submission == null || submission.Answers == null || !submission.Answers.Any())
                 return BadRequest("No data submitted.");
+
+            var answerSheet = await _context.AnswerSheets
+                .FirstOrDefaultAsync(x => x.FileName == submission.FileName);
+
+            if (answerSheet == null)
+                return NotFound("AnswerSheet not found.");
 
             var marks = submission.Answers.Select(a => new StudentMark
             {
@@ -194,34 +207,14 @@ namespace MarkingManagerAPI.Controllers
                 Question = a.Question,
                 Answer = a.Answer,
                 Mark = a.Mark,
-                DateScored = DateTime.UtcNow
+                DateScored = DateTime.UtcNow,
+                AnswerSheetId = answerSheet.Id
             }).ToList();
 
             _context.StudentMarks.AddRange(marks);
             await _context.SaveChangesAsync();
 
             return Ok(new { message = "Marks submitted successfully." });
-        }
-
-        [HttpGet("view-all")]
-        public async Task<IActionResult> GetAllAnswerSheets()
-        {
-            var data = await _context.StudentMarks
-                .GroupBy(m => new { m.StudentId, m.FileName })
-                .Select(g => new
-                {
-                    g.Key.StudentId,
-                    g.Key.FileName,
-                    Answers = g.Select(m => new
-                    {
-                        m.Question,
-                        m.Answer,
-                        m.Mark
-                    }).ToList()
-                })
-                .ToListAsync();
-
-            return Ok(data);
         }
 
         [HttpPost("submit-marks-bulk")]
@@ -234,7 +227,10 @@ namespace MarkingManagerAPI.Controllers
 
             foreach (var submission in bulkSubmission.Submissions)
             {
-                if (submission.Answers == null || !submission.Answers.Any())
+                var answerSheet = await _context.AnswerSheets
+                    .FirstOrDefaultAsync(x => x.FileName == submission.FileName);
+
+                if (answerSheet == null)
                     continue;
 
                 var marks = submission.Answers.Select(a => new StudentMark
@@ -244,7 +240,8 @@ namespace MarkingManagerAPI.Controllers
                     Question = a.Question,
                     Answer = a.Answer,
                     Mark = a.Mark,
-                    DateScored = DateTime.UtcNow
+                    DateScored = DateTime.UtcNow,
+                    AnswerSheetId = answerSheet.Id
                 });
 
                 allMarks.AddRange(marks);
@@ -256,6 +253,80 @@ namespace MarkingManagerAPI.Controllers
             return Ok(new { message = "Bulk marks submitted successfully." });
         }
 
+        [HttpGet("view-all")]
+        public async Task<IActionResult> GetAllAnswerSheets()
+        {
+            var data = await _context.AnswerSheets
+                .Include(a => a.Answers)
+                .Include(a => a.StudentMarks)
+                .Select(sheet => new
+                {
+                    sheet.Id,
+                    sheet.FileName,
+                    sheet.UploadDate,
+                    Answers = sheet.Answers.Select(ans => new
+                    {
+                        ans.Question,
+                        ans.AnswerText,
+                        Mark = sheet.StudentMarks
+                            .Where(m => m.Question == ans.Question)
+                            .Select(m => m.Mark)
+                            .FirstOrDefault()
+                    }).ToList()
+                })
+                .ToListAsync();
 
+            return Ok(data);
+        }
+
+        //[HttpGet("details/{answerSheetId}")]
+        //public async Task<IActionResult> GetAnswerSheetDetails(int answerSheetId)
+        //{
+        //    var sheet = await _context.AnswerSheets
+        //        .Include(a => a.Answers)
+        //        .Include(a => a.StudentMarks)
+        //        .Where(s => s.Id == answerSheetId)
+        //        .Select(s => new
+        //        {
+        //            s.Id,
+        //            s.StudentId,
+        //            s.FileName,
+        //            s.UploadDate,
+        //            Answers = s.Answers.Select(a => new
+        //            {
+        //                a.Question,
+        //                a.AnswerText,
+        //                Mark = s.StudentMarks
+        //                    .Where(m => m.Question == a.Question)
+        //                    .Select(m => m.Mark)
+        //                    .FirstOrDefault()
+        //            })
+        //        }).FirstOrDefaultAsync();
+
+        //    if (sheet == null)
+        //        return NotFound("Answer sheet not found.");
+
+        //    return Ok(sheet);
+        //}
+
+        [HttpGet]
+        public IActionResult GetExtractedAnswers()
+        {
+            return Ok(StoredAnswers);
+        }
+
+        [HttpGet("details/{fileName}")]
+        public async Task<IActionResult> GetAnswerSheetDetails(string fileName, [FromQuery] string studentId)
+        {
+            var answerSheet = await _context.AnswerSheets
+                .Where(sheet => sheet.StudentId == studentId && sheet.FileName == fileName)
+                .Include(sheet => sheet.Answers)
+                .FirstOrDefaultAsync();
+
+            if (answerSheet == null)
+                return NotFound("Answer sheet not found.");
+
+            return Ok(answerSheet);
+        }
     }
 }

@@ -12,6 +12,9 @@ builder.Services.AddControllers()
     {
         options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
         options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+
+        // Add circular reference handling
+        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
     });
 
 // Register DbContext

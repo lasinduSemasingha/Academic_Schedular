@@ -1,13 +1,20 @@
-﻿namespace MarkingManagerAPI.Entity
+﻿using MarkingManagerAPI.Models;
+
+namespace MarkingManagerAPI.Entity
 {
     public class StudentMark
     {
         public int Id { get; set; }
         public string StudentId { get; set; }
         public string FileName { get; set; }
+
         public string Question { get; set; }
         public string Answer { get; set; }
         public int Mark { get; set; }
+
         public DateTime DateScored { get; set; }
+
+        public int AnswerSheetId { get; set; }
+        public AnswerSheet AnswerSheet { get; set; }
     }
 }

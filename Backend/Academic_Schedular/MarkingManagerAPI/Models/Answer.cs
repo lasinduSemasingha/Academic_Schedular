@@ -4,6 +4,8 @@
     {
         public int Id { get; set; }
         public int AnswerSheetId { get; set; }  // Foreign key to AnswerSheet
+
+        public string StudentId { get; set; }
         public string Question { get; set; }
         public string AnswerText { get; set; }
 
