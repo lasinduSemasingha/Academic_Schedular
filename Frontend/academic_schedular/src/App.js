@@ -31,6 +31,7 @@ import AcademicSchedule from "./Components/Main/TimeTable/AcademicSchedule";
 import AddResources from "./Components/Sub/Lasindu/Resource/AddResources";
 import EditResource from "./Components/Sub/Lasindu/Resource/EditResource";
 import UploadAnswerSheet from "./Components/MarkingManager/UploadAnswerSheet";
+import MarkStudentAnswerSheet from "./Components/MarkingManager/MarkStudentAnswerSheet";
 
 function App() {
   return (
@@ -74,6 +75,7 @@ function App() {
 
           {/* marking manager */}
           <Route path="/marking-manager" element={<UploadAnswerSheet />} />
+          <Route path="/add-marks" element={<MarkStudentAnswerSheet />} />
         </Routes>
       </Layout>
     </Router>
