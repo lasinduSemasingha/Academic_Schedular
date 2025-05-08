@@ -93,7 +93,7 @@ const Lecturer = () => {
         }, {
           headers: { 'Content-Type': 'application/json' },
         });
-  
+
         console.log('Form submitted successfully:', response.data);
         setSuccessMessage('Lecturer registered successfully!');
         setErrorMessage('');
@@ -111,34 +111,141 @@ const Lecturer = () => {
       }
     }
   };
-  
+
 
   return (
     <Box>
       <Container maxWidth="lg" sx={{ py: 6 }}>
         <Box display="flex" flexDirection={{ xs: 'column', md: 'row' }} gap={4}>
           <Box flex={2}>
-            <Box sx={{ p: 4, border: '1px solid #ccc', borderRadius: '8px', boxShadow: 2, backgroundColor: 'white' }}>
-              <Typography variant="h4" gutterBottom>Register Lecturer Now</Typography>
+            <Box sx={{
+              p: 4,
+              border: '1px solid #ddd',
+              borderRadius: '12px',
+              boxShadow: 4,
+              backgroundColor: '#fafafa',
+              maxWidth: '800px',
+              margin: '0 auto',
+              '&:hover': {
+                boxShadow: 8,
+              },
+            }}>
+              <Typography variant="h4" gutterBottom align="center" sx={{ fontWeight: 600, color: '#1976d2' }}>
+                Register Lecturer Now
+              </Typography>
               {successMessage && <Alert severity="success">{successMessage}</Alert>}
               {errorMessage && <Alert severity="error">{errorMessage}</Alert>}
               <Box component="form" onSubmit={handleSubmit}>
-                <TextField fullWidth label="Lecturer Name" name="name" margin="normal" required 
-                  value={formData.name} onChange={handleInputChange} error={!!errors.name} helperText={errors.name} />
-                <TextField fullWidth label="Email Address" type="email" name="email" margin="normal" required 
-                  value={formData.email} onChange={handleInputChange} error={!!errors.email} helperText={errors.email} />
-                <TextField fullWidth label="Phone Number" name="phonenumber" margin="normal" required 
-                  inputProps={{ maxLength: 9 }} value={formData.phonenumber} onChange={handleInputChange} 
-                  error={!!errors.phonenumber} helperText={errors.phonenumber} />
-                <TextField fullWidth select label="Department" name="department" margin="normal" required 
-                  value={formData.department} onChange={handleInputChange} error={!!errors.department} helperText={errors.department}>
+                <TextField
+                  fullWidth
+                  label="Lecturer Name"
+                  name="name"
+                  margin="normal"
+                  required
+                  value={formData.name}
+                  onChange={handleInputChange}
+                  error={!!errors.name}
+                  helperText={errors.name}
+                  sx={{
+                    '& .MuiInputBase-root': {
+                      backgroundColor: '#fff',
+                      borderRadius: '8px',
+                    },
+                  }}
+                />
+                <TextField
+                  fullWidth
+                  label="Email Address"
+                  type="email"
+                  name="email"
+                  margin="normal"
+                  required
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  error={!!errors.email}
+                  helperText={errors.email}
+                  sx={{
+                    '& .MuiInputBase-root': {
+                      backgroundColor: '#fff',
+                      borderRadius: '8px',
+                    },
+                  }}
+                />
+                <TextField
+                  fullWidth
+                  label="Phone Number"
+                  name="phonenumber"
+                  margin="normal"
+                  required
+                  inputProps={{ maxLength: 9 }}
+                  value={formData.phonenumber}
+                  onChange={handleInputChange}
+                  error={!!errors.phonenumber}
+                  helperText={errors.phonenumber}
+                  sx={{
+                    '& .MuiInputBase-root': {
+                      backgroundColor: '#fff',
+                      borderRadius: '8px',
+                    },
+                  }}
+                />
+                <TextField
+                  fullWidth
+                  select
+                  label="Department"
+                  name="department"
+                  margin="normal"
+                  required
+                  value={formData.department}
+                  onChange={handleInputChange}
+                  error={!!errors.department}
+                  helperText={errors.department}
+                  sx={{
+                    '& .MuiInputBase-root': {
+                      backgroundColor: '#fff',
+                      borderRadius: '8px',
+                    },
+                  }}
+                >
                   <MenuItem value="IT">IT</MenuItem>
                   <MenuItem value="Engineering">Engineering</MenuItem>
                   <MenuItem value="Business">Business</MenuItem>
                 </TextField>
-                <TextField fullWidth label="Description" name="description" multiline rows={4} margin="normal" required 
-                  value={formData.description} onChange={handleInputChange} error={!!errors.description} helperText={errors.description} />
-                <Button type="submit" variant="contained" color="primary" sx={{ mt: 2 }}>Submit</Button>
+                <TextField
+                  fullWidth
+                  label="Description"
+                  name="description"
+                  multiline
+                  rows={4}
+                  margin="normal"
+                  required
+                  value={formData.description}
+                  onChange={handleInputChange}
+                  error={!!errors.description}
+                  helperText={errors.description}
+                  sx={{
+                    '& .MuiInputBase-root': {
+                      backgroundColor: '#fff',
+                      borderRadius: '8px',
+                    },
+                  }}
+                />
+                <Button
+                  type="submit"
+                  variant="contained"
+                  color="primary"
+                  sx={{
+                    mt: 2,
+                    borderRadius: '12px',
+                    fontSize: '1rem',
+                    padding: '10px 20px',
+                    '&:hover': {
+                      backgroundColor: '#1565c0',
+                    },
+                  }}
+                >
+                  Submit
+                </Button>
               </Box>
             </Box>
           </Box>

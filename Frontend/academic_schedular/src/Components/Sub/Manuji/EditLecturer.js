@@ -3,7 +3,7 @@ import { Container, Typography, Box, Button, TextField } from '@mui/material';
 
 const EditLecturer = () => {
   return (
-    <Box>
+    <Box sx={{ backgroundColor: '#f9f9fb', minHeight: '100vh', py: 4 }}>
       {/* Hero Section */}
       <Box
         sx={{
@@ -12,18 +12,18 @@ const EditLecturer = () => {
           alignItems: 'center',
           justifyContent: 'center',
           textAlign: 'center',
-          py: 6,
-          px: 6,
-          border: '2px solid #ccc',
-          borderRadius: '8px',
-          boxShadow: 3,
-          backgroundColor: 'white',
+          py: 5,
+          px: 4,
+          borderRadius: 2,
+          boxShadow: 4,
+          backgroundColor: '#ffffff',
           maxWidth: '800px',
           margin: 'auto',
+          borderTop: '6px solid #1976d2',
         }}
       >
-        <Typography variant="h3" fontWeight="bold">
-          Edit Lecturer Details
+        <Typography variant="h3" fontWeight="bold" color="primary">
+          Update Lecturer Details
         </Typography>
       </Box>
 
@@ -35,25 +35,32 @@ const EditLecturer = () => {
             <Box
               sx={{
                 p: 4,
-                border: '1px solid #ccc',
-                borderRadius: '8px',
-                boxShadow: 2,
-                backgroundColor: 'white',
+                borderRadius: 3,
+                boxShadow: 4,
+                backgroundColor: '#ffffff',
               }}
             >
-              <Typography variant="h4" gutterBottom>
+              <Typography variant="h4" gutterBottom color="primary">
                 Update Lecturer Credentials
               </Typography>
-              <Typography variant="body1" sx={{ mb: 3 }}>
+              <Typography variant="body1" sx={{ mb: 3, color: '#555' }}>
                 Please fill out the form below to update lecturer details.
               </Typography>
               <Box component="form">
-                <TextField fullWidth label="Lecturer Name" margin="normal" required />
-                <TextField fullWidth label="Email Address" type="email" margin="normal" required />
-                <TextField fullWidth label="Phone Number" margin="normal" required />
-                <TextField fullWidth label="Department" margin="normal" required />
-                <TextField fullWidth label="Description" multiline rows={4} margin="normal" required />
-                <Button variant="contained" color="primary" sx={{ mt: 2 }}>
+                <TextField fullWidth label="Lecturer Name" margin="normal" required variant="outlined" />
+                <TextField fullWidth label="Email Address" type="email" margin="normal" required variant="outlined" />
+                <TextField fullWidth label="Phone Number" margin="normal" required variant="outlined" />
+                <TextField fullWidth label="Department" margin="normal" required variant="outlined" />
+                <TextField
+                  fullWidth
+                  label="Description"
+                  multiline
+                  rows={4}
+                  margin="normal"
+                  required
+                  variant="outlined"
+                />
+                <Button variant="contained" color="primary" sx={{ mt: 2, px: 4 }}>
                   Update
                 </Button>
               </Box>
@@ -61,17 +68,37 @@ const EditLecturer = () => {
           </Box>
 
           {/* Information Section */}
-          <Box flex={1}>
-            {/* Admin Office Section */}
-            <Box sx={{ mt: 3, p: 3, border: '1px solid #ccc', borderRadius: '8px', boxShadow: 2 }}>
-              <Typography variant="h6" fontWeight="bold">Admin Office</Typography>
-              <Typography>123 University Road, Faculty Building, Room 105</Typography>
+          <Box flex={1} display="flex" flexDirection="column" gap={3}>
+            <Box
+              sx={{
+                p: 3,
+                borderRadius: 2,
+                boxShadow: 3,
+                backgroundColor: '#ffffff',
+                borderLeft: '4px solid #1976d2',
+              }}
+            >
+              <Typography variant="h6" fontWeight="bold" color="primary">Admin Office</Typography>
+              <Typography sx={{ mt: 1, color: '#555' }}>
+                123 University Road,<br />
+                Faculty Building,<br />
+                Room 105
+              </Typography>
             </Box>
 
-            {/* Support Section */}
-            <Box sx={{ mt: 2, p: 3, border: '1px solid #ccc', borderRadius: '8px', boxShadow: 2 }}>
-              <Typography variant="h6" fontWeight="bold">Support</Typography>
-              <Typography>For any issues, contact the system administrator.</Typography>
+            <Box
+              sx={{
+                p: 3,
+                borderRadius: 2,
+                boxShadow: 3,
+                backgroundColor: '#ffffff',
+                borderLeft: '4px solid #ed6c02',
+              }}
+            >
+              <Typography variant="h6" fontWeight="bold" color="secondary">Support</Typography>
+              <Typography sx={{ mt: 1, color: '#555' }}>
+                For any issues, contact the system administrator.
+              </Typography>
             </Box>
           </Box>
         </Box>
