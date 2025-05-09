@@ -202,6 +202,10 @@ export default function EditStudent() {
               { label: "Date of Birth", name: "dob", type: "date", icon: <CalendarIcon /> },
               { label: "Address", name: "address", icon: <HomeIcon /> },
             ].map(({ label, name, type = "text", icon }) => (
+
+
+
+              
               <Grid item xs={12} md={name === "address" ? 6 : 6} key={name}>
                 <TextField
                   fullWidth

@@ -208,23 +208,32 @@ export default function StudentRegistration() {
             </Grid>
             
             <Grid item xs={12} md={6}>
-              <TextField
-                fullWidth
-                label="Contact Number"
-                name="contact"
-                value={student.contact}
-                onChange={handleChange}
-                error={!!errors.contact}
-                helperText={errors.contact}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <PhoneIcon color="action" />
-                    </InputAdornment>
-                  ),
-                }}
-              />
-            </Grid>
+  <TextField
+    fullWidth
+    label="Contact Number"
+    name="contact"
+    value={student.contact}
+    onChange={(e) => {
+      const onlyNums = e.target.value.replace(/\D/g, ''); // Remove non-digit characters
+      if (onlyNums.length <= 10) {
+        setStudent((prev) => ({ ...prev, contact: onlyNums }));
+      }
+    }}
+    error={!!errors.contact}
+    helperText={errors.contact}
+    inputProps={{
+      maxLength: 10 // Additional safeguard
+    }}
+    InputProps={{
+      startAdornment: (
+        <InputAdornment position="start">
+          <PhoneIcon color="action" />
+        </InputAdornment>
+      ),
+    }}
+  />
+</Grid>
+
             
             <Grid item xs={12} md={6}>
               <TextField
