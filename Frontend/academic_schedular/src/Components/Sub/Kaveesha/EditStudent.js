@@ -1,19 +1,20 @@
-import { useState } from "react";
-import { 
-  Container, 
-  TextField, 
-  Button, 
-  Typography, 
-  Grid, 
-  Paper,
+import React, { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import {
   Box,
-  InputAdornment,
+  Typography,
+  Paper,
+  Grid,
+  TextField,
   MenuItem,
+  Button,
+  InputAdornment,
   CircularProgress,
+  Snackbar,
   Alert,
-  Snackbar
+  Container,
 } from "@mui/material";
-import { 
+import {
   Person as PersonIcon,
   Email as EmailIcon,
   Phone as PhoneIcon,
@@ -21,14 +22,20 @@ import {
   Home as HomeIcon,
   School as SchoolIcon,
   Book as BookIcon,
-  Numbers as NumbersIcon
+  Numbers as NumbersIcon,
 } from "@mui/icons-material";
-import axios from "axios";
-import { useTheme } from '@mui/material/styles';
+import { useTheme } from "@mui/material/styles";
 
-export default function StudentRegistration() {
+const faculties = ["Engineering", "Medicine", "Science", "Business", "Arts", "Law"];
+const years = ["1", "2", "3", "4"];
+const semesters = ["1", "2"];
+
+export default function EditStudent() {
+  const { sId } = useParams();
+  const navigate = useNavigate();
   const theme = useTheme();
-  const [student, setStudent] = useState({
+
+  const [formData, setFormData] = useState({
     name: "",
     studentId: "",
     email: "",
@@ -37,79 +44,114 @@ export default function StudentRegistration() {
     address: "",
     faculty: "",
     year: "",
-    semester: ""
+    semester: "",
   });
-  
+
   const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [snackbar, setSnackbar] = useState({
     open: false,
     message: "",
-    severity: "success"
+    severity: "success",
   });
 
-  const faculties = [
-    "Engineering",
-    "Medicine",
-    "Science",
-    "Business",
-    "Arts",
-    "Law"
-  ];
+  useEffect(() => {
+    const controller = new AbortController();
 
-  const years = ["1", "2", "3", "4"];
-  const semesters = ["1", "2"];
+    const fetchStudent = async () => {
+      try {
+        const res = await fetch(`https://localhost:7005/student/${sId}`, {
+          signal: controller.signal,
+        });
+        if (!res.ok) throw new Error("Failed to fetch student data");
 
-  const validate = () => {
-    let tempErrors = {};
-    tempErrors.name = student.name ? "" : "Name is required";
-    tempErrors.studentId = student.studentId ? "" : "Student ID is required";
-    tempErrors.email = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(student.email) ? "" : "Invalid email format";
-    tempErrors.contact = /^[0-9]{10}$/.test(student.contact) ? "" : "Contact must be 10 digits";
-    tempErrors.dob = student.dob ? "" : "Date of Birth is required";
-    tempErrors.address = student.address ? "" : "Address is required";
-    tempErrors.faculty = student.faculty ? "" : "Faculty is required";
-    tempErrors.year = student.year ? "" : "Year is required";
-    tempErrors.semester = student.semester ? "" : "Semester is required";
-    setErrors(tempErrors);
-    return Object.values(tempErrors).every(x => x === "");
-  };
+        const json = await res.json();
+        const data = json.data || json;
+
+        setFormData({
+          name: data.name || "",
+          studentId: data.studentId || "",
+          email: data.email || "",
+          contact: data.contact || "",
+          dob: data.dob ? new Date(data.dob).toISOString().split("T")[0] : "",
+          address: data.address || "",
+          faculty: data.faculty || "",
+          year: data.year || "",
+          semester: data.semester || "",
+        });
+      } catch (err) {
+        if (err.name !== "AbortError") {
+          console.error(err);
+          setSnackbar({
+            open: true,
+            message: "Failed to load student data",
+            severity: "error",
+          });
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchStudent();
+
+    return () => controller.abort();
+  }, [sId]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setStudent(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const validate = () => {
+    const tempErrors = {
+      name: formData.name ? "" : "Name is required",
+      studentId: formData.studentId ? "" : "Student ID is required",
+      email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)
+        ? ""
+        : "Invalid email",
+      contact: /^[0-9]{10}$/.test(formData.contact)
+        ? ""
+        : "Contact must be 10 digits",
+      dob: formData.dob ? "" : "Date of birth is required",
+      address: formData.address ? "" : "Address is required",
+      faculty: formData.faculty ? "" : "Faculty is required",
+      year: formData.year ? "" : "Year is required",
+      semester: formData.semester ? "" : "Semester is required",
+    };
+
+    setErrors(tempErrors);
+    return Object.values(tempErrors).every((x) => x === "");
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validate()) return;
-    
+
     setIsSubmitting(true);
     try {
-      await axios.post("https://localhost:7005/student", student);
+      const res = await fetch(`https://localhost:7005/student/${sId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      if (!res.ok) throw new Error("Update failed");
+
       setSnackbar({
         open: true,
         message: "Student updated successfully!",
-        severity: "success"
+        severity: "success",
       });
-      // Reset form after successful submission
-      setStudent({
-        name: "",
-        studentId: "",
-        email: "",
-        contact: "",
-        dob: "",
-        address: "",
-        faculty: "",
-        year: "",
-        semester: ""
-      });
-    } catch (error) {
-      console.error("Registration error:", error);
+
+      setTimeout(() => navigate("/Studenttable"), 1500);
+    } catch (err) {
+      console.error(err);
       setSnackbar({
         open: true,
-        message: "Error updating student. Please try again.",
-        severity: "error"
+        message: "Error updating student",
+        severity: "error",
       });
     } finally {
       setIsSubmitting(false);
@@ -117,33 +159,32 @@ export default function StudentRegistration() {
   };
 
   const handleCloseSnackbar = () => {
-    setSnackbar(prev => ({ ...prev, open: false }));
+    setSnackbar((prev) => ({ ...prev, open: false }));
   };
+
+  if (loading) {
+    return (
+      <Box sx={{ textAlign: "center", mt: 6 }}>
+        <CircularProgress />
+        <Typography mt={2}>Loading student details...</Typography>
+      </Box>
+    );
+  }
 
   return (
     <Container maxWidth="md" sx={{ py: 4 }}>
-      <Paper elevation={4} sx={{ 
-        padding: 4, 
-        borderRadius: 4,
-        background: theme.palette.background.paper
-      }}>
-        <Box sx={{ textAlign: 'center', mb: 4 }}>
-          <Typography variant="h4" component="h1" sx={{ 
-            fontWeight: 700,
-            color: theme.palette.primary.main,
-            mb: 1
-          }}>
-            Update Student Profile
+      <Paper elevation={4} sx={{ p: 4, borderRadius: 4 }}>
+        <Box sx={{ textAlign: "center", mb: 4 }}>
+          <Typography variant="h4" fontWeight={700} color={theme.palette.primary.main}>
+            Edit Student
           </Typography>
           <Typography variant="body1" color="text.secondary">
-            Please fill in all required fields to update a student
+            Update the necessary fields and submit the form
           </Typography>
         </Box>
 
         <form onSubmit={handleSubmit}>
-          <Grid container spacing={3}>
-            {/* Personal Information */}
-            <Grid item xs={12}>
+          <Grid item xs={12}>
               <Typography variant="subtitle1" sx={{ 
                 mb: 1,
                 color: theme.palette.text.secondary,
@@ -152,127 +193,33 @@ export default function StudentRegistration() {
                 Personal Information
               </Typography>
             </Grid>
-            
-            <Grid item xs={12} md={6}>
-              <TextField
-                fullWidth
-                label="Full Name"
-                name="name"
-                value={student.name}
-                onChange={handleChange}
-                error={!!errors.name}
-                helperText={errors.name}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <PersonIcon color="action" />
-                    </InputAdornment>
-                  ),
-                }}
-              />
-            </Grid>
-            
-            <Grid item xs={12} md={6}>
-              <TextField
-                fullWidth
-                label="Student ID"
-                name="studentId"
-                value={student.studentId}
-                onChange={handleChange}
-                error={!!errors.studentId}
-                helperText={errors.studentId}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <NumbersIcon color="action" />
-                    </InputAdornment>
-                  ),
-                }}
-              />
-            </Grid>
-            
-            <Grid item xs={12} md={6}>
-              <TextField
-                fullWidth
-                label="Email"
-                name="email"
-                type="email"
-                value={student.email}
-                onChange={handleChange}
-                error={!!errors.email}
-                helperText={errors.email}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <EmailIcon color="action" />
-                    </InputAdornment>
-                  ),
-                }}
-              />
-            </Grid>
-            
-            <Grid item xs={12} md={6}>
-              <TextField
-                fullWidth
-                label="Contact Number"
-                name="contact"
-                value={student.contact}
-                onChange={handleChange}
-                error={!!errors.contact}
-                helperText={errors.contact}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <PhoneIcon color="action" />
-                    </InputAdornment>
-                  ),
-                }}
-              />
-            </Grid>
-            
-            <Grid item xs={12} md={6}>
-              <TextField
-                fullWidth
-                label="Date of Birth"
-                name="dob"
-                type="date"
-                value={student.dob}
-                onChange={handleChange}
-                error={!!errors.dob}
-                helperText={errors.dob}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <CalendarIcon color="action" />
-                    </InputAdornment>
-                  ),
-                }}
-              />
-            </Grid>
-            
-            <Grid item xs={12} md={6}>
-              <TextField
-                fullWidth
-                label="Address"
-                name="address"
-                value={student.address}
-                onChange={handleChange}
-                error={!!errors.address}
-                helperText={errors.address}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <HomeIcon color="action" />
-                    </InputAdornment>
-                  ),
-                }}
-              />
-            </Grid>
+          <Grid container spacing={3}>
+            {[
+              { label: "Full Name", name: "name", icon: <PersonIcon /> },
+              { label: "Student ID", name: "studentId", icon: <NumbersIcon /> },
+              { label: "Email", name: "email", type: "email", icon: <EmailIcon /> },
+              { label: "Contact Number", name: "contact", icon: <PhoneIcon /> },
+              { label: "Date of Birth", name: "dob", type: "date", icon: <CalendarIcon /> },
+              { label: "Address", name: "address", icon: <HomeIcon /> },
+            ].map(({ label, name, type = "text", icon }) => (
+              <Grid item xs={12} md={name === "address" ? 6 : 6} key={name}>
+                <TextField
+                  fullWidth
+                  label={label}
+                  name={name}
+                  type={type}
+                  value={formData[name]}
+                  onChange={handleChange}
+                  error={!!errors[name]}
+                  helperText={errors[name]}
+                  InputLabelProps={type === "date" ? { shrink: true } : {}}
+                  InputProps={{
+                    startAdornment: <InputAdornment position="start">{icon}</InputAdornment>,
+                  }}
+                />
+              </Grid>
+            ))}
 
-            {/* Academic Information */}
             <Grid item xs={12} sx={{ mt: 2 }}>
               <Typography variant="subtitle1" sx={{ 
                 mb: 1,
@@ -282,101 +229,94 @@ export default function StudentRegistration() {
                 Academic Information
               </Typography>
             </Grid>
-            
+
             <Grid item xs={12} md={6}>
               <TextField
                 select
                 fullWidth
                 label="Faculty"
                 name="faculty"
-                value={student.faculty}
+                value={formData.faculty}
                 onChange={handleChange}
                 error={!!errors.faculty}
                 helperText={errors.faculty}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
-                      <SchoolIcon color="action" />
+                      <SchoolIcon />
                     </InputAdornment>
                   ),
                 }}
               >
-                {faculties.map((option) => (
-                  <MenuItem key={option} value={option}>
-                    {option}
+                {faculties.map((f) => (
+                  <MenuItem key={f} value={f}>
+                    {f}
                   </MenuItem>
                 ))}
               </TextField>
             </Grid>
-            
+
             <Grid item xs={6} md={3}>
               <TextField
                 select
                 fullWidth
                 label="Year"
                 name="year"
-                value={student.year}
+                value={formData.year}
                 onChange={handleChange}
                 error={!!errors.year}
                 helperText={errors.year}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
-                      <BookIcon color="action" />
+                      <BookIcon />
                     </InputAdornment>
                   ),
                 }}
               >
-                {years.map((option) => (
-                  <MenuItem key={option} value={option}>
-                    Year {option}
+                {years.map((y) => (
+                  <MenuItem key={y} value={y}>
+                    Year {y}
                   </MenuItem>
                 ))}
               </TextField>
             </Grid>
-            
+
             <Grid item xs={6} md={3}>
               <TextField
                 select
                 fullWidth
                 label="Semester"
                 name="semester"
-                value={student.semester}
+                value={formData.semester}
                 onChange={handleChange}
                 error={!!errors.semester}
                 helperText={errors.semester}
               >
-                {semesters.map((option) => (
-                  <MenuItem key={option} value={option}>
-                    Semester {option}
+                {semesters.map((s) => (
+                  <MenuItem key={s} value={s}>
+                    Semester {s}
                   </MenuItem>
                 ))}
               </TextField>
             </Grid>
 
-            {/* Submit Button */}
-            <Grid item xs={12} sx={{ mt: 2, textAlign: "center" }}>
-                          <Button
-                            type="submit"
-                            variant="contained"
-                            color="primary"
-                            size="large"
-                            disabled={isSubmitting}
-                            sx={{
-                              px: 6,
-                              py: 1.5,
-                              borderRadius: 2,
-                              fontSize: '1rem',
-                              minWidth: '200px'
-                            }}
-                          >
+            <Grid item xs={12} sx={{ textAlign: "center", mt: 2 }}>
+              <Button
+                type="submit"
+                variant="contained"
+                color="primary"
+                size="large"
+                disabled={isSubmitting}
+                sx={{ px: 6, py: 1.5, borderRadius: 2, fontSize: "1rem" }}
+              >
                 {isSubmitting ? (
                   <>
-                    <CircularProgress size={24} color="inherit" sx={{ mr: 2 }} />
+                    <CircularProgress size={24} sx={{ mr: 2 }} />
                     Updating...
                   </>
                 ) : (
-                  "Update"
+                  "Update Student"
                 )}
               </Button>
             </Grid>
@@ -388,12 +328,12 @@ export default function StudentRegistration() {
         open={snackbar.open}
         autoHideDuration={6000}
         onClose={handleCloseSnackbar}
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
       >
-        <Alert 
-          onClose={handleCloseSnackbar} 
+        <Alert
+          onClose={handleCloseSnackbar}
           severity={snackbar.severity}
-          sx={{ width: '100%' }}
+          sx={{ width: "100%" }}
         >
           {snackbar.message}
         </Alert>

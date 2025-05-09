@@ -69,7 +69,7 @@ function App() {
           <Route path="/student" element={<Student />} />
           <Route path="/studenthome" element={<StudentHome />} />
           <Route path="/studenttable" element={<Studenttable />} />
-          <Route path="/editstudent" element={<EditStudent />} />
+          <Route path="/student/edit/:sId" element={<EditStudent />} />
 
           {/* Add other routes here */}
         </Routes>

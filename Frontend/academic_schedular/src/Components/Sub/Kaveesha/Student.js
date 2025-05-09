@@ -1,17 +1,8 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { 
-  Container, 
-  TextField, 
-  Button, 
-  Typography, 
-  Grid, 
-  Paper,
-  Box,
-  InputAdornment,
-  MenuItem,
-  CircularProgress,
-  Alert,
-  Snackbar
+  Container, TextField, Button, Typography, Grid, Paper, Box,
+  InputAdornment, MenuItem, CircularProgress, Alert, Snackbar
 } from "@mui/material";
 import { 
   Person as PersonIcon,
@@ -28,6 +19,7 @@ import { useTheme } from '@mui/material/styles';
 
 export default function StudentRegistration() {
   const theme = useTheme();
+  const navigate = useNavigate();
   const [student, setStudent] = useState({
     name: "",
     studentId: "",
@@ -86,24 +78,29 @@ export default function StudentRegistration() {
     
     setIsSubmitting(true);
     try {
-      await axios.post("https://localhost:7005/student", student);
+      // Format the date correctly before sending
+      const dobDate = new Date(student.dob);
+      const formattedDob = `${dobDate.getFullYear()}-${String(dobDate.getMonth() + 1).padStart(2, '0')}-${String(dobDate.getDate()).padStart(2, '0')}`;
+      
+      const studentToSend = {
+        ...student,
+        dob: formattedDob
+      };
+
+      const response = await axios.post("https://localhost:7005/student", studentToSend);
       setSnackbar({
         open: true,
         message: "Student registered successfully!",
         severity: "success"
       });
-      // Reset form after successful submission
-      setStudent({
-        name: "",
-        studentId: "",
-        email: "",
-        contact: "",
-        dob: "",
-        address: "",
-        faculty: "",
-        year: "",
-        semester: ""
+      
+      navigate("/Studenttable", { 
+        state: { 
+          newStudent: response.data,
+          message: "Student registered successfully!" 
+        } 
       });
+      
     } catch (error) {
       console.error("Registration error:", error);
       setSnackbar({
@@ -142,7 +139,6 @@ export default function StudentRegistration() {
 
         <form onSubmit={handleSubmit}>
           <Grid container spacing={3}>
-            {/* Personal Information */}
             <Grid item xs={12}>
               <Typography variant="subtitle1" sx={{ 
                 mb: 1,
@@ -272,7 +268,6 @@ export default function StudentRegistration() {
               />
             </Grid>
 
-            {/* Academic Information */}
             <Grid item xs={12} sx={{ mt: 2 }}>
               <Typography variant="subtitle1" sx={{ 
                 mb: 1,
@@ -354,22 +349,21 @@ export default function StudentRegistration() {
               </TextField>
             </Grid>
 
-            {/* Submit Button */}
             <Grid item xs={12} sx={{ mt: 2, textAlign: "center" }}>
-                          <Button
-                            type="submit"
-                            variant="contained"
-                            color="primary"
-                            size="large"
-                            disabled={isSubmitting}
-                            sx={{
-                              px: 6,
-                              py: 1.5,
-                              borderRadius: 2,
-                              fontSize: '1rem',
-                              minWidth: '200px'
-                            }}
-                          >
+              <Button
+                type="submit"
+                variant="contained"
+                color="primary"
+                size="large"
+                disabled={isSubmitting}
+                sx={{
+                  px: 6,
+                  py: 1.5,
+                  borderRadius: 2,
+                  fontSize: '1rem',
+                  minWidth: '200px'
+                }}
+              >
                 {isSubmitting ? (
                   <>
                     <CircularProgress size={24} color="inherit" sx={{ mr: 2 }} />
