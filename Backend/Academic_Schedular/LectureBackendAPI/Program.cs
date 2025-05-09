@@ -1,6 +1,7 @@
 using LectureBackendAPI.Data;
-using LectureBackendAPI.Services;
 using LectureBackendAPI.Endpoints;
+using LectureBackendAPI.Services;
+using LectureBackendAPI.Services.Lecturer;
 
 var builder = WebApplication.CreateBuilder(args);
 
