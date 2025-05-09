@@ -58,12 +58,39 @@ function ExamTable() {
         navigate(`/exam/edit/${id}`);
     };
 
+    const [searchType, setSearchType] = useState("");
+    const [searchSubject, setSearchSubject] = useState("");
+
+    const filteredExams = exams.filter(exam =>
+        exam.examtype.toLowerCase().includes(searchType.toLowerCase()) &&
+        exam.subject.toLowerCase().includes(searchSubject.toLowerCase())
+    );
+    
+
+
     return (
         <Box sx={{ textAlign: "center", py: 6, px: 3, maxWidth: 1000, margin: "0 auto" }}>
             <Paper elevation={6} sx={{ padding: 4, backgroundColor: "#f9f9f9", borderRadius: "12px" }}>
                 <Typography variant="h4" fontWeight="bold" gutterBottom sx={{ color: "#2D3A5A" }}>
                     Exam Records
                 </Typography>
+<Box sx={{ display: 'flex', justifyContent: 'center', gap: 2, mb: 3 }}>
+    <input
+        type="text"
+        placeholder="Search by Exam Type"
+        value={searchType}
+        onChange={(e) => setSearchType(e.target.value)}
+        style={{ padding: "8px", borderRadius: "5px", border: "1px solid #ccc" }}
+    />
+    <input
+        type="text"
+        placeholder="Search by Subject"
+        value={searchSubject}
+        onChange={(e) => setSearchSubject(e.target.value)}
+        style={{ padding: "8px", borderRadius: "5px", border: "1px solid #ccc" }}
+    />
+</Box>
+
                 <TableContainer sx={{ maxHeight: 600, overflowY: 'auto' }}>
                     <Table sx={{ minWidth: 800 }}>
                         <TableHead>
@@ -81,7 +108,7 @@ function ExamTable() {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {exams.map((exam, index) => (
+                            {filteredExams.map((exam, index) => (
                                 <TableRow key={index} sx={{
                                     '&:hover': { backgroundColor: "#f1f1f1", cursor: 'pointer' },
                                     backgroundColor: index % 2 === 0 ? '#ffffff' : '#f9f9f9'
