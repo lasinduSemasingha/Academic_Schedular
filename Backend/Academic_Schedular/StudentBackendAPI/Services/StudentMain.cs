@@ -39,21 +39,21 @@ namespace StudentBackendAPI.Services
         }
 
         //All Data Getting endpoint
-        public async Task<IEnumerable<ResourceEntity>> GetAllStudent()
+        public async Task<IEnumerable<StudentEntity>> GetAllStudent()
         {
             //Database connection creating
             using var connection = _context.Create();
             const string query = "SELECT * FROM Academic_Schedular_Student";
-            return await connection.QueryAsync<ResourceEntity>(query);
+            return await connection.QueryAsync<StudentEntity>(query);
         }
 
         //single data getting endpoint
-        public async Task<ResourceEntity> GetSingleStudent(int id)
+        public async Task<StudentEntity> GetSingleStudent(int id)
         {
             //database connection creating
             using var connection = _context.Create();
             const string query = "SELECT * FROM Academic_Schedular_Student WHERE sId = @id";
-            return await connection.QueryFirstOrDefaultAsync<ResourceEntity>(query, new { id });
+            return await connection.QueryFirstOrDefaultAsync<StudentEntity>(query, new { id });
         }
 
         //single data updating endpoint

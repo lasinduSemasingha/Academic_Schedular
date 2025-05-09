@@ -8,8 +8,8 @@ namespace StudentBackendAPI.Services
         Task<bool> CreateStudent(CreateStudent request);
         Task<bool> UpdateStudent(int id, UpdateStudent request);
         Task<bool> DeleteStudent(int id);       
-        Task<IEnumerable<ResourceEntity>> GetAllStudent();
-        Task<ResourceEntity> GetSingleStudent(int id);
+        Task<IEnumerable<StudentEntity>> GetAllStudent();
+        Task<StudentEntity> GetSingleStudent(int id);
 
     }
 }

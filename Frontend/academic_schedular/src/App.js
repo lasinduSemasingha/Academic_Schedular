@@ -82,6 +82,10 @@ function App() {
           <Route path="/lecturertable" element={<ProtectedRoute><LecturerTable /></ProtectedRoute>} />
           <Route path="/editlecturer" element={<ProtectedRoute><EditLecturer /></ProtectedRoute>} />
 
+          <Route path="/student" element={<Student />} />
+          <Route path="/studenthome" element={<StudentHome />} />
+          <Route path="/studenttable" element={<Studenttable />} />
+          <Route path="/student/edit/:sId" element={<EditStudent />} />
           <Route path="/student" element={<ProtectedRoute><Student /></ProtectedRoute>} />
           <Route path="/studenthome" element={<ProtectedRoute><StudentHome /></ProtectedRoute>} />
           <Route path="/studenttable" element={<ProtectedRoute><Studenttable /></ProtectedRoute>} />
