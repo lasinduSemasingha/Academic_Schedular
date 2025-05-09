@@ -190,7 +190,7 @@ function UploadAnswerSheet() {
 
     try {
       const { data } = await axios.post(
-        "https://localhost:7005/api/answers/upload",
+        "https://localhost:7006/api/answers/upload",
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },
@@ -352,7 +352,7 @@ function UploadBulkAnswerSheet() {
 
     try {
       const { data } = await axios.post(
-        "https://localhost:7005/api/answers/upload-bulk",
+        "https://localhost:7006/api/answers/upload-bulk",
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },
@@ -582,7 +582,7 @@ function SubmitMarks() {
       };
       
       const { data: responseData } = await axios.post(
-        "https://localhost:7005/api/answers/submit-marks",
+        "https://localhost:7006/api/answers/submit-marks",
         data
       );
       
@@ -795,7 +795,7 @@ function ExtractedAnswers() {
   const fetchAnswers = async () => {
     setLoading(true);
     try {
-      const { data } = await axios.get("https://localhost:7005/api/answers");
+      const { data } = await axios.get("https://localhost:7006/api/answers");
       setAnswers(data);
       setError(null);
     } catch (err) {

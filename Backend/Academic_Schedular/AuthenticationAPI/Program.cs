@@ -61,7 +61,7 @@ if (app.Environment.IsDevelopment())
     });
 }
 
-app.UseCors("AllowAllOrigins");
+app.UseCors("AllowAll");
 
 app.MapUserEndpoint();
 

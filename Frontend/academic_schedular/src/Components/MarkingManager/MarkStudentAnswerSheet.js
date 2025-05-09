@@ -61,7 +61,7 @@ const MarkingManager = () => {
     setSuccess(false);
     try {
       const response = await axios.get(
-        `https://localhost:7005/api/answers/details/${fileName}?studentId=${studentId}`
+        `https://localhost:7006/api/answers/details/${fileName}?studentId=${studentId}`
       );
       const data = response.data;
 
@@ -116,7 +116,7 @@ const MarkingManager = () => {
     };
 
     try {
-      await axios.post('https://localhost:7005/api/answers/submit-marks', payload);
+      await axios.post('https://localhost:7006/api/answers/submit-marks', payload);
       setSuccess(true);
       setTimeout(() => setSuccess(false), 3000);
     } catch (error) {
