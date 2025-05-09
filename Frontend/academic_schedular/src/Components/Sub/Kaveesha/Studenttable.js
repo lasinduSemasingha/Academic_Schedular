@@ -327,7 +327,7 @@ const StudentTable = () => {
             ) : (
               filteredStudents.slice().reverse().map((student) => (
                 <StyledTableRow key={student.sId} hover>
-                  <TableCell>{student.sId}</TableCell>
+                  <TableCell>{student.studentId}</TableCell>
                   <TableCell>{student.name}</TableCell>
                   <TableCell>{student.email}</TableCell>
                   <TableCell>{student.contact}</TableCell>
