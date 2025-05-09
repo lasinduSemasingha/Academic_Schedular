@@ -66,9 +66,9 @@ const Layout = ({ children }) => {
           {isLoggedIn && (
             <>
               <Button sx={{ color: "white", mx: 1 }} component={Link} to="/examHome">Exam</Button>
-              <Button sx={{ color: "white", mx: 1 }} component={Link} to="/profile">Profile</Button>
               <Button sx={{ color: "white", mx: 1 }} component={Link} to="/resource">Resources</Button>
               <Button sx={{ color: "white", mx: 1 }} component={Link} to="/studenthome">Student</Button>
+              <Button sx={{ color: "white", mx: 1 }} component={Link} to="/marking-manager">Marking Manager</Button>
               <Button sx={{ color: "white", mx: 1 }} component={Link} to="/lecturerhome">Lecturer</Button>
               <Button sx={{ color: "white", mx: 1 }} component={Link} to="/timetable">Time Tables</Button>
               <Button sx={{ color: "white", mx: 1 }}>
@@ -108,10 +108,6 @@ const Layout = ({ children }) => {
               <ListItem button component={Link} to="/schedule" onClick={closeDrawer} sx={{ color: "white" }}>
                 <Schedule sx={{ marginRight: 1 }} />
                 <ListItemText primary="Schedule" />
-              </ListItem>
-              <ListItem button component={Link} to="/profile" onClick={closeDrawer} sx={{ color: "white" }}>
-                <AccountCircle sx={{ marginRight: 1 }} />
-                <ListItemText primary="Profile" />
               </ListItem>
             </>
           )}

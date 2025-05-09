@@ -4,7 +4,6 @@ import {
   Typography,
   Button,
   Grid,
-  Paper,
   Card,
   CardContent,
   Divider,
@@ -13,39 +12,44 @@ import {
   ListItem,
   ListItemAvatar,
   ListItemText,
-  Chip,
-  LinearProgress
+  IconButton
 } from "@mui/material";
 import { Link } from "react-router-dom";
 import { styled } from "@mui/system";
-import SchoolIcon from "@mui/icons-material/School";
-import EventIcon from "@mui/icons-material/Event";
-import PeopleIcon from "@mui/icons-material/People";
-import AnnouncementIcon from "@mui/icons-material/Announcement";
-import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
-import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
-import AssignmentIcon from "@mui/icons-material/Assignment";
-import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, BarChart, Bar, XAxis, YAxis } from "recharts";
-import Calendar from 'react-calendar';
-import 'react-calendar/dist/Calendar.css';
+import {
+  Schedule as ScheduleIcon,
+  Class as ClassIcon,
+  Assignment as AssignmentIcon,
+  Event as EventIcon,
+  School as SchoolIcon,
+  Notifications as NotificationsIcon,
+  Today as TodayIcon,
+  Person as PersonIcon,
+  Group as GroupIcon,
+  CalendarToday as CalendarTodayIcon
+} from "@mui/icons-material";
+import { Calendar, dateFnsLocalizer } from 'react-big-calendar';
+import 'react-big-calendar/lib/css/react-big-calendar.css';
+import format from 'date-fns/format';
+import parse from 'date-fns/parse';
+import startOfWeek from 'date-fns/startOfWeek';
+import getDay from 'date-fns/getDay';
 
-const primaryColor = "#1E3A8A";
-const secondaryColor = "#F59E0B";
-const backgroundColor = "#F3F4F6";
-const cardBackground = "#FFFFFF";
+const locales = {
+  'en-US': require('date-fns/locale/en-US')
+}
 
-const pieData = [
-  { name: "Scheduled Classes", value: 50, color: "#0284C7" },
-  { name: "Exams Scheduled", value: 20, color: "#E11D48" },
-  { name: "Assignments Due", value: 30, color: "#22C55E" }
-];
+const localizer = dateFnsLocalizer({
+  format,
+  parse,
+  startOfWeek,
+  getDay,
+  locales,
+})
 
-const barData = [
-  { name: "Math", students: 200 },
-  { name: "Science", students: 180 },
-  { name: "History", students: 150 },
-  { name: "English", students: 170 }
-];
+const primaryColor = "#3f51b5";
+const secondaryColor = "#ff9800";
+const backgroundColor = "#f5f5f5";
 
 const DashboardContainer = styled(Box)({
   backgroundColor,
@@ -53,196 +57,307 @@ const DashboardContainer = styled(Box)({
   padding: "2rem"
 });
 
+const events = [
+  {
+    title: 'Math 101 Lecture',
+    start: new Date(2025, 2, 25, 9, 0),
+    end: new Date(2025, 2, 25, 10, 30),
+    resource: 'Room 201'
+  },
+  {
+    title: 'Physics Lab',
+    start: new Date(2025, 2, 25, 14, 0),
+    end: new Date(2025, 2, 25, 16, 0),
+    resource: 'Lab B'
+  },
+  {
+    title: 'Faculty Meeting',
+    start: new Date(2025, 2, 26, 10, 0),
+    end: new Date(2025, 2, 26, 11, 30),
+    resource: 'Conference Room'
+  }
+];
+
 const Home = () => {
   return (
     <DashboardContainer>
+      <Typography variant="h4" gutterBottom sx={{ fontWeight: 'bold', color: primaryColor }}>
+        Academic Scheduler Dashboard
+      </Typography>
+      
       <Grid container spacing={3}>
-        {/* KPI Stats */}
+        {/* Quick Access Cards */}
         <Grid item xs={12} md={3}>
-          <Card sx={{ backgroundColor: cardBackground, p: 2 }}>
-            <CardContent>
-              <PeopleIcon sx={{ fontSize: 40, color: secondaryColor }} />
-              <Typography variant="h6" color="textSecondary">Total Students</Typography>
-              <Typography variant="h4" fontWeight="bold">500</Typography>
+          <Card sx={{ height: '100%' }}>
+            <CardContent sx={{ textAlign: 'center' }}>
+              <ScheduleIcon sx={{ fontSize: 50, color: primaryColor }} />
+              <Typography variant="h6" sx={{ mt: 1 }}>Class Scheduler</Typography>
+              <Button 
+                variant="contained" 
+                color="primary" 
+                sx={{ mt: 2 }}
+                component={Link}
+                to="/resource"
+              >
+                Resource Manager
+              </Button>
             </CardContent>
           </Card>
         </Grid>
+        
         <Grid item xs={12} md={3}>
-          <Card sx={{ backgroundColor: cardBackground, p: 2 }}>
-            <CardContent>
-              <EventIcon sx={{ fontSize: 40, color: secondaryColor }} />
-              <Typography variant="h6" color="textSecondary">Upcoming Exams</Typography>
-              <Typography variant="h4" fontWeight="bold">10</Typography>
+          <Card sx={{ height: '100%' }}>
+            <CardContent sx={{ textAlign: 'center' }}>
+              <EventIcon sx={{ fontSize: 50, color: secondaryColor }} />
+              <Typography variant="h6" sx={{ mt: 1 }}>Event Management</Typography>
+              <Button 
+                variant="contained" 
+                color="secondary" 
+                sx={{ mt: 2 }}
+                component={Link}
+                to="/studenthome"
+              >
+                Student Management
+              </Button>
             </CardContent>
           </Card>
         </Grid>
+        
         <Grid item xs={12} md={3}>
-          <Card sx={{ backgroundColor: cardBackground, p: 2 }}>
-            <CardContent>
-              <SchoolIcon sx={{ fontSize: 40, color: secondaryColor }} />
-              <Typography variant="h6" color="textSecondary">Total Courses</Typography>
-              <Typography variant="h4" fontWeight="bold">25</Typography>
+          <Card sx={{ height: '100%' }}>
+            <CardContent sx={{ textAlign: 'center' }}>
+              <PersonIcon sx={{ fontSize: 50, color: primaryColor }} />
+              <Typography variant="h6" sx={{ mt: 1 }}>Student Management</Typography>
+              <Button 
+                variant="contained" 
+                color="primary" 
+                sx={{ mt: 2 }}
+                component={Link}
+                to="/faculty"
+              >
+                Student Management
+              </Button>
             </CardContent>
           </Card>
         </Grid>
+        
         <Grid item xs={12} md={3}>
-          <Card sx={{ backgroundColor: cardBackground, p: 2 }}>
-            <CardContent>
-              <NotificationsActiveIcon sx={{ fontSize: 40, color: secondaryColor }} />
-              <Typography variant="h6" color="textSecondary">New Notifications</Typography>
-              <Typography variant="h4" fontWeight="bold">5</Typography>
+          <Card sx={{ height: '100%' }}>
+            <CardContent sx={{ textAlign: 'center' }}>
+              <GroupIcon sx={{ fontSize: 50, color: secondaryColor }} />
+              <Typography variant="h6" sx={{ mt: 1 }}>Student Groups</Typography>
+              <Button 
+                variant="contained" 
+                color="secondary" 
+                sx={{ mt: 2 }}
+                component={Link}
+                to="/students"
+              >
+                Manage Groups
+              </Button>
             </CardContent>
           </Card>
         </Grid>
       </Grid>
+      
       <Divider sx={{ my: 4 }} />
-
-      {/* Charts Section */}
+      
+      {/* Main Content */}
       <Grid container spacing={3}>
-        <Grid item xs={12} md={6}>
-          <Card sx={{ backgroundColor: cardBackground, p: 2 }}>
+        {/* Calendar View */}
+        <Grid item xs={12} md={8}>
+          <Card>
             <CardContent>
-              <Typography variant="h6" fontWeight="bold" color={primaryColor} gutterBottom>
-                Enrollment Overview
-              </Typography>
-              <ResponsiveContainer width="100%" height={250}>
-                <BarChart data={barData}>
-                  <XAxis dataKey="name" />
-                  <YAxis />
-                  <Tooltip />
-                  <Bar dataKey="students" fill="#3B82F6" />
-                </BarChart>
-              </ResponsiveContainer>
-            </CardContent>
-          </Card>
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <Card sx={{ backgroundColor: cardBackground, p: 2 }}>
-            <CardContent>
-              <Typography variant="h6" fontWeight="bold" color={primaryColor} gutterBottom>
-                Schedule Breakdown
-              </Typography>
-              <ResponsiveContainer width="100%" height={250}>
-                <PieChart>
-                  <Pie data={pieData} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={80} label>
-                    {pieData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={entry.color} />
-                    ))}
-                  </Pie>
-                  <Tooltip />
-                </PieChart>
-              </ResponsiveContainer>
-            </CardContent>
-          </Card>
-        </Grid>
-      </Grid>
-      <Divider sx={{ my: 4 }} />
-
-      {/* Announcements & Events */}
-      <Grid container spacing={3}>
-        <Grid item xs={12} md={6}>
-          <Card sx={{ backgroundColor: cardBackground, p: 2 }}>
-            <CardContent>
-              <Typography variant="h6" fontWeight="bold" color={primaryColor} gutterBottom>
-                Latest Announcements
-              </Typography>
-              <List>
-                <ListItem>
-                  <ListItemAvatar><AnnouncementIcon color="primary" /></ListItemAvatar>
-                  <ListItemText primary="Exam Schedule Released" secondary="March 25, 2025" />
-                </ListItem>
-                <ListItem>
-                  <ListItemAvatar><AssignmentIcon color="primary" /></ListItemAvatar>
-                  <ListItemText primary="New Assignment Uploaded" secondary="Due April 10, 2025" />
-                </ListItem>
-              </List>
-            </CardContent>
-          </Card>
-        </Grid>
-
-        {/* Event Calendar */}
-        <Grid item xs={12} md={6}>
-          <Card sx={{ backgroundColor: cardBackground, p: 2 }}>
-            <CardContent>
-              <Typography variant="h6" fontWeight="bold" color={primaryColor} gutterBottom>
+              <Typography variant="h6" sx={{ mb: 2, fontWeight: 'bold', color: primaryColor }}>
                 Academic Calendar
               </Typography>
-              <Calendar />
+              <div style={{ height: 500 }}>
+                <Calendar
+                  localizer={localizer}
+                  events={events}
+                  startAccessor="start"
+                  endAccessor="end"
+                  style={{ height: '100%' }}
+                  defaultView="week"
+                  views={['month', 'week', 'day', 'agenda']}
+                  toolbar={true}
+                />
+              </div>
+            </CardContent>
+          </Card>
+        </Grid>
+        
+        {/* Upcoming Schedule */}
+        <Grid item xs={12} md={4}>
+          <Card>
+            <CardContent>
+              <Typography variant="h6" sx={{ mb: 2, fontWeight: 'bold', color: primaryColor }}>
+                Today's Schedule
+              </Typography>
+              <List>
+                <ListItem sx={{ borderLeft: `4px solid ${primaryColor}`, mb: 1 }}>
+                  <ListItemAvatar>
+                    <Avatar sx={{ bgcolor: primaryColor }}>
+                      <ClassIcon />
+                    </Avatar>
+                  </ListItemAvatar>
+                  <ListItemText 
+                    primary="Math 101 Lecture" 
+                    secondary="9:00 AM - 10:30 AM | Room 201" 
+                  />
+                </ListItem>
+                <ListItem sx={{ borderLeft: `4px solid ${secondaryColor}`, mb: 1 }}>
+                  <ListItemAvatar>
+                    <Avatar sx={{ bgcolor: secondaryColor }}>
+                      <SchoolIcon />
+                    </Avatar>
+                  </ListItemAvatar>
+                  <ListItemText 
+                    primary="Physics Lab" 
+                    secondary="2:00 PM - 4:00 PM | Lab B" 
+                  />
+                </ListItem>
+                <ListItem sx={{ borderLeft: `4px solid ${primaryColor}` }}>
+                  <ListItemAvatar>
+                    <Avatar sx={{ bgcolor: primaryColor }}>
+                      <EventIcon />
+                    </Avatar>
+                  </ListItemAvatar>
+                  <ListItemText 
+                    primary="Department Meeting" 
+                    secondary="4:30 PM - 5:30 PM | Conference Room" 
+                  />
+                </ListItem>
+              </List>
+              
+              <Divider sx={{ my: 2 }} />
+              
+              <Typography variant="h6" sx={{ mb: 2, fontWeight: 'bold', color: primaryColor }}>
+                Upcoming Events
+              </Typography>
+              <List>
+                <ListItem>
+                  <ListItemAvatar>
+                    <Avatar>
+                      <TodayIcon />
+                    </Avatar>
+                  </ListItemAvatar>
+                  <ListItemText 
+                    primary="Midterm Exams" 
+                    secondary="Starts next Monday" 
+                  />
+                </ListItem>
+                <ListItem>
+                  <ListItemAvatar>
+                    <Avatar>
+                      <CalendarTodayIcon />
+                    </Avatar>
+                  </ListItemAvatar>
+                  <ListItemText 
+                    primary="Faculty Development Workshop" 
+                    secondary="Next Friday, 9:00 AM" 
+                  />
+                </ListItem>
+              </List>
             </CardContent>
           </Card>
         </Grid>
       </Grid>
-
+      
       <Divider sx={{ my: 4 }} />
-
-      {/* Additional Widgets */}
+      
+      {/* Recent Activity */}
       <Grid container spacing={3}>
-        {/* Task Progress */}
-        <Grid item xs={12} md={3}>
-          <Card sx={{ backgroundColor: cardBackground, p: 2 }}>
+        <Grid item xs={12} md={6}>
+          <Card>
             <CardContent>
-              <Typography variant="h6" color="textSecondary">Assignments Progress</Typography>
-              <LinearProgress variant="determinate" value={60} />
-              <Typography variant="body2" color="textSecondary">60% of assignments completed</Typography>
-            </CardContent>
-          </Card>
-        </Grid>
-
-        {/* Upcoming Deadlines */}
-        <Grid item xs={12} md={3}>
-          <Card sx={{ backgroundColor: cardBackground, p: 2 }}>
-            <CardContent>
-              <Typography variant="h6" fontWeight="bold" color={primaryColor} gutterBottom>
-                Upcoming Deadlines
+              <Typography variant="h6" sx={{ mb: 2, fontWeight: 'bold', color: primaryColor }}>
+                Recent Schedule Changes
               </Typography>
               <List>
                 <ListItem>
-                  <ListItemText primary="Assignment 1 Due" secondary="April 1, 2025" />
+                  <ListItemAvatar>
+                    <Avatar sx={{ bgcolor: '#ff5722' }}>
+                      <NotificationsIcon />
+                    </Avatar>
+                  </ListItemAvatar>
+                  <ListItemText 
+                    primary="Room change for History 202" 
+                    secondary="Changed from Room 105 to Room 203" 
+                  />
                 </ListItem>
                 <ListItem>
-                  <ListItemText primary="Exam Registration Deadline" secondary="April 5, 2025" />
+                  <ListItemAvatar>
+                    <Avatar sx={{ bgcolor: '#4caf50' }}>
+                      <AssignmentIcon />
+                    </Avatar>
+                  </ListItemAvatar>
+                  <ListItemText 
+                    primary="New class added" 
+                    secondary="CS 301 - Advanced Programming, Wednesdays 1:00 PM" 
+                  />
                 </ListItem>
               </List>
             </CardContent>
           </Card>
         </Grid>
-
-        {/* Recent Activities */}
-        <Grid item xs={12} md={3}>
-          <Card sx={{ backgroundColor: cardBackground, p: 2 }}>
+        
+        <Grid item xs={12} md={6}>
+          <Card>
             <CardContent>
-              <Typography variant="h6" fontWeight="bold" color={primaryColor} gutterBottom>
-                Recent Activities
+              <Typography variant="h6" sx={{ mb: 2, fontWeight: 'bold', color: primaryColor }}>
+                Quick Actions
               </Typography>
-              <List>
-                <ListItem>
-                  <ListItemAvatar><AssignmentIcon color="primary" /></ListItemAvatar>
-                  <ListItemText primary="Math Exam Scheduled" secondary="March 20, 2025" />
-                </ListItem>
-                <ListItem>
-                  <ListItemAvatar><PeopleIcon color="primary" /></ListItemAvatar>
-                  <ListItemText primary="New Student Registered" secondary="March 22, 2025" />
-                </ListItem>
-              </List>
-            </CardContent>
-          </Card>
-        </Grid>
-
-        {/* Notifications */}
-        <Grid item xs={12} md={3}>
-          <Card sx={{ backgroundColor: cardBackground, p: 2 }}>
-            <CardContent>
-              <Typography variant="h6" fontWeight="bold" color={primaryColor} gutterBottom>
-                Notifications
-              </Typography>
-              <List>
-                <ListItem>
-                  <Chip label="Exam Schedule Released" color="primary" />
-                </ListItem>
-                <ListItem>
-                  <Chip label="New Assignment Due" color="secondary" />
-                </ListItem>
-              </List>
+              <Grid container spacing={2}>
+                <Grid item xs={6}>
+                  <Button 
+                    variant="outlined" 
+                    color="primary" 
+                    fullWidth 
+                    startIcon={<ClassIcon />}
+                    component={Link}
+                    to="/add-class"
+                  >
+                    Add Class
+                  </Button>
+                </Grid>
+                <Grid item xs={6}>
+                  <Button 
+                    variant="outlined" 
+                    color="secondary" 
+                    fullWidth 
+                    startIcon={<EventIcon />}
+                    component={Link}
+                    to="/add-event"
+                  >
+                    Add Event
+                  </Button>
+                </Grid>
+                <Grid item xs={6}>
+                  <Button 
+                    variant="outlined" 
+                    color="primary" 
+                    fullWidth 
+                    startIcon={<PersonIcon />}
+                    component={Link}
+                    to="/add-faculty"
+                  >
+                    Add Faculty
+                  </Button>
+                </Grid>
+                <Grid item xs={6}>
+                  <Button 
+                    variant="outlined" 
+                    color="secondary" 
+                    fullWidth 
+                    startIcon={<GroupIcon />}
+                    component={Link}
+                    to="/add-student-group"
+                  >
+                    Add Student Group
+                  </Button>
+                </Grid>
+              </Grid>
             </CardContent>
           </Card>
         </Grid>

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 import {
   Container,
   Button,
@@ -217,6 +218,7 @@ function UploadAnswerSheet() {
         subheader="Upload individual student answer sheets for processing"
         titleTypographyProps={{ variant: 'h6' }}
       />
+      
       <CardContent>
         <Grid container spacing={3}>
           <Grid item xs={12} md={6}>
@@ -911,7 +913,8 @@ export default function App() {
           </Typography>
           <Typography variant="subtitle1" sx={{ mt: 1, opacity: 0.9 }}>
             Professional answer sheet processing and grading platform
-          </Typography>
+          </Typography><br />
+          <Button sx={{ color: "primary.main", mx: 1, backgroundColor: "white" }} component={Link} to="/add-marks">Give Marks</Button>
         </Box>
         
         <UploadAnswerSheet />

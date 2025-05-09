@@ -27,7 +27,7 @@ namespace AuthenticationAPI.Endpoints
 
                 if (token != null)
                 {
-                    return Results.Ok(new { message = "Authentication successful", token });
+                    return Results.Ok(new { message = true, token });
                 }
                 else
                 {
@@ -39,7 +39,7 @@ namespace AuthenticationAPI.Endpoints
             {
                 bool isUserCreated = await service.CreateUser(request);
                 return isUserCreated
-                    ? Results.Ok("User registered successfully")
+                    ? Results.Ok(new { message = true })
                     : Results.NotFound($"Transaction with username {request.username} not found.");
             });
         }
