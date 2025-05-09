@@ -71,9 +71,6 @@ const Layout = ({ children }) => {
               <Button sx={{ color: "white", mx: 1 }} component={Link} to="/marking-manager">Marking Manager</Button>
               <Button sx={{ color: "white", mx: 1 }} component={Link} to="/lecturerhome">Lecturer</Button>
               <Button sx={{ color: "white", mx: 1 }} component={Link} to="/timetable">Time Tables</Button>
-              <Button sx={{ color: "white", mx: 1 }}>
-                <NotificationsActiveIcon sx={{ fontSize: 30, color: 'white' }} />
-              </Button>
             </>
           )}
           {isLoggedIn ? (

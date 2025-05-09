@@ -91,7 +91,7 @@ const Home = () => {
           <Card sx={{ height: '100%' }}>
             <CardContent sx={{ textAlign: 'center' }}>
               <ScheduleIcon sx={{ fontSize: 50, color: primaryColor }} />
-              <Typography variant="h6" sx={{ mt: 1 }}>Class Scheduler</Typography>
+              <Typography variant="h6" sx={{ mt: 1 }}>Resource Manager</Typography>
               <Button 
                 variant="contained" 
                 color="primary" 
@@ -109,15 +109,15 @@ const Home = () => {
           <Card sx={{ height: '100%' }}>
             <CardContent sx={{ textAlign: 'center' }}>
               <EventIcon sx={{ fontSize: 50, color: secondaryColor }} />
-              <Typography variant="h6" sx={{ mt: 1 }}>Event Management</Typography>
+              <Typography variant="h6" sx={{ mt: 1 }}>Exam Management</Typography>
               <Button 
                 variant="contained" 
                 color="secondary" 
                 sx={{ mt: 2 }}
                 component={Link}
-                to="/studenthome"
+                to="/examHome"
               >
-                Student Management
+                Exam Management
               </Button>
             </CardContent>
           </Card>
@@ -133,7 +133,7 @@ const Home = () => {
                 color="primary" 
                 sx={{ mt: 2 }}
                 component={Link}
-                to="/faculty"
+                to="/studenthome"
               >
                 Student Management
               </Button>
@@ -145,15 +145,15 @@ const Home = () => {
           <Card sx={{ height: '100%' }}>
             <CardContent sx={{ textAlign: 'center' }}>
               <GroupIcon sx={{ fontSize: 50, color: secondaryColor }} />
-              <Typography variant="h6" sx={{ mt: 1 }}>Student Groups</Typography>
+              <Typography variant="h6" sx={{ mt: 1 }}>Lecturer Management</Typography>
               <Button 
                 variant="contained" 
                 color="secondary" 
                 sx={{ mt: 2 }}
                 component={Link}
-                to="/students"
+                to="/lecturerhome"
               >
-                Manage Groups
+                Lecturer Management
               </Button>
             </CardContent>
           </Card>
