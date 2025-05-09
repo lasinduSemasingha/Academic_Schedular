@@ -339,6 +339,7 @@ const LecturerDetailsTable = () => {
           </div>
         </div>
       </div>
+
       </div>
       
       <div class="professional-profile">
