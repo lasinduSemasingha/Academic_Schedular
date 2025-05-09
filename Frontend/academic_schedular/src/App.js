@@ -73,6 +73,10 @@ function App() {
           <Route path="/resource" element={<ProtectedRoute><ResourceManagement /></ProtectedRoute>} />
           <Route path="/editresource/:id" element={<ProtectedRoute><EditResource /></ProtectedRoute>} />
 
+          <Route path="/lecturer" element={<Lecturer />} />
+          <Route path="/lecturerhome" element={<LecturerHome />} />
+          <Route path="/lecturertable" element={<LecturerTable />} />
+          <Route path="/editlecturer/:lId" element={<EditLecturer />} />
           <Route path="/lecturer" element={<ProtectedRoute><Lecturer /></ProtectedRoute>} />
           <Route path="/lecturerhome" element={<ProtectedRoute><LecturerHome /></ProtectedRoute>} />
           <Route path="/lecturertable" element={<ProtectedRoute><LecturerTable /></ProtectedRoute>} />
