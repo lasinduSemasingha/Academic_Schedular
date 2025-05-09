@@ -167,17 +167,13 @@ function EditExam() {
                         </Grid>
                         <Grid item xs={12}>
                             <TextField
-                                select fullWidth label="Exam Hall" name="examhall"
-                                value={formData.examhall} onChange={handleChange}
-                                error={!!errors.examhall} helperText={errors.examhall}
-                            >
-                                <MenuItem value="A12">A12</MenuItem>
-                                <MenuItem value="A13">A13</MenuItem>
-                                <MenuItem value="A14">A14</MenuItem>
-                                <MenuItem value="A15">A15</MenuItem>
-                                <MenuItem value="A16">A16</MenuItem>
-                                <MenuItem value="Main">Main</MenuItem>
-                            </TextField>
+                                fullWidth
+                                label="Exam Hall"
+                                name="examHall"
+                                variant="outlined"
+                                required
+                                onChange={handleChange}
+                            />
                         </Grid>
                         <Grid item xs={12}>
                             <TextField

@@ -7,6 +7,8 @@ import { useNavigate } from "react-router-dom";
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import axios from "axios";
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
 
 function ExamTable() {
     const navigate = useNavigate();
@@ -66,6 +68,61 @@ function ExamTable() {
         exam.subject.toLowerCase().includes(searchSubject.toLowerCase())
     );
     
+const handlePrintRow = async (exam) => {
+    const content = document.createElement('div');
+    content.style.width = "900px";
+    content.style.margin = "0 auto";
+    content.style.padding = "40px";
+    content.style.fontFamily = "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif";
+    content.style.fontSize = "20px";
+    content.style.color = "#333";
+
+    content.innerHTML = `
+        <div style="text-align: center; margin-bottom: 30px;">
+            <img src="LOGO_URL_HERE" alt="Logo" style="height: 80px; margin-bottom: 10px;" />
+            <h2 style="margin: 5px 0; font-size: 28px; color: #2D3A5A;">Academic Scheduler</h2>
+            <h3 style="margin: 0; font-size: 22px;">Exam Details Report</h3>
+        </div>
+
+        <table style="width: 100%; border-collapse: collapse; font-size: 20px;">
+            ${[
+                ["Exam ID", exam.eId],
+                ["Exam Type", exam.examtype],
+                ["Subject", exam.subject],
+                ["Date & Time", new Date(exam.datetime).toLocaleString()],
+                ["Duration", `${exam.duration} hours`],
+                ["Exam Hall", exam.examhall],
+                ["Invigilator", exam.invigilator],
+                ["Total Marks", exam.marks],
+                ["Status", exam.status || "Scheduled"]
+            ].map((row, i) => `
+                <tr style="background: ${i % 2 === 0 ? '#f9f9f9' : '#fff'};">
+                    <th style="text-align: left; padding: 12px; border: 1px solid #ccc; width: 35%; background: #f1f1f1;">${row[0]}</th>
+                    <td style="padding: 12px; border: 1px solid #ccc;">${row[1]}</td>
+                </tr>
+            `).join('')}
+        </table>
+
+        <div style="margin-top: 50px; font-size: 16px; text-align: center; color: #888;">
+            Generated on ${new Date().toLocaleDateString()}
+        </div>
+    `;
+
+    document.body.appendChild(content); // Temporary append for rendering
+
+    const canvas = await html2canvas(content, { scale: 2, useCORS: true });
+    const imgData = canvas.toDataURL("image/png");
+
+    const pdf = new jsPDF("p", "mm", "a4");
+    const pdfWidth = pdf.internal.pageSize.getWidth();
+    const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+
+    pdf.addImage(imgData, "PNG", 0, 10, pdfWidth, pdfHeight);
+    pdf.save(`Exam_${exam.eId}.pdf`);
+
+    document.body.removeChild(content); // Clean up
+};
+
 
 
     return (
@@ -123,36 +180,50 @@ function ExamTable() {
                                     <TableCell sx={{ padding: '8px 16px' }}>{exam.marks}</TableCell>
                                     <TableCell sx={{ padding: '8px 16px' }}>{exam.status || "Scheduled"}</TableCell>
                                     <TableCell sx={{ padding: '8px 16px' }}>
-                                        <Box sx={{ display: 'flex', justifyContent: 'space-around', width: '100%' }}>
-                                            <Tooltip title="Edit">
-                                                <IconButton
-                                                    color="primary"
-                                                    onClick={() => handleEdit(exam.eId)}
-                                                    sx={{
-                                                        mr: 1,
-                                                        backgroundColor: "#E3F2FD",
-                                                        borderRadius: "50%",
-                                                        '&:hover': { backgroundColor: "#BBDEFB" }
-                                                    }}
-                                                >
-                                                    <EditIcon />
-                                                </IconButton>
-                                            </Tooltip>
-                                            <Tooltip title="Delete">
-                                                <IconButton
-                                                    color="error"
-                                                    onClick={() => handleDelete(exam.eId)}
-                                                    sx={{
-                                                        backgroundColor: "#FFCDD2",
-                                                        borderRadius: "50%",
-                                                        '&:hover': { backgroundColor: "#FFEBEE" }
-                                                    }}
-                                                >
-                                                    <DeleteIcon />
-                                                </IconButton>
-                                            </Tooltip>
-                                        </Box>
-                                    </TableCell>
+    <Box sx={{ display: 'flex', justifyContent: 'space-around', width: '100%' }}>
+        <Tooltip title="Edit">
+            <IconButton
+                color="primary"
+                onClick={() => handleEdit(exam.eId)}
+                sx={{
+                    mr: 1,
+                    backgroundColor: "#E3F2FD",
+                    borderRadius: "50%",
+                    '&:hover': { backgroundColor: "#BBDEFB" }
+                }}
+            >
+                <EditIcon />
+            </IconButton>
+        </Tooltip>
+        <Tooltip title="Delete">
+            <IconButton
+                color="error"
+                onClick={() => handleDelete(exam.eId)}
+                sx={{
+                    backgroundColor: "#FFCDD2",
+                    borderRadius: "50%",
+                    '&:hover': { backgroundColor: "#FFEBEE" }
+                }}
+            >
+                <DeleteIcon />
+            </IconButton>
+        </Tooltip>
+        <Tooltip title="Download PDF">
+            <IconButton
+                color="secondary"
+                onClick={() => handlePrintRow(exam)}
+                sx={{
+                    backgroundColor: "#C8E6C9",
+                    borderRadius: "50%",
+                    '&:hover': { backgroundColor: "#A5D6A7" }
+                }}
+            >
+                🖨️
+            </IconButton>
+        </Tooltip>
+    </Box>
+</TableCell>
+
                                 </TableRow>
                             ))}
                         </TableBody>
