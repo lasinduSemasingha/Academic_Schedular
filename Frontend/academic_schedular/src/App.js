@@ -64,7 +64,7 @@ function App() {
           <Route path="/lecturer" element={<Lecturer />} />
           <Route path="/lecturerhome" element={<LecturerHome />} />
           <Route path="/lecturertable" element={<LecturerTable />} />
-          <Route path="/editlecturer" element={<EditLecturer />} />
+          <Route path="/editlecturer/:lId" element={<EditLecturer />} />
 
           <Route path="/student" element={<Student />} />
           <Route path="/studenthome" element={<StudentHome />} />
