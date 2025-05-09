@@ -60,7 +60,7 @@ const EditLecturer = () => {
     try {
       await axios.put(`https://localhost:7004/Lecturer/${lId}`, lecturer);
       alert('Lecturer updated successfully!');
-      navigate('/lecturers');
+      navigate('/LecturerTable');
     } catch (error) {
       console.error('Error updating lecturer:', error);
       alert('Failed to update lecturer.');
